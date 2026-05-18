@@ -49,7 +49,7 @@ public class AuthService {
         Credential saved = credentialRepository.save(newCredentials);
         String token = jwtUtil.generateToken(saved.getUserId(), saved.getEmail(), saved.getRole());
 
-        return new AuthResponse(token, saved.getEmail(), saved.getRole());
+        return new AuthResponse(saved.getUserId(), token, saved.getEmail(), saved.getRole());
     }
 
     public AuthResponse login(LoginRequest request) {
@@ -60,7 +60,7 @@ public class AuthService {
             throw new BadCredentialsException("Invalid credentials");
         }
         String token = jwtUtil.generateToken(credential.getUserId(), credential.getEmail(), credential.getRole());
-        return new AuthResponse(token, credential.getEmail(), credential.getRole());
+        return new AuthResponse(credential.getUserId(), token, credential.getEmail(), credential.getRole());
     }
 
     public Claims validateToken(String token) {
