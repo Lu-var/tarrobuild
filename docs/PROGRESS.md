@@ -6,8 +6,8 @@
 
 ## Functional requirements (RF)
 
-- [ ] **RF-01** — Register user with bcrypt
-- [ ] **RF-02** — Authenticate user (JWT)
+- [x] **RF-01** — Register user with bcrypt
+- [x] **RF-02** — Authenticate user (JWT)
 - [ ] **RF-03** — List catalog components
 - [ ] **RF-04** — Component detail
 - [ ] **RF-05** — Filter by category/brand/price
@@ -32,12 +32,12 @@
 - [ ] **RNF-03** — Structured logs with correlation ID
 - [ ] **RNF-04** — Independent DB per service
 - [ ] **RNF-05** — REST-only inter-service communication
-- [ ] **RNF-06** — BCrypt password encryption
+- [x] **RNF-06** — BCrypt password encryption
 
 ## User stories (HU)
 
-- [ ] **HU-01** — User registration
-- [ ] **HU-02** — Authentication
+- [x] **HU-01** — User registration
+- [x] **HU-02** — Authentication
 - [ ] **HU-03** — Catalog exploration
 - [ ] **HU-04** — Build creation
 - [ ] **HU-05** — Compatibility validation
@@ -63,20 +63,19 @@
 
 ### auth-service :8081
 
-- [ ] Model / Entity (Credential) (Module 2)
-- [ ] Repository (Module 2)
-- [ ] DTOs (Request / Response) (Module 1)
-- [ ] Service (Module 1)
-- [ ] Controller (Module 1)
-- [ ] Exception handling (Module 1)
-- [ ] Seed data (admin + test users) (Module 2)
-- [ ] `@OneToMany` User -> Credential (Module 3)
-- [ ] BCrypt password hashing (Module 7)
-- [ ] JWT token generation / validation (Module 7)
-- [ ] Roles: USER / ADMIN (Module 7)
-- [ ] Flyway migrations (Module 6)
-- [ ] Logging with `@Slf4j` (Module 8)
-- [ ] GlobalExceptionHandler (Module 9)
+- [x] Model / Entity (Credential) (Module 2)
+- [x] Repository (Module 2)
+- [x] DTOs (Request / Response) (Module 1)
+- [x] Service (Module 1)
+- [x] Controller (Module 1)
+- [x] Exception handling (Module 1)
+- [x] Seed credentials for admin + test users (link to existing user-service profiles)
+- [x] BCrypt password hashing (Module 7)
+- [x] JWT token generation / validation (Module 7)
+- [x] Roles: USER / ADMIN (Module 7)
+- [x] Flyway migrations (Module 6)
+- [x] Logging with `@Slf4j` (Module 8)
+- [x] GlobalExceptionHandler (Module 9)
 - [ ] Endpoint tests script (notification as template)
 - [ ] Tests
 
@@ -89,7 +88,8 @@
 - [x] Controller (Module 1)
 - [x] Exception handling (Module 1)
 - [x] Seed data (20 users) (Module 2)
-- [x] User with unique email (Module 3)
+- [ ] User with unique email (Module 3)
+- [ ] Ensure email uniqueness validated across user-service and auth-service (duplicate check in register flow)
 - [ ] Flyway migrations (Module 6)
 - [x] Logging with `@Slf4j` (Module 8)
 - [x] GlobalExceptionHandler (Module 9)
@@ -147,7 +147,7 @@
 - [ ] Flyway migrations (Module 6)
 - [x] Logging with `@Slf4j` (Module 8)
 - [x] GlobalExceptionHandler (Module 9)
-- [ ] Handle HttpMessageNotReadableException in GlobalExceptionHandler (invalid enums return 400)
+- [x] Handle HttpMessageNotReadableException in GlobalExceptionHandler (invalid enums return 400)
 - [ ] Endpoint tests script (notification as template)
 - [ ] Tests
 
@@ -163,7 +163,7 @@
 - [ ] Flyway migrations (Module 6)
 - [x] Logging with `@Slf4j` (Module 8)
 - [x] GlobalExceptionHandler (Module 9)
-- [ ] Handle HttpMessageNotReadableException in GlobalExceptionHandler (invalid enums return 400)
+- [x] Handle HttpMessageNotReadableException in GlobalExceptionHandler (invalid enums return 400)
 - [ ] Endpoint tests script (notification as template)
 - [ ] Tests
 
@@ -184,7 +184,7 @@
 - [ ] Flyway migrations (Module 6)
 - [x] Logging with `@Slf4j` (Module 8)
 - [x] GlobalExceptionHandler (Module 9)
-- [ ] Handle HttpMessageNotReadableException in GlobalExceptionHandler (invalid enums return 400)
+- [x] Handle HttpMessageNotReadableException in GlobalExceptionHandler (invalid enums return 400)
 - [ ] Endpoint tests script (notification as template)
 - [ ] Tests
 
@@ -203,7 +203,7 @@
 - [ ] Flyway migrations (Module 6)
 - [x] Logging with `@Slf4j` (Module 8)
 - [x] GlobalExceptionHandler (Module 9)
-- [ ] Handle HttpMessageNotReadableException in GlobalExceptionHandler (invalid enums return 400)
+- [x] Handle HttpMessageNotReadableException in GlobalExceptionHandler (invalid enums return 400)
 - [ ] Endpoint tests script (notification as template)
 - [ ] Tests
 
@@ -223,7 +223,7 @@
 - [ ] Flyway migrations (Module 6)
 - [x] Logging with `@Slf4j` (Module 8)
 - [x] GlobalExceptionHandler (Module 9)
-- [ ] Handle HttpMessageNotReadableException in GlobalExceptionHandler (invalid enums return 400)
+- [x] Handle HttpMessageNotReadableException in GlobalExceptionHandler (invalid enums return 400)
 - [ ] Endpoint tests script (notification as template)
 - [ ] Tests
 
@@ -243,3 +243,4 @@
 - [x] Handle HttpMessageNotReadableException in GlobalExceptionHandler (invalid enums return 400)
 - [x] Endpoint tests script
 - [ ] Tests
+
