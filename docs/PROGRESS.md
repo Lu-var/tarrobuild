@@ -6,8 +6,8 @@
 
 ## Functional requirements (RF)
 
-- [ ] **RF-01** — Register user with bcrypt
-- [ ] **RF-02** — Authenticate user (JWT)
+- [x] **RF-01** — Register user with bcrypt
+- [x] **RF-02** — Authenticate user (JWT)
 - [ ] **RF-03** — List catalog components
 - [ ] **RF-04** — Component detail
 - [ ] **RF-05** — Filter by category/brand/price
@@ -32,12 +32,12 @@
 - [ ] **RNF-03** — Structured logs with correlation ID
 - [ ] **RNF-04** — Independent DB per service
 - [ ] **RNF-05** — REST-only inter-service communication
-- [ ] **RNF-06** — BCrypt password encryption
+- [x] **RNF-06** — BCrypt password encryption
 
 ## User stories (HU)
 
-- [ ] **HU-01** — User registration
-- [ ] **HU-02** — Authentication
+- [x] **HU-01** — User registration
+- [x] **HU-02** — Authentication
 - [ ] **HU-03** — Catalog exploration
 - [ ] **HU-04** — Build creation
 - [ ] **HU-05** — Compatibility validation
@@ -67,13 +67,13 @@
 - [x] Repository (Module 2)
 - [x] DTOs (Request / Response) (Module 1)
 - [x] Service (Module 1)
-- [ ] Controller (Module 1)
-- [ ] Exception handling (Module 1)
-- [ ] Seed credentials for admin + test users (link to existing user-service profiles)
+- [x] Controller (Module 1)
+- [x] Exception handling (Module 1)
+- [x] Seed credentials for admin + test users (link to existing user-service profiles)
 - [x] BCrypt password hashing (Module 7)
 - [x] JWT token generation / validation (Module 7)
 - [x] Roles: USER / ADMIN (Module 7)
-- [ ] Flyway migrations (Module 6)
+- [x] Flyway migrations (Module 6)
 - [x] Logging with `@Slf4j` (Module 8)
 - [x] GlobalExceptionHandler (Module 9)
 - [ ] Endpoint tests script (notification as template)

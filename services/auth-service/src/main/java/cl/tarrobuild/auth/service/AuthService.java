@@ -2,14 +2,14 @@ package cl.tarrobuild.auth.service;
 
 import cl.tarrobuild.auth.client.UserRestClient;
 import cl.tarrobuild.auth.config.JwtUtil;
-import cl.tarrobuild.auth.dto.AuthResponse;
-import cl.tarrobuild.auth.dto.RegisterRequest;
-import cl.tarrobuild.auth.dto.UserClientRequest;
-import cl.tarrobuild.auth.dto.UserClientResponse;
+import cl.tarrobuild.auth.dto.*;
 import cl.tarrobuild.auth.model.Credential;
 import cl.tarrobuild.auth.repository.CredentialRepository;
+import io.jsonwebtoken.Claims;
 import jakarta.persistence.EntityExistsException;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -50,5 +50,29 @@ public class AuthService {
         String token = jwtUtil.generateToken(saved.getUserId(), saved.getEmail(), saved.getRole());
 
         return new AuthResponse(token, saved.getEmail(), saved.getRole());
+    }
+
+    public AuthResponse login(LoginRequest request) {
+        Credential credential = credentialRepository.findByEmail(request.email())
+                .orElseThrow(() -> new BadCredentialsException("Invalid credentials"));
+        boolean isValidLogin = passwordEncoder.matches(request.password(), credential.getPasswordHash());
+        if (!isValidLogin) {
+            throw new BadCredentialsException("Invalid credentials");
+        }
+        String token = jwtUtil.generateToken(credential.getUserId(), credential.getEmail(), credential.getRole());
+        return new AuthResponse(token, credential.getEmail(), credential.getRole());
+    }
+
+    public Claims validateToken(String token) {
+        try {
+            return jwtUtil.validateToken(token);
+        } catch (Exception e) {
+            throw new BadCredentialsException("Invalid or expired token");
+        }
+    }
+
+    public void logout(String token) {
+        log.info("Logout requested for token");
+        // Placeholder for blacklist logic
     }
 }

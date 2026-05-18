@@ -12,6 +12,8 @@ permission:
     mvn --version: allow
     netstat -ano: allow
     Test-Path *: allow
+    "git commit*": deny
+    "git push*": deny
 ---
 
 You are a backend implementor for the TarroBuild project.
