@@ -131,11 +131,15 @@
 
 ### api-gateway :8080
 
-- [ ] Config (application.yml routes)
-- [ ] JWT auth filter (Module 7)
-- [ ] Route proxying setup (Module 7)
-- [ ] Logging with `@Slf4j` (Module 8)
-- [ ] GlobalExceptionHandler (Module 9)
+- [ ] Config — route definitions in `application.yaml` (Module 7)
+- [ ] Clean up `.env.example` — remove `JWT_SECRET` (delegating), keep `AUTH_SERVICE_URL`
+- [ ] RestClient → `auth-service:8081/api/auth/validate` for token delegation (Module 5)
+- [ ] Delegating JWT auth filter — extracts Bearer token, calls auth-service, populates `SecurityContext` (Module 7)
+- [ ] Security config — `SecurityFilterChain` with STATELESS sessions, match public vs. protected routes (Module 7)
+- [ ] CORS configuration — allow frontend origin on all routes
+- [ ] Route protection filter — enforce role-based access (USER / ADMIN) per ARCHITECTURE.md access control table (Module 7)
+- [ ] `@Slf4j` + correlation ID filter for request tracing (Module 8)
+- [ ] GlobalExceptionHandler with `ApiError` record (Module 9)
 - [ ] Endpoint tests script
 - [ ] Tests
 
