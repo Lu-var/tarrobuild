@@ -5,11 +5,11 @@ spring:
     active: ${SPRING_PROFILES_ACTIVE:h2}
 
 server:
-  port: 8081
+  port: ${SERVER_PORT:8081}
 
 user-service:
   url: ${USER_SERVICE_URL:http://localhost:8082}
 
 jwt:
-  secret: "aB3dEfGhIjKlMnOpQrStUvWxYz0123456789AbCdEfGhIjKlMnOpQrStUv"  # at least 256 bits = 32 chars for HS256
-  expiration: 3600000
+  secret: ${JWT_SECRET:aB3dEfGhIjKlMnOpQrStUvWxYz0123456789AbCdEfGhIjKlMnOpQrStUv}
+  expiration: ${JWT_EXPIRATION:3600000}
