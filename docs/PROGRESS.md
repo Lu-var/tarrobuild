@@ -55,18 +55,17 @@
 
 ### api-gateway :8080
 
-- [ ] Config — route definitions in `application.yaml` (Module 7)
-- [ ] Add all 9 `*_SERVICE_URL` vars to `.env.example`
-- [ ] RestClient → `auth-service:8081/api/auth/validate` for token delegation (Module 5)
-- [ ] Delegating JWT auth filter — extracts Bearer token, calls auth-service, populates `SecurityContext` (Module 7)
-- [ ] Security config — `SecurityFilterChain` with STATELESS sessions, match public vs. protected routes (Module 7)
-- [ ] Route protection filter — enforce role-based access (USER / ADMIN) per ARCHITECTURE.md access control table (Module 7)
-- [ ] `@Slf4j` + correlation ID filter for request tracing (Module 8)
-- [ ] GlobalExceptionHandler with `ApiError` record (Module 9)
-- [ ] Add AccessDeniedException → 403 to GlobalExceptionHandler (Module 9)
-- [ ] Add `spring-boot-starter-security` to `pom.xml`
-- [ ] `RestClientConfig` — `RestClient.Builder` bean
-- [ ] `AuthClientResponse` — DTO record for auth-service validate response
+- [x] `spring-boot-starter-security` in `pom.xml`
+- [x] `GatewayRoutesConfig` — `RouterFunction<ServerResponse>` with `GatewayRouterFunctions.route()` + `BeforeFilterFunctions.uri()` (replaced YAML routes)
+- [x] All 9 `*_SERVICE_URL` vars in `.env.example`
+- [x] `AuthClientResponse` — DTO record for auth-service validate response
+- [x] `RestClientConfig` — `RestClient.Builder` bean
+- [x] `AuthRestClient` — RestClient → `auth-service:8081/api/auth/validate` for token delegation (Module 5)
+- [x] `JwtAuthFilter` — `OncePerRequestFilter` that extracts Bearer token, delegates to auth-service, populates `SecurityContext`. Blocks invalid tokens with 401 immediately (Module 7)
+- [x] `SecurityConfig` — `SecurityFilterChain` with STATELESS sessions, CSRF disabled, public vs. user vs. admin route rules per ARCHITECTURE.md (Module 7)
+- [x] `CorrelationIdFilter` — MDC-based `X-Correlation-Id` request tracing (Module 8)
+- [x] `ApiError` record — `{ message, details, timestamp }` (Module 9)
+- [x] `GlobalExceptionHandler` — `@ControllerAdvice` with `IllegalArgument`→400, `MethodArgumentNotValid`→400, `NoResourceFound`→404, `HttpMessageNotReadable`→400, `BadCredentials`→401, `AccessDenied`→403, generic `Exception`→500 (Module 9)
 - [ ] Endpoint tests script
 - [ ] Tests
 
@@ -88,6 +87,7 @@
 - [ ] Per-profile log levels + correlation ID filter
 - [x] GlobalExceptionHandler (Module 9)
 - [ ] Add AccessDeniedException → 403 to GlobalExceptionHandler (Module 9)
+- [ ] Add ResourceAccessException → 503 to GlobalExceptionHandler (downstream service unavailable)
 - [ ] Endpoint tests script (notification as template)
 - [ ] Tests
 
@@ -347,6 +347,7 @@
 - `EntityNotFoundException` → 404
 - `BadCredentialsException` → 401
 - `AccessDeniedException` → 403
+- **`ResourceAccessException` → 503 (downstream unavailable)**
 - Generic `Exception` → 500
 - Dev (stack trace) vs. prod (message only) responses
 
