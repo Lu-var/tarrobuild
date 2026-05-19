@@ -58,20 +58,17 @@ AUTH   USER   PRODUCT CATEGORY COMPAT PROVIDER  BUILD
 
 Each service has its own independent database — strictly no shared tables.
 
-Flyway manages all schema changes across all environments. Every migration is tested in development before reaching production. Hibernate uses `ddl-auto: validate` everywhere — it only confirms entities match the migrated schema, never creates or alters tables.
+Flyway manages schema changes for MySQL (production). H2 (development) uses JPA `ddl-auto: create-drop` + `data.sql` for seed data. Hibernate uses `ddl-auto: validate` in production and `ddl-auto: create-drop` in development.
 
 ### Migration structure
 
 ```
 services/<service>/src/main/resources/
-  db/migration/h2/
-    V1__init.sql       — CREATE TABLE with H2 syntax
-    V2__seed_data.sql  — INSERT reference data
   db/migration/mysql/
     V1__init.sql       — CREATE TABLE with MySQL syntax
     V2__seed_data.sql  — INSERT reference data
   application.yaml            — default profile (h2)
-  application-h2.yaml         — H2 + Flyway
+  application-h2.yaml         — H2 (JPA auto-DDL + data.sql)
   application-mysql.yaml      — MySQL + Flyway
 ```
 
@@ -90,17 +87,15 @@ spring:
 
 ```yaml
 spring:
-  flyway:
-    locations: classpath:db/migration/h2
   jpa:
     hibernate:
-      ddl-auto: validate
+      ddl-auto: create-drop
   h2:
     console:
       enabled: true
 ```
 
-Switch profiles via `SPRING_PROFILES_ACTIVE=mysql` (defaults to `h2`). No `data.sql` — seed data goes in Flyway `V2__seed_data.sql`.
+Switch profiles via `SPRING_PROFILES_ACTIVE=mysql` (defaults to `h2`). Development uses `data.sql` for seed data. Production uses Flyway `V2__seed_data.sql`.
 
 ## Entity definitions
 
@@ -114,7 +109,7 @@ User { Long id, String name, String lastName, String email, String phone, LocalD
 // category-service
 Category { Long id, String name, String slug, String description, Boolean isActive,
            @OneToMany List<AttributeDefinition> attributes }
-AttributeDefinition { Long id, String attributeName, String valueType, Boolean isRequired,
+AttributeDefinition { Long id, String attributeName, AttributeValueType valueType (STRING, NUMBER, BOOLEAN), Boolean isRequired,
                       @ManyToOne Category category }
 
 // product-service
@@ -128,7 +123,7 @@ ProductAttribute { Long id, String attributeName, String attributeValue,
 CompatibilityRule { Long id, String sourceCategory, String sourceAttributeName,
                     String operator, String targetCategory, String targetAttributeName,
                     String incompatibilityReason }
-CompatibilityCheck { Long id, String productIds, String result, String details }
+CompatibilityCheck { Long id, Long buildId, String productIds, Boolean result, String details, LocalDateTime createdAt }
 
 // provider-service
 Provider { Long id, String name, String contact, String website, Boolean isActive }
@@ -147,7 +142,7 @@ Recommendation { Long id, Long buildId, String ruleApplied, Long suggestedProduc
                  String reason, LocalDateTime createdAt }
 
 // notification-service
-NotificationLog { Long id, Long userId, String type, String content, String status,
+NotificationLog { Long id, Long userId, String type, String content, NotificationStatus status (INFO, WARNING, SUCCESS, ERROR),
                   LocalDateTime timestamp }
 ```
 

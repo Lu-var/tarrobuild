@@ -93,12 +93,10 @@ cl.tarrobuild.<service>/
 
 ### Database
 - Each service has its own independent database
-- Flyway manages all schema changes in all environments
-- `ddl-auto: validate` everywhere — Hibernate never creates or alters tables
-- Per-profile migration directories:
-  - `db/migration/h2/`: `V1__init.sql` + `V2__seed_data.sql` (H2 syntax)
+- Per ARCHITECTURE.md, Flyway is for MySQL (production) only. H2 (dev) uses `data.sql` + JPA `ddl-auto: create-drop`
+- MySQL migration directories:
   - `db/migration/mysql/`: `V1__init.sql` + `V2__seed_data.sql` (MySQL syntax)
-- No `data.sql` — seed data goes in Flyway `V2__seed_data.sql`
+- See PROGRESS.md for current migration status per service
 
 ## Security
 
@@ -130,24 +128,6 @@ category-service → provider-service → product-service
 → hardware-advisor-service → notification-service
 → auth-service → api-gateway
 ```
-
-## Implemented services (reference for patterns)
-
-8 of 11 services follow all conventions above and can be used as implementation references:
-- **user-service**
-- **category-service**
-- **provider-service**
-- **product-service**
-- **compatibility-service**
-- **build-service**
-- **estimate-service**
-- **hardware-advisor-service**
-- **notification-service**
-
-## Stub-only services (Application class only)
-
-- **api-gateway**
-- **auth-service**
 
 ## Tech stack
 
