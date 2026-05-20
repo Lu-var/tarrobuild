@@ -1,0 +1,8 @@
+CREATE TABLE notification_logs (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    user_id BIGINT NOT NULL,
+    type VARCHAR(255) NOT NULL,
+    content VARCHAR(255) NOT NULL,
+    status VARCHAR(32) NOT NULL DEFAULT 'INFO',
+    timestamp DATETIME NOT NULL
+);
