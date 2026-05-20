@@ -24,8 +24,9 @@ public class AuthController {
         String token = authHeader.replace("Bearer ", "");
         Claims info = authService.validateToken(token);
         String email = info.getSubject();
+        Long userId = info.get("userId", Long.class);
         String role = info.get("role", String.class);
-        return ResponseEntity.ok(new AuthResponse(token, email, role));
+        return ResponseEntity.ok(new AuthResponse(userId, token, email, role));
     }
 
     @PostMapping("/register")
