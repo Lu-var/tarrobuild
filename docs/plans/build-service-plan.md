@@ -1,22 +1,26 @@
 # Build-Service Plan
 
-## Stage 1: Fix 3 known bugs (surgical, highest impact)
+## Stage 1: Fix 3 known bugs (surgical, highest impact) DONE
 
-| # | File | What | Why |
+---
+
+<!-- | # | File | What | Why |
 |---|------|------|-----|
 | 1 | `BuildController.java` | Add `PUT /{buildId}/items/{itemId}` | Currently 500 (no mapping exists) |
 | 2 | `BuildService.java` | Add `updateItem()` method | Service method doesn't exist |
 | 3 | `BuildController.java` | Add `PATCH /{id}/status` | Currently 404 (not implemented) |
 | 4 | `BuildService.java` | Add `updateBuildStatus()` method | Needed for PATCH endpoint |
-| 5 | `data.sql` | Fix product IDs (101-124 → 1-32) | Seed data references nonexistent products |git 
+| 5 | `data.sql` | Fix product IDs (101-124 → 1-32) | Seed data references nonexistent products |git  -->
 
-## Stage 2: Validate product existence (FeignClient → product-service)
+## Stage 2: Validate product existence (FeignClient → product-service) DONE
 
-| # | File | What |
+---
+
+<!-- | # | File | What |
 |---|------|------|
 | 6 | `pom.xml` | Add `spring-cloud-starter-openfeign` |
 | 7 | `client/ProductClient.java` | FeignClient → `product-service:8083` |
-| 8 | `BuildService.java` | Call ProductClient in `createItem()` — return 404 if productId doesn't exist |
+| 8 | `BuildService.java` | Call ProductClient in `createItem()` — return 404 if productId doesn't exist | -->
 
 ## Stage 3: Other inter-service FeignClients
 

@@ -1,14 +1,13 @@
 package cl.tarrobuild.build.service;
 
-import cl.tarrobuild.build.dto.BuildItemRequest;
-import cl.tarrobuild.build.dto.BuildItemResponse;
-import cl.tarrobuild.build.dto.BuildRequest;
-import cl.tarrobuild.build.dto.BuildResponse;
+import cl.tarrobuild.build.client.ProductFeignClient;
+import cl.tarrobuild.build.dto.*;
 import cl.tarrobuild.build.model.Build;
 import cl.tarrobuild.build.model.BuildItem;
 import cl.tarrobuild.build.model.BuildStatus;
 import cl.tarrobuild.build.repository.BuildItemRepository;
 import cl.tarrobuild.build.repository.BuildRepository;
+import feign.FeignException;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -22,10 +21,12 @@ public class BuildService {
 
     private final BuildRepository buildRepository;
     private final BuildItemRepository buildItemRepository;
+    private final ProductFeignClient productFeignClient;
 
-    public BuildService(BuildRepository buildRepository, BuildItemRepository buildItemRepository) {
+    public BuildService(BuildRepository buildRepository, BuildItemRepository buildItemRepository, ProductFeignClient productFeignClient) {
         this.buildRepository = buildRepository;
         this.buildItemRepository = buildItemRepository;
+        this.productFeignClient = productFeignClient;
     }
 
     public List<BuildResponse> getBuilds() {
@@ -121,6 +122,16 @@ public class BuildService {
         log.info("Creating item for buildId: {}", buildId);
         Build targetBuild = buildRepository.findById(buildId)
                 .orElseThrow(() -> new EntityNotFoundException("Build with ID " + buildId + " not found"));
+
+        try {
+            ProductClientResponse product = productFeignClient.getProductById(request.productId());
+            if (!product.isActive()) {
+                throw new IllegalArgumentException("Product with ID " + request.productId() + " is not active");
+            }
+        } catch (FeignException.NotFound e) {
+            log.warn("Product with ID {} not found in product-service", request.productId());
+            throw new EntityNotFoundException("Product with ID " + request.productId() + " not found");
+        }
 
         log.info("Creating item with productId: {} and quantity: {}", request.productId(), request.quantity());
         BuildItem newItem = new BuildItem();

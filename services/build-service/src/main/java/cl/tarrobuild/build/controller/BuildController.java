@@ -50,7 +50,7 @@ public class BuildController {
         return ResponseEntity.ok(buildService.updateBuild(id, request));
     }
 
-    @PatchMapping("/{id/status}")
+    @PatchMapping("/{id}/status")
     public ResponseEntity<BuildResponse> updateBuildStatus(@PathVariable Long id, @Valid @RequestBody BuildStatusRequest request) {
         return ResponseEntity.ok(buildService.updateBuildStatus(id, request.status()));
     }
