@@ -6,6 +6,7 @@ import cl.tarrobuild.build.dto.BuildRequest;
 import cl.tarrobuild.build.dto.BuildResponse;
 import cl.tarrobuild.build.model.Build;
 import cl.tarrobuild.build.model.BuildItem;
+import cl.tarrobuild.build.model.BuildStatus;
 import cl.tarrobuild.build.repository.BuildItemRepository;
 import cl.tarrobuild.build.repository.BuildRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -65,6 +66,16 @@ public class BuildService {
         return toResponse(saved);
     }
 
+    public BuildResponse updateBuildStatus(Long id, BuildStatus status) {
+        log.info("Updating status for build: {}", id);
+        Build targetBuild = buildRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Build with ID " + id + " not found"));
+        targetBuild.setStatus(status);
+
+        Build saved = buildRepository.save(targetBuild);
+        return toResponse(saved);
+    }
+
     public BuildResponse updateBuild(Long id, BuildRequest request) {
         log.info("Updating build id: {} with name: \"{}\" from userId: {}", id, request.name(), request.userId());
         return buildRepository.findById(id)
@@ -118,6 +129,18 @@ public class BuildService {
         newItem.setBuild(targetBuild);
 
         BuildItem saved = buildItemRepository.save(newItem);
+        return toItemResponse(saved);
+    }
+
+    public BuildItemResponse updateItem(Long buildId, Long itemId, BuildItemRequest request) {
+        log.info("Updating item for buildId: {}", buildId);
+        Build targetBuild = buildRepository.findById(buildId)
+                .orElseThrow(() -> new EntityNotFoundException("Build with ID " + buildId + " not found"));
+        BuildItem targetItem = buildItemRepository.findByIdAndBuild_Id(itemId, buildId)
+                .orElseThrow(() -> new EntityNotFoundException("Item with ID " + itemId + " not found"));
+        targetItem.setId(request.productId());
+        targetItem.setQuantity(request.quantity());
+        BuildItem saved = buildItemRepository.save(targetItem);
         return toItemResponse(saved);
     }
 
