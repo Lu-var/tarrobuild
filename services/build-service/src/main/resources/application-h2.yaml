@@ -12,3 +12,13 @@ spring:
     defer-datasource-initialization: true
     hibernate:
       ddl-auto: create-drop
+
+app:
+  environment: development
+
+logging:
+  level:
+    cl.tarrobuild: DEBUG
+    org.hibernate.SQL: DEBUG
+    org.springframework.web: DEBUG
+    org.springframework.security: DEBUG

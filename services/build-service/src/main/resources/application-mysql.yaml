@@ -13,3 +13,15 @@ spring:
   flyway:
     locations: classpath:db/migration/mysql
     baseline-on-migrate: true
+
+logging:
+  level:
+    root: WARN
+    cl.tarrobuild: INFO
+    org.springframework: WARN
+  file:
+    name: /var/log/build-service/build-service.log
+  logback:
+    rollingpolicy:
+      max-file-size: 100MB
+      max-history: 30

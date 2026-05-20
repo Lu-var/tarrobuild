@@ -15,3 +15,17 @@ compatibility-service:
 
 provider-service:
   url: ${PROVIDER_SERVICE_URL:http://localhost:8086}
+
+app:
+  environment: production
+
+logging:
+  level:
+    cl.tarrobuild: INFO
+    org.hibernate.SQL: WARN
+  file:
+    name: logs/build-service.log
+  logback:
+    rollingpolicy:
+      max-file-size: 10MB
+      max-history: 10
