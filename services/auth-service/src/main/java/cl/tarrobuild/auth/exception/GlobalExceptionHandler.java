@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
 
+import java.nio.file.AccessDeniedException;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 
@@ -90,6 +91,24 @@ public class GlobalExceptionHandler {
         String details = isDevelopment() ? Arrays.toString(e.getStackTrace()) : null;
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                 .body(new ApiError("Invalid credentials", details, LocalDateTime.now().toString()));
+    }
+
+    @ExceptionHandler(NumberFormatException.class)
+    public ResponseEntity<?> handleNumberFormat(NumberFormatException e) {
+        log.warn("Invalid number format: {}", e.getMessage());
+
+        String details = isDevelopment() ? Arrays.toString(e.getStackTrace()) : null;
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(new ApiError("Invalid number format: " + e.getMessage(), details, LocalDateTime.now().toString()));
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<?> handleAccessDenied(AccessDeniedException e) {
+        log.warn("Access denied: {}", e.getMessage());
+
+        String details = isDevelopment() ? Arrays.toString(e.getStackTrace()) : null;
+        return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                .body(new ApiError("Access denied", details, LocalDateTime.now().toString()));
     }
 
     @ExceptionHandler(Exception.class)
