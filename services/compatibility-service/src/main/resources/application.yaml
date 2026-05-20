@@ -7,6 +7,9 @@ spring:
 server:
   port: ${SERVER_PORT:8085}
 
+product-service:
+  url: ${PRODUCT_SERVICE_URL:http://localhost:8083}
+  
 app:
   environment: production
 
