@@ -57,7 +57,9 @@ public class BuildController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteBuild(@PathVariable Long id) {
-        buildService.deleteBuild(id);
+        if (!buildService.deleteBuild(id)) {
+            return ResponseEntity.notFound().build();
+        }
         return ResponseEntity.noContent().build();
     }
 

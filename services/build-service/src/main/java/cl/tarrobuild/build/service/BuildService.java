@@ -149,7 +149,7 @@ public class BuildService {
                 .orElseThrow(() -> new EntityNotFoundException("Build with ID " + buildId + " not found"));
         BuildItem targetItem = buildItemRepository.findByIdAndBuild_Id(itemId, buildId)
                 .orElseThrow(() -> new EntityNotFoundException("Item with ID " + itemId + " not found"));
-        targetItem.setId(request.productId());
+        targetItem.setProductId(request.productId());
         targetItem.setQuantity(request.quantity());
         BuildItem saved = buildItemRepository.save(targetItem);
         return toItemResponse(saved);
