@@ -1,5 +1,6 @@
 package cl.tarrobuild.compatibility.service;
 
+import cl.tarrobuild.compatibility.client.ProductRestClient;
 import cl.tarrobuild.compatibility.dto.CompatibilityCheckRequest;
 import cl.tarrobuild.compatibility.dto.CompatibilityCheckResponse;
 import cl.tarrobuild.compatibility.dto.CompatibilityRuleRequest;
@@ -21,11 +22,14 @@ public class CompatibilityService {
 
     private final CompatibilityRuleRepository ruleRepository;
     private final CompatibilityCheckRepository checkRepository;
+    private final ProductRestClient productRestClient;
 
     public CompatibilityService(CompatibilityRuleRepository ruleRepository,
-                                CompatibilityCheckRepository checkRepository) {
+                                CompatibilityCheckRepository checkRepository,
+                                ProductRestClient productRestClient) {
         this.ruleRepository = ruleRepository;
         this.checkRepository = checkRepository;
+        this.productRestClient = productRestClient;
     }
 
     public CompatibilityCheckResponse check(CompatibilityCheckRequest request) {
