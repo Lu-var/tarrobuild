@@ -77,9 +77,11 @@
 
 **Pending**
 - [ ] Align application-h2.yaml to use `data.sql` + `ddl-auto: create-drop` (like other services)
-- [ ] Per-profile log levels + correlation ID filter
+- [ ] Per-profile log levels (Module 8)
+- [ ] (optional) Correlation ID filter (Module 8 — extra challenge)
 - [ ] Add AccessDeniedException → 403 to GlobalExceptionHandler (Module 9)
 - [ ] Add ResourceAccessException → 503 to GlobalExceptionHandler (downstream service unavailable)
+- [ ] Wire `app.environment` into profile YAMLs for stack trace control
 - [ ] Endpoint tests script (notification as template)
 - [ ] Tests
 
@@ -105,8 +107,10 @@
 - [ ] User with unique email (Module 3)
 - [ ] Ensure email uniqueness validated across user-service and auth-service (duplicate check in register flow)
 - [ ] Flyway migrations (Module 6)
-- [ ] Per-profile log levels + correlation ID filter
+- [ ] Per-profile log levels (Module 8)
+- [ ] (optional) Correlation ID filter (Module 8 — extra challenge)
 - [ ] Add AccessDeniedException → 403 to GlobalExceptionHandler (Module 9)
+- [ ] Wire `app.environment` into profile YAMLs for stack trace control
 - [ ] Endpoint tests script (notification as template)
 - [ ] Tests
 
@@ -127,8 +131,10 @@
 
 **Pending**
 - [ ] Flyway migrations (Module 6)
-- [ ] Per-profile log levels + correlation ID filter
+- [ ] Per-profile log levels (Module 8)
+- [ ] (optional) Correlation ID filter (Module 8 — extra challenge)
 - [ ] Add AccessDeniedException → 403 to GlobalExceptionHandler (Module 9)
+- [ ] Wire `app.environment` into profile YAMLs for stack trace control
 - [ ] Endpoint tests script (notification as template)
 - [ ] Tests
 
@@ -150,8 +156,10 @@
 
 **Pending**
 - [ ] Flyway migrations (Module 6)
-- [ ] Per-profile log levels + correlation ID filter
+- [ ] Per-profile log levels (Module 8)
+- [ ] (optional) Correlation ID filter (Module 8 — extra challenge)
 - [ ] Add AccessDeniedException → 403 to GlobalExceptionHandler (Module 9)
+- [ ] Wire `app.environment` into profile YAMLs for stack trace control
 - [ ] Refactor endpoint tests script (notification template)
 - [ ] Tests
 
@@ -176,8 +184,10 @@
 **Pending**
 - [ ] RestClient → product-service (Module 5)
 - [ ] Flyway migrations (Module 6)
-- [ ] Per-profile log levels + correlation ID filter
+- [ ] Per-profile log levels (Module 8)
+- [ ] (optional) Correlation ID filter (Module 8 — extra challenge)
 - [ ] Add AccessDeniedException → 403 to GlobalExceptionHandler (Module 9)
+- [ ] Wire `app.environment` into profile YAMLs for stack trace control
 - [ ] Align CompatibilityCheck entity in README.md: add `buildId` and `createdAt`
 - [ ] Endpoint tests script (notification as template)
 - [ ] Tests
@@ -200,8 +210,10 @@
 
 **Pending**
 - [ ] Flyway migrations (Module 6)
-- [ ] Per-profile log levels + correlation ID filter
+- [ ] Per-profile log levels (Module 8)
+- [ ] (optional) Correlation ID filter (Module 8 — extra challenge)
 - [ ] Add AccessDeniedException → 403 to GlobalExceptionHandler (Module 9)
+- [ ] Wire `app.environment` into profile YAMLs for stack trace control
 - [ ] Endpoint tests script (notification as template)
 - [ ] Tests
 
@@ -221,15 +233,9 @@
 ### build-service :8087
 
 **Pending**
-- [ ] Seed data (5 builds, ~25 items) (Module 2) — product IDs (101–124) don't match product-service (1–32)
-- [ ] PATCH /api/builds/{id}/status for partial updates (Module 3)
-- [ ] FeignClient → product-service (Module 5)
-- [ ] FeignClient → compatibility-service (Module 5)
-- [ ] FeignClient → provider-service (Module 5)
-- [ ] Flyway migrations (Module 6)
-- [ ] Per-profile log levels + correlation ID filter
-- [ ] Add AccessDeniedException → 403 to GlobalExceptionHandler (Module 9)
-- [ ] Endpoint tests script (notification as template)
+- [ ] (optional) Log who performed each action (Module 8 — extra challenge)
+- [ ] (optional) Correlation ID filter (Module 8 — extra challenge)
+- [ ] (optional) Split profiles into `dev`/`prod` (environment) + `h2`/`mysql` (database)
 - [ ] Tests
 
 **Done**
@@ -243,6 +249,22 @@
 - [x] `@Slf4j` on services + `log.info()` in CRUD
 - [x] GlobalExceptionHandler (Module 9)
 - [x] Handle HttpMessageNotReadableException in GlobalExceptionHandler (invalid enums return 400)
+- [x] Seed data (5 builds, ~25 items) with corrected product IDs (Module 2)
+- [x] PATCH /api/builds/{id}/status for partial updates (Module 3)
+- [x] FeignClient → product-service (Module 5)
+- [x] FeignClient → compatibility-service (Module 5)
+- [x] FeignClient → provider-service (Module 5)
+- [x] Flyway migrations — MySQL (Module 6)
+- [x] `application-mysql.yaml` with `ddl-auto: validate` + Flyway config
+- [x] `application.yaml` with all 3 service URLs (product, compatibility, provider)
+- [x] Add `NumberFormatException` → 400 + `AccessDeniedException` → 403 to GlobalExceptionHandler (Module 9)
+- [x] `.env.example` with service URL vars
+- [x] Endpoint tests script — `scripts/build-service-endpoint-test.ps1`
+- [x] Per-profile log levels with `app.environment` in YAMLs (Module 8)
+- [x] File-based logging
+- [x] Data seed fix: product IDs 101–124 → 1–32
+- [x] Bug fix: `updateItem` — `setProductId()` instead of `setId()`
+- [x] Bug fix: `deleteBuild` — return 404 when build not found
 
 ---
 ### estimate-service :8088
@@ -253,8 +275,10 @@
 - [ ] RestClient → product-service (Module 5)
 - [ ] RestClient → notification-service (Module 5)
 - [ ] Flyway migrations (Module 6)
-- [ ] Per-profile log levels + correlation ID filter
+- [ ] Per-profile log levels (Module 8)
+- [ ] (optional) Correlation ID filter (Module 8 — extra challenge)
 - [ ] Add AccessDeniedException → 403 to GlobalExceptionHandler (Module 9)
+- [ ] Wire `app.environment` into profile YAMLs for stack trace control
 - [ ] Endpoint tests script (notification as template)
 - [ ] Tests
 
@@ -279,8 +303,10 @@
 - [ ] FeignClient → compatibility-service (Module 5)
 - [ ] FeignClient → notification-service (Module 5)
 - [ ] Flyway migrations (Module 6)
-- [ ] Per-profile log levels + correlation ID filter
+- [ ] Per-profile log levels (Module 8)
+- [ ] (optional) Correlation ID filter (Module 8 — extra challenge)
 - [ ] Add AccessDeniedException → 403 to GlobalExceptionHandler (Module 9)
+- [ ] Wire `app.environment` into profile YAMLs for stack trace control
 - [ ] Endpoint tests script (notification as template)
 - [ ] Tests
 
@@ -301,8 +327,10 @@
 **Pending**
 - [ ] Seed data (Module 2)
 - [ ] Flyway migrations (Module 6)
-- [ ] Per-profile log levels + correlation ID filter
+- [ ] Per-profile log levels (Module 8)
+- [ ] (optional) Correlation ID filter (Module 8 — extra challenge)
 - [ ] Add AccessDeniedException → 403 to GlobalExceptionHandler (Module 9)
+- [ ] Wire `app.environment` into profile YAMLs for stack trace control
 - [ ] Endpoint tests script (no script file found)
 - [ ] Tests
 
@@ -380,7 +408,7 @@
 - `@Slf4j` from Lombok on Services
 - `log.info()` on create / update / delete
 - Log levels per profile
-- Correlation ID for request tracing
+- (optional) Correlation ID for request tracing — extra challenge
 
 ### Module 9: Global Exception Handling (Lesson 18)
 
@@ -412,13 +440,13 @@
 | 6 | product-service | `GET /api/products/category/{nonNumeric}` | 500 | 400 | `NumberFormatException` |
 | 7 | product-service | `GET /api/products/price?minPrice=abc` | 500 | 400 | Bad request param parsing |
 | 8 | product-service | `GET /api/products/{id}/attributes/{badId}` | 500 | 404 | Child entity not found, throws unknown exception |
-| 9 | build-service | `PUT /api/builds/{id}/items/{itemId}` | 500 | 200 | Item update fails with unhandled exception |
+| ~~9~~ | ~~build-service~~ | ~~`PUT /api/builds/{id}/items/{itemId}`~~ | ~~500~~ | ~~200~~ | ~~Fixed: `setId(productId)` → `setProductId()`~~ |
 
 ### Medium: Missing/incorrect validation
 
 | # | Service | Endpoint | Got | Expected | Root Cause |
 |---|---------|----------|-----|----------|------------|
-| 10 | build-service | `POST /api/builds/{id}/items` (bad productId=99999) | 201 | 404 | No validation that productId exists before adding to build |
+| ~~10~~ | ~~build-service~~ | ~~`POST /api/builds/{id}/items` (bad productId=99999)~~ | ~~201~~ | ~~404~~ | ~~Fixed: FeignClient → product-service validates existence~~ |
 | 11 | estimate-service | `POST /api/estimate/calculate` (bad buildId=99999) | 201 | 404 | Creates estimate for nonexistent build |
 | 12 | hardware-advisor | `GET /api/recommendations/{badBuildId}` | 200 (empty) | 404 | Returns empty list instead of 404 for nonexistent build |
 | 13 | hardware-advisor | `POST /api/recommendations/generate` (bad buildId) | 201 | 404 | Generates recommendations for nonexistent build |
@@ -427,7 +455,7 @@
 
 | # | Service | Endpoint | Got | Expected | Root Cause |
 |---|---------|----------|-----|----------|------------|
-| 14 | build-service | `PATCH /api/builds/{id}/status` | 404 | 200 | PATCH endpoint for status updates not implemented |
+| ~~14~~ | ~~build-service~~ | ~~`PATCH /api/builds/{id}/status`~~ | ~~404~~ | ~~200~~ | ~~Fixed: controller + service method implemented~~ |
 
 ### Seed data issues
 

@@ -6,3 +6,26 @@ spring:
 
 server:
   port: ${SERVER_PORT:8087}
+
+product-service:
+  url: ${PRODUCT_SERVICE_URL:http://localhost:8083}
+
+compatibility-service:
+  url: ${COMPATIBILITY_SERVICE_URL:http://localhost:8085}
+
+provider-service:
+  url: ${PROVIDER_SERVICE_URL:http://localhost:8086}
+
+app:
+  environment: production
+
+logging:
+  level:
+    cl.tarrobuild: INFO
+    org.hibernate.SQL: WARN
+  file:
+    name: logs/build-service.log
+  logback:
+    rollingpolicy:
+      max-file-size: 10MB
+      max-history: 10

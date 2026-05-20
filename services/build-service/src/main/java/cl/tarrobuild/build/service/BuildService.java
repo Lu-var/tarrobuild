@@ -1,13 +1,13 @@
 package cl.tarrobuild.build.service;
 
-import cl.tarrobuild.build.dto.BuildItemRequest;
-import cl.tarrobuild.build.dto.BuildItemResponse;
-import cl.tarrobuild.build.dto.BuildRequest;
-import cl.tarrobuild.build.dto.BuildResponse;
+import cl.tarrobuild.build.client.ProductFeignClient;
+import cl.tarrobuild.build.dto.*;
 import cl.tarrobuild.build.model.Build;
 import cl.tarrobuild.build.model.BuildItem;
+import cl.tarrobuild.build.model.BuildStatus;
 import cl.tarrobuild.build.repository.BuildItemRepository;
 import cl.tarrobuild.build.repository.BuildRepository;
+import feign.FeignException;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -21,10 +21,12 @@ public class BuildService {
 
     private final BuildRepository buildRepository;
     private final BuildItemRepository buildItemRepository;
+    private final ProductFeignClient productFeignClient;
 
-    public BuildService(BuildRepository buildRepository, BuildItemRepository buildItemRepository) {
+    public BuildService(BuildRepository buildRepository, BuildItemRepository buildItemRepository, ProductFeignClient productFeignClient) {
         this.buildRepository = buildRepository;
         this.buildItemRepository = buildItemRepository;
+        this.productFeignClient = productFeignClient;
     }
 
     public List<BuildResponse> getBuilds() {
@@ -62,6 +64,16 @@ public class BuildService {
         build.setName(request.name());
 
         Build saved = buildRepository.save(build);
+        return toResponse(saved);
+    }
+
+    public BuildResponse updateBuildStatus(Long id, BuildStatus status) {
+        log.info("Updating status for build: {}", id);
+        Build targetBuild = buildRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Build with ID " + id + " not found"));
+        targetBuild.setStatus(status);
+
+        Build saved = buildRepository.save(targetBuild);
         return toResponse(saved);
     }
 
@@ -111,6 +123,16 @@ public class BuildService {
         Build targetBuild = buildRepository.findById(buildId)
                 .orElseThrow(() -> new EntityNotFoundException("Build with ID " + buildId + " not found"));
 
+        try {
+            ProductClientResponse product = productFeignClient.getProductById(request.productId());
+            if (!product.isActive()) {
+                throw new IllegalArgumentException("Product with ID " + request.productId() + " is not active");
+            }
+        } catch (FeignException.NotFound e) {
+            log.warn("Product with ID {} not found in product-service", request.productId());
+            throw new EntityNotFoundException("Product with ID " + request.productId() + " not found");
+        }
+
         log.info("Creating item with productId: {} and quantity: {}", request.productId(), request.quantity());
         BuildItem newItem = new BuildItem();
         newItem.setProductId(request.productId());
@@ -118,6 +140,18 @@ public class BuildService {
         newItem.setBuild(targetBuild);
 
         BuildItem saved = buildItemRepository.save(newItem);
+        return toItemResponse(saved);
+    }
+
+    public BuildItemResponse updateItem(Long buildId, Long itemId, BuildItemRequest request) {
+        log.info("Updating item for buildId: {}", buildId);
+        Build targetBuild = buildRepository.findById(buildId)
+                .orElseThrow(() -> new EntityNotFoundException("Build with ID " + buildId + " not found"));
+        BuildItem targetItem = buildItemRepository.findByIdAndBuild_Id(itemId, buildId)
+                .orElseThrow(() -> new EntityNotFoundException("Item with ID " + itemId + " not found"));
+        targetItem.setProductId(request.productId());
+        targetItem.setQuantity(request.quantity());
+        BuildItem saved = buildItemRepository.save(targetItem);
         return toItemResponse(saved);
     }
 
