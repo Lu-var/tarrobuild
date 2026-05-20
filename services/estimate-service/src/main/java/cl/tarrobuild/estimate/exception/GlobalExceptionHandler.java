@@ -4,6 +4,7 @@ import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 
+import java.nio.file.AccessDeniedException;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 
@@ -82,6 +83,24 @@ public class GlobalExceptionHandler {
         String details = isDevelopment() ? Arrays.toString(e.getStackTrace()) : null;
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(new ApiError("Invalid request body", details, LocalDateTime.now().toString()));
+    }
+
+    @ExceptionHandler(NumberFormatException.class)
+    public ResponseEntity<?> handleNumberFormat(NumberFormatException e) {
+        log.warn("Invalid number format: {}", e.getMessage());
+
+        String details = isDevelopment() ? Arrays.toString(e.getStackTrace()) : null;
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(new ApiError("Invalid number format: " + e.getMessage(), details, LocalDateTime.now().toString()));
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<?> handleAccessDenied(AccessDeniedException e) {
+        log.warn("Access denied: {}", e.getMessage());
+
+        String details = isDevelopment() ? Arrays.toString(e.getStackTrace()) : null;
+        return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                .body(new ApiError("Access denied", details, LocalDateTime.now().toString()));
     }
 
     @ExceptionHandler(Exception.class)
