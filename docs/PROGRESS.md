@@ -26,24 +26,24 @@
 ## Non-functional requirements (RNF)
 
 - [ ] **RNF-01** — Response < 500ms
-- [ ] **RNF-02** — Validation + semantic HTTP codes
-- [ ] **RNF-03** — Structured logs with correlation ID
-- [ ] **RNF-04** — Independent DB per service
-- [ ] **RNF-05** — REST-only inter-service communication
+- [x] **RNF-02** — Validation + semantic HTTP codes
+- [ ] (optional) **RNF-03** — Structured logs with correlation ID
+- [x] **RNF-04** — Independent DB per service
+- [x] **RNF-05** — REST-only inter-service communication
 - [x] **RNF-06** — BCrypt password encryption
 
 ## User stories (HU)
 
 - [x] **HU-01** — User registration
 - [x] **HU-02** — Authentication
-- [ ] **HU-03** — Catalog exploration
-- [ ] **HU-04** — Build creation
+- [x] **HU-03** — Catalog exploration
+- [x] **HU-04** — Build creation
 - [ ] **HU-05** — Compatibility validation
 - [ ] **HU-06** — Cost estimation
 - [ ] **HU-07** — Component recommendations
 - [ ] **HU-08** — Build history
-- [ ] **HU-09** — System notifications
-- [ ] **HU-10** — Admin catalog management
+- [x] **HU-09** — System notifications
+- [x] **HU-10** — Admin catalog management
 
 ---
 
@@ -77,11 +77,8 @@
 
 **Pending**
 - [ ] Align application-h2.yaml to use `data.sql` + `ddl-auto: create-drop` (like other services)
-- [ ] Per-profile log levels (Module 8)
 - [ ] (optional) Correlation ID filter (Module 8 — extra challenge)
-- [ ] Add AccessDeniedException → 403 to GlobalExceptionHandler (Module 9)
 - [ ] Add ResourceAccessException → 503 to GlobalExceptionHandler (downstream service unavailable)
-- [ ] Wire `app.environment` into profile YAMLs for stack trace control
 - [ ] Endpoint tests script (notification as template)
 - [ ] Tests
 
@@ -99,6 +96,8 @@
 - [x] Flyway migrations — MySQL (Module 6)
 - [x] `@Slf4j` on services + `log.info()` in CRUD
 - [x] GlobalExceptionHandler (Module 9)
+- [x] Per-profile log levels with `app.environment` in YAMLs (Module 8)
+- [x] Add `NumberFormatException` → 400 + `AccessDeniedException` → 403 to GlobalExceptionHandler (Module 9)
 
 ---
 ### user-service :8082
@@ -106,11 +105,7 @@
 **Pending**
 - [ ] User with unique email (Module 3)
 - [ ] Ensure email uniqueness validated across user-service and auth-service (duplicate check in register flow)
-- [ ] Flyway migrations (Module 6)
-- [ ] Per-profile log levels (Module 8)
 - [ ] (optional) Correlation ID filter (Module 8 — extra challenge)
-- [ ] Add AccessDeniedException → 403 to GlobalExceptionHandler (Module 9)
-- [ ] Wire `app.environment` into profile YAMLs for stack trace control
 - [ ] Endpoint tests script (notification as template)
 - [ ] Tests
 
@@ -125,16 +120,15 @@
 - [x] `@Slf4j` on services + `log.info()` in CRUD
 - [x] GlobalExceptionHandler (Module 9)
 - [x] Handle HttpMessageNotReadableException in GlobalExceptionHandler (invalid enums return 400)
+- [x] Per-profile log levels with `app.environment` in YAMLs (Module 8)
+- [x] Add `NumberFormatException` → 400 + `AccessDeniedException` → 403 to GlobalExceptionHandler (Module 9)
+- [x] Flyway migrations — MySQL (Module 6)
 
 ---
 ### category-service :8084
 
 **Pending**
-- [ ] Flyway migrations (Module 6)
-- [ ] Per-profile log levels (Module 8)
 - [ ] (optional) Correlation ID filter (Module 8 — extra challenge)
-- [ ] Add AccessDeniedException → 403 to GlobalExceptionHandler (Module 9)
-- [ ] Wire `app.environment` into profile YAMLs for stack trace control
 - [ ] Endpoint tests script (notification as template)
 - [ ] Tests
 
@@ -150,16 +144,15 @@
 - [x] `@Slf4j` on services + `log.info()` in CRUD
 - [x] GlobalExceptionHandler (Module 9)
 - [x] Handle HttpMessageNotReadableException in GlobalExceptionHandler (invalid enums return 400)
+- [x] Per-profile log levels with `app.environment` in YAMLs (Module 8)
+- [x] Add `NumberFormatException` → 400 + `AccessDeniedException` → 403 to GlobalExceptionHandler (Module 9)
+- [x] Flyway migrations — MySQL (Module 6)
 
 ---
 ### product-service :8083
 
 **Pending**
-- [ ] Flyway migrations (Module 6)
-- [ ] Per-profile log levels (Module 8)
 - [ ] (optional) Correlation ID filter (Module 8 — extra challenge)
-- [ ] Add AccessDeniedException → 403 to GlobalExceptionHandler (Module 9)
-- [ ] Wire `app.environment` into profile YAMLs for stack trace control
 - [ ] Refactor endpoint tests script (notification template)
 - [ ] Tests
 
@@ -177,17 +170,16 @@
 - [x] `@Slf4j` on services + `log.info()` in CRUD
 - [x] GlobalExceptionHandler (Module 9)
 - [x] Handle HttpMessageNotReadableException in GlobalExceptionHandler (invalid enums return 400)
+- [x] Per-profile log levels with `app.environment` in YAMLs (Module 8)
+- [x] Add `NumberFormatException` → 400 + `AccessDeniedException` → 403 to GlobalExceptionHandler (Module 9)
+- [x] Flyway migrations — MySQL (Module 6)
 
 ---
 ### compatibility-service :8085
 
 **Pending**
 - [ ] RestClient → product-service (Module 5)
-- [ ] Flyway migrations (Module 6)
-- [ ] Per-profile log levels (Module 8)
 - [ ] (optional) Correlation ID filter (Module 8 — extra challenge)
-- [ ] Add AccessDeniedException → 403 to GlobalExceptionHandler (Module 9)
-- [ ] Wire `app.environment` into profile YAMLs for stack trace control
 - [ ] Align CompatibilityCheck entity in README.md: add `buildId` and `createdAt`
 - [ ] Endpoint tests script (notification as template)
 - [ ] Tests
@@ -204,16 +196,15 @@
 - [x] `@Slf4j` on services + `log.info()` in CRUD
 - [x] GlobalExceptionHandler (Module 9)
 - [x] Handle HttpMessageNotReadableException in GlobalExceptionHandler (invalid enums return 400)
+- [x] Per-profile log levels with `app.environment` in YAMLs (Module 8)
+- [x] Add `NumberFormatException` → 400 + `AccessDeniedException` → 403 to GlobalExceptionHandler (Module 9)
+- [x] Flyway migrations — MySQL (Module 6)
 
 ---
 ### provider-service :8086
 
 **Pending**
-- [ ] Flyway migrations (Module 6)
-- [ ] Per-profile log levels (Module 8)
 - [ ] (optional) Correlation ID filter (Module 8 — extra challenge)
-- [ ] Add AccessDeniedException → 403 to GlobalExceptionHandler (Module 9)
-- [ ] Wire `app.environment` into profile YAMLs for stack trace control
 - [ ] Endpoint tests script (notification as template)
 - [ ] Tests
 
@@ -228,6 +219,9 @@
 - [x] `@Slf4j` on services + `log.info()` in CRUD
 - [x] GlobalExceptionHandler (Module 9)
 - [x] Handle HttpMessageNotReadableException in GlobalExceptionHandler (invalid enums return 400)
+- [x] Per-profile log levels with `app.environment` in YAMLs (Module 8)
+- [x] Add `NumberFormatException` → 400 + `AccessDeniedException` → 403 to GlobalExceptionHandler (Module 9)
+- [x] Flyway migrations — MySQL (Module 6)
 
 ---
 ### build-service :8087
@@ -270,15 +264,10 @@
 ### estimate-service :8088
 
 **Pending**
-- [ ] Seed data (Module 2)
 - [ ] RestClient → build-service (Module 5)
 - [ ] RestClient → product-service (Module 5)
 - [ ] RestClient → notification-service (Module 5)
-- [ ] Flyway migrations (Module 6)
-- [ ] Per-profile log levels (Module 8)
 - [ ] (optional) Correlation ID filter (Module 8 — extra challenge)
-- [ ] Add AccessDeniedException → 403 to GlobalExceptionHandler (Module 9)
-- [ ] Wire `app.environment` into profile YAMLs for stack trace control
 - [ ] Endpoint tests script (notification as template)
 - [ ] Tests
 
@@ -292,21 +281,20 @@
 - [x] `@Slf4j` on services + `log.info()` in CRUD
 - [x] GlobalExceptionHandler (Module 9)
 - [x] Handle HttpMessageNotReadableException in GlobalExceptionHandler (invalid enums return 400)
+- [x] Per-profile log levels with `app.environment` in YAMLs (Module 8)
+- [x] Add `NumberFormatException` → 400 + `AccessDeniedException` → 403 to GlobalExceptionHandler (Module 9)
+- [x] Seed data (3 sample estimates) (Module 2)
+- [x] Flyway migrations — MySQL (Module 6)
 
 ---
 ### hardware-advisor :8089
 
 **Pending**
-- [ ] Seed data (Module 2)
 - [ ] FeignClient → build-service (Module 5)
 - [ ] FeignClient → product-service (Module 5)
 - [ ] FeignClient → compatibility-service (Module 5)
 - [ ] FeignClient → notification-service (Module 5)
-- [ ] Flyway migrations (Module 6)
-- [ ] Per-profile log levels (Module 8)
 - [ ] (optional) Correlation ID filter (Module 8 — extra challenge)
-- [ ] Add AccessDeniedException → 403 to GlobalExceptionHandler (Module 9)
-- [ ] Wire `app.environment` into profile YAMLs for stack trace control
 - [ ] Endpoint tests script (notification as template)
 - [ ] Tests
 
@@ -320,17 +308,16 @@
 - [x] `@Slf4j` on services + `log.info()` in CRUD
 - [x] GlobalExceptionHandler (Module 9)
 - [x] Handle HttpMessageNotReadableException in GlobalExceptionHandler (invalid enums return 400)
+- [x] Per-profile log levels with `app.environment` in YAMLs (Module 8)
+- [x] Add `NumberFormatException` → 400 + `AccessDeniedException` → 403 to GlobalExceptionHandler (Module 9)
+- [x] Seed data (3 sample recommendations) (Module 2)
+- [x] Flyway migrations — MySQL (Module 6)
 
 ---
 ### notification-service :8090
 
 **Pending**
-- [ ] Seed data (Module 2)
-- [ ] Flyway migrations (Module 6)
-- [ ] Per-profile log levels (Module 8)
 - [ ] (optional) Correlation ID filter (Module 8 — extra challenge)
-- [ ] Add AccessDeniedException → 403 to GlobalExceptionHandler (Module 9)
-- [ ] Wire `app.environment` into profile YAMLs for stack trace control
 - [ ] Endpoint tests script (no script file found)
 - [ ] Tests
 
@@ -345,6 +332,10 @@
 - [x] `@Slf4j` on services + `log.info()` in CRUD
 - [x] GlobalExceptionHandler (Module 9)
 - [x] Handle HttpMessageNotReadableException in GlobalExceptionHandler (invalid enums return 400)
+- [x] Per-profile log levels with `app.environment` in YAMLs (Module 8)
+- [x] Add `NumberFormatException` → 400 + `AccessDeniedException` → 403 to GlobalExceptionHandler (Module 9)
+- [x] Seed data (3 sample notification logs) (Module 2)
+- [x] Flyway migrations — MySQL (Module 6)
 
 ---
 
