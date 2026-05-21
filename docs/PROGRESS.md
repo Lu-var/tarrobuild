@@ -125,9 +125,6 @@
 ### estimate-service :8088
 
 **Pending**
-- [ ] RestClient → build-service (Module 5)
-- [ ] RestClient → product-service (Module 5)
-- [ ] RestClient → notification-service (Module 5)
 - [ ] (optional) Correlation ID filter (Module 8 — extra challenge)
 - [ ] Endpoint tests script (notification as template)
 - [ ] Tests
@@ -253,7 +250,7 @@
 | # | Service | Endpoint | Got | Expected | Root Cause |
 |---|---------|----------|-----|----------|------------|
 | ~~10~~ | ~~build-service~~ | ~~`POST /api/builds/{id}/items` (bad productId=99999)~~ | ~~201~~ | ~~404~~ | ~~Fixed: FeignClient → product-service validates existence~~ |
-| 11 | estimate-service | `POST /api/estimate/calculate` (bad buildId=99999) | 201 | 404 | Creates estimate for nonexistent build — blocked on RestClient → build-service |
+| ~~11~~ | ~~estimate-service~~ | ~~`POST /api/estimate/calculate` (bad buildId=99999)~~ | ~~201~~ | ~~404~~ | ~~Fixed: BuildRestClient validates build existence~~ |
 | 12 | hardware-advisor | `GET /api/recommendations/{badBuildId}` | 200 (empty) | 404 | Returns empty list instead of 404 for nonexistent build — blocked on FeignClient → build-service |
 | 13 | hardware-advisor | `POST /api/recommendations/generate` (bad buildId) | 201 | 404 | Generates recommendations for nonexistent build — blocked on FeignClient → build-service |
 
