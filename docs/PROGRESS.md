@@ -50,27 +50,13 @@
 
 ## Services
 
-> Current progress per service
+> Current progress per service. Completed items archived in [DONE.md](DONE.md).
 
 ---
 ### api-gateway :8080
 
 **Pending**
 - [ ] Tests
-
-**Done**
-- [x] `spring-boot-starter-security` in `pom.xml`
-- [x] `GatewayRoutesConfig` — `RouterFunction<ServerResponse>` with `GatewayRouterFunctions.route()` + `BeforeFilterFunctions.uri()` (replaced YAML routes)
-- [x] All 9 `*_SERVICE_URL` vars in `.env.example`
-- [x] `AuthClientResponse` — DTO record for auth-service validate response
-- [x] `RestClientConfig` — `RestClient.Builder` bean
-- [x] `AuthRestClient` — RestClient → `auth-service:8081/api/auth/validate` for token delegation (Module 5)
-- [x] `JwtAuthFilter` — `OncePerRequestFilter` that extracts Bearer token, delegates to auth-service, populates `SecurityContext`. Blocks invalid tokens with 401 immediately (Module 7)
-- [x] `SecurityConfig` — `SecurityFilterChain` with STATELESS sessions, CSRF disabled, public vs. user vs. admin route rules per ARCHITECTURE.md (Module 7)
-- [x] `CorrelationIdFilter` — MDC-based `X-Correlation-Id` request tracing (Module 8)
-- [x] `ApiError` record — `{ message, details, timestamp }` (Module 9)
-- [x] `GlobalExceptionHandler` — `@ControllerAdvice` with `IllegalArgument`→400, `MethodArgumentNotValid`→400, `NoResourceFound`→404, `HttpMessageNotReadable`→400, `BadCredentials`→401, `AccessDenied`→403, generic `Exception`→500 (Module 9)
-- [x] Endpoint tests script — `scripts/gateway-endpoint-test.ps1` + `scripts/gateway-endpoint-test-v2.ps1`
 
 ---
 ### auth-service :8081
@@ -82,23 +68,6 @@
 - [ ] Endpoint tests script (notification as template)
 - [ ] Tests
 
-**Done**
-- [x] Model / Entity (Credential) (Module 2)
-- [x] Repository (Module 2)
-- [x] DTOs (Request / Response) (Module 1)
-- [x] Service (Module 1)
-- [x] Controller (Module 1)
-- [x] Exception handling (Module 1)
-- [x] Seed credentials for admin + test users (link to existing user-service profiles)
-- [x] BCrypt password hashing (Module 7)
-- [x] JWT token generation / validation (Module 7)
-- [x] Roles: USER / ADMIN (Module 7)
-- [x] Flyway migrations — MySQL (Module 6)
-- [x] `@Slf4j` on services + `log.info()` in CRUD
-- [x] GlobalExceptionHandler (Module 9)
-- [x] Per-profile log levels with `app.environment` in YAMLs (Module 8)
-- [x] Add `NumberFormatException` → 400 + `AccessDeniedException` → 403 to GlobalExceptionHandler (Module 9)
-
 ---
 ### user-service :8082
 
@@ -109,21 +78,6 @@
 - [ ] Endpoint tests script (notification as template)
 - [ ] Tests
 
-**Done**
-- [x] Model / Entity (User) (Module 2)
-- [x] Repository (Module 2)
-- [x] DTOs (Request / Response) (Module 1)
-- [x] Service (Module 1)
-- [x] Controller (Module 1)
-- [x] Exception handling (Module 1)
-- [x] Seed data (20 users) (Module 2)
-- [x] `@Slf4j` on services + `log.info()` in CRUD
-- [x] GlobalExceptionHandler (Module 9)
-- [x] Handle HttpMessageNotReadableException in GlobalExceptionHandler (invalid enums return 400)
-- [x] Per-profile log levels with `app.environment` in YAMLs (Module 8)
-- [x] Add `NumberFormatException` → 400 + `AccessDeniedException` → 403 to GlobalExceptionHandler (Module 9)
-- [x] Flyway migrations — MySQL (Module 6)
-
 ---
 ### category-service :8084
 
@@ -131,22 +85,6 @@
 - [ ] (optional) Correlation ID filter (Module 8 — extra challenge)
 - [ ] Endpoint tests script (notification as template)
 - [ ] Tests
-
-**Done**
-- [x] Model / Entity (Category, AttributeDefinition) (Module 2)
-- [x] Repository (Module 2)
-- [x] DTOs (Request / Response) (Module 1)
-- [x] Service (Module 1)
-- [x] Controller (Module 1)
-- [x] Exception handling (Module 1)
-- [x] Seed data (8 categories, ~30 attributes) (Module 2)
-- [x] `@OneToMany` Category -> AttributeDefinition (Module 3)
-- [x] `@Slf4j` on services + `log.info()` in CRUD
-- [x] GlobalExceptionHandler (Module 9)
-- [x] Handle HttpMessageNotReadableException in GlobalExceptionHandler (invalid enums return 400)
-- [x] Per-profile log levels with `app.environment` in YAMLs (Module 8)
-- [x] Add `NumberFormatException` → 400 + `AccessDeniedException` → 403 to GlobalExceptionHandler (Module 9)
-- [x] Flyway migrations — MySQL (Module 6)
 
 ---
 ### product-service :8083
@@ -156,49 +94,15 @@
 - [ ] Refactor endpoint tests script (notification template)
 - [ ] Tests
 
-**Done**
-- [x] Model / Entity (Product, ProductAttribute) (Module 2)
-- [x] Repository (Module 2)
-- [x] DTOs (Request / Response) (Module 1)
-- [x] Service (Module 1)
-- [x] Controller (Module 1)
-- [x] Exception handling (Module 1)
-- [x] Seed data (32 products, ~100 attributes) (Module 2)
-- [x] `@OneToMany` Product -> ProductAttribute (Module 3)
-- [x] RestClient → category-service (Module 5)
-- [x] Add to ARCHITECTURE.md inter-service table (product → category)
-- [x] `@Slf4j` on services + `log.info()` in CRUD
-- [x] GlobalExceptionHandler (Module 9)
-- [x] Handle HttpMessageNotReadableException in GlobalExceptionHandler (invalid enums return 400)
-- [x] Per-profile log levels with `app.environment` in YAMLs (Module 8)
-- [x] Add `NumberFormatException` → 400 + `AccessDeniedException` → 403 to GlobalExceptionHandler (Module 9)
-- [x] Flyway migrations — MySQL (Module 6)
-
 ---
 ### compatibility-service :8085
 
 **Pending**
-- [ ] RestClient → product-service (Module 5)
+- [ ] `evaluateRule()` business logic
 - [ ] (optional) Correlation ID filter (Module 8 — extra challenge)
 - [ ] Align CompatibilityCheck entity in README.md: add `buildId` and `createdAt`
 - [ ] Endpoint tests script (notification as template)
 - [ ] Tests
-
-**Done**
-- [x] Model / Entity (CompatibilityRule, CompatibilityCheck) (Module 2)
-- [x] Repository (Module 2)
-- [x] DTOs (Request / Response) (Module 1)
-- [x] Service (Module 1)
-- [x] Controller (Module 1)
-- [x] Exception handling (Module 1)
-- [x] Seed data (5 rules) (Module 2)
-- [x] Add to ARCHITECTURE.md inter-service table (compatibility → product)
-- [x] `@Slf4j` on services + `log.info()` in CRUD
-- [x] GlobalExceptionHandler (Module 9)
-- [x] Handle HttpMessageNotReadableException in GlobalExceptionHandler (invalid enums return 400)
-- [x] Per-profile log levels with `app.environment` in YAMLs (Module 8)
-- [x] Add `NumberFormatException` → 400 + `AccessDeniedException` → 403 to GlobalExceptionHandler (Module 9)
-- [x] Flyway migrations — MySQL (Module 6)
 
 ---
 ### provider-service :8086
@@ -208,21 +112,6 @@
 - [ ] Endpoint tests script (notification as template)
 - [ ] Tests
 
-**Done**
-- [x] Model / Entity (Provider, ProviderProduct) (Module 2)
-- [x] Repository (Module 2)
-- [x] DTOs (Request / Response) (Module 1)
-- [x] Service (Module 1)
-- [x] Controller (Module 1)
-- [x] Exception handling (Module 1)
-- [x] Seed data (4 providers) (Module 2)
-- [x] `@Slf4j` on services + `log.info()` in CRUD
-- [x] GlobalExceptionHandler (Module 9)
-- [x] Handle HttpMessageNotReadableException in GlobalExceptionHandler (invalid enums return 400)
-- [x] Per-profile log levels with `app.environment` in YAMLs (Module 8)
-- [x] Add `NumberFormatException` → 400 + `AccessDeniedException` → 403 to GlobalExceptionHandler (Module 9)
-- [x] Flyway migrations — MySQL (Module 6)
-
 ---
 ### build-service :8087
 
@@ -231,34 +120,6 @@
 - [ ] (optional) Correlation ID filter (Module 8 — extra challenge)
 - [ ] (optional) Split profiles into `dev`/`prod` (environment) + `h2`/`mysql` (database)
 - [ ] Tests
-
-**Done**
-- [x] Model / Entity (Build, BuildItem) (Module 2)
-- [x] Repository (Module 2)
-- [x] DTOs (Request / Response) (Module 1)
-- [x] Service (Module 1)
-- [x] Controller (Module 1)
-- [x] Exception handling (Module 1)
-- [x] `@OneToMany` Build -> BuildItem (Module 3)
-- [x] `@Slf4j` on services + `log.info()` in CRUD
-- [x] GlobalExceptionHandler (Module 9)
-- [x] Handle HttpMessageNotReadableException in GlobalExceptionHandler (invalid enums return 400)
-- [x] Seed data (5 builds, ~25 items) with corrected product IDs (Module 2)
-- [x] PATCH /api/builds/{id}/status for partial updates (Module 3)
-- [x] FeignClient → product-service (Module 5)
-- [x] FeignClient → compatibility-service (Module 5)
-- [x] FeignClient → provider-service (Module 5)
-- [x] Flyway migrations — MySQL (Module 6)
-- [x] `application-mysql.yaml` with `ddl-auto: validate` + Flyway config
-- [x] `application.yaml` with all 3 service URLs (product, compatibility, provider)
-- [x] Add `NumberFormatException` → 400 + `AccessDeniedException` → 403 to GlobalExceptionHandler (Module 9)
-- [x] `.env.example` with service URL vars
-- [x] Endpoint tests script — `scripts/build-service-endpoint-test.ps1`
-- [x] Per-profile log levels with `app.environment` in YAMLs (Module 8)
-- [x] File-based logging
-- [x] Data seed fix: product IDs 101–124 → 1–32
-- [x] Bug fix: `updateItem` — `setProductId()` instead of `setId()`
-- [x] Bug fix: `deleteBuild` — return 404 when build not found
 
 ---
 ### estimate-service :8088
@@ -270,21 +131,6 @@
 - [ ] (optional) Correlation ID filter (Module 8 — extra challenge)
 - [ ] Endpoint tests script (notification as template)
 - [ ] Tests
-
-**Done**
-- [x] Model / Entity (Estimate) (Module 2)
-- [x] Repository (Module 2)
-- [x] DTOs (Request / Response) (Module 1)
-- [x] Service (Module 1)
-- [x] Controller (Module 1)
-- [x] Exception handling (Module 1)
-- [x] `@Slf4j` on services + `log.info()` in CRUD
-- [x] GlobalExceptionHandler (Module 9)
-- [x] Handle HttpMessageNotReadableException in GlobalExceptionHandler (invalid enums return 400)
-- [x] Per-profile log levels with `app.environment` in YAMLs (Module 8)
-- [x] Add `NumberFormatException` → 400 + `AccessDeniedException` → 403 to GlobalExceptionHandler (Module 9)
-- [x] Seed data (3 sample estimates) (Module 2)
-- [x] Flyway migrations — MySQL (Module 6)
 
 ---
 ### hardware-advisor :8089
@@ -298,21 +144,6 @@
 - [ ] Endpoint tests script (notification as template)
 - [ ] Tests
 
-**Done**
-- [x] Model / Entity (Recommendation) (Module 2)
-- [x] Repository (Module 2)
-- [x] DTOs (Request / Response) (Module 1)
-- [x] Service (Module 1)
-- [x] Controller (Module 1)
-- [x] Exception handling (Module 1)
-- [x] `@Slf4j` on services + `log.info()` in CRUD
-- [x] GlobalExceptionHandler (Module 9)
-- [x] Handle HttpMessageNotReadableException in GlobalExceptionHandler (invalid enums return 400)
-- [x] Per-profile log levels with `app.environment` in YAMLs (Module 8)
-- [x] Add `NumberFormatException` → 400 + `AccessDeniedException` → 403 to GlobalExceptionHandler (Module 9)
-- [x] Seed data (3 sample recommendations) (Module 2)
-- [x] Flyway migrations — MySQL (Module 6)
-
 ---
 ### notification-service :8090
 
@@ -320,22 +151,6 @@
 - [ ] (optional) Correlation ID filter (Module 8 — extra challenge)
 - [ ] Endpoint tests script (no script file found)
 - [ ] Tests
-
-**Done**
-- [x] Model / Entity (NotificationLog) (Module 2)
-- [x] Repository (Module 2)
-- [x] DTOs (Request / Response) (Module 1)
-- [x] Service (Module 1)
-- [x] Controller (Module 1)
-- [x] Exception handling (Module 1)
-- [x] Migrate to JPA + database (Module 2)
-- [x] `@Slf4j` on services + `log.info()` in CRUD
-- [x] GlobalExceptionHandler (Module 9)
-- [x] Handle HttpMessageNotReadableException in GlobalExceptionHandler (invalid enums return 400)
-- [x] Per-profile log levels with `app.environment` in YAMLs (Module 8)
-- [x] Add `NumberFormatException` → 400 + `AccessDeniedException` → 403 to GlobalExceptionHandler (Module 9)
-- [x] Seed data (3 sample notification logs) (Module 2)
-- [x] Flyway migrations — MySQL (Module 6)
 
 ---
 
@@ -438,15 +253,14 @@
 | # | Service | Endpoint | Got | Expected | Root Cause |
 |---|---------|----------|-----|----------|------------|
 | ~~10~~ | ~~build-service~~ | ~~`POST /api/builds/{id}/items` (bad productId=99999)~~ | ~~201~~ | ~~404~~ | ~~Fixed: FeignClient → product-service validates existence~~ |
-| 11 | estimate-service | `POST /api/estimate/calculate` (bad buildId=99999) | 201 | 404 | Creates estimate for nonexistent build |
-| 12 | hardware-advisor | `GET /api/recommendations/{badBuildId}` | 200 (empty) | 404 | Returns empty list instead of 404 for nonexistent build |
-| 13 | hardware-advisor | `POST /api/recommendations/generate` (bad buildId) | 201 | 404 | Generates recommendations for nonexistent build |
+| 11 | estimate-service | `POST /api/estimate/calculate` (bad buildId=99999) | 201 | 404 | Creates estimate for nonexistent build — blocked on RestClient → build-service |
+| 12 | hardware-advisor | `GET /api/recommendations/{badBuildId}` | 200 (empty) | 404 | Returns empty list instead of 404 for nonexistent build — blocked on FeignClient → build-service |
+| 13 | hardware-advisor | `POST /api/recommendations/generate` (bad buildId) | 201 | 404 | Generates recommendations for nonexistent build — blocked on FeignClient → build-service |
 
 ### Low: Missing feature
 
 | # | Service | Endpoint | Got | Expected | Root Cause |
 |---|---------|----------|-----|----------|------------|
-| ~~14~~ | ~~build-service~~ | ~~`PATCH /api/builds/{id}/status`~~ | ~~404~~ | ~~200~~ | ~~Fixed: controller + service method implemented~~ |
 
 ### Seed data issues
 
