@@ -4,8 +4,14 @@ spring:
   profiles:
     active: ${SPRING_PROFILES_ACTIVE:h2}
 
-server:
-  port: ${SERVER_PORT:8088}
+build-service:
+  url: ${BUILD_SERVICE_URL:http://localhost:8087}
+
+product-service:
+  url: ${PRODUCT_SERVICE_URL:http://localhost:8083}
+
+notification-service:
+  url: ${NOTIFICATION_SERVICE_URL:http://localhost:8090}
 
 app:
   environment: production
@@ -20,3 +26,15 @@ logging:
     rollingpolicy:
       max-file-size: 10MB
       max-history: 10
+
+server:
+  port: ${SERVER_PORT:8088}
+
+product-service:
+  url: ${PRODUCT_SERVICE_URL:http://localhost:8083}
+
+build-service:
+  url: ${BUILD_SERVICE_URL:http://localhost:8087}
+
+notification-service:
+  url: ${NOTIFICATION_SERVICE_URL:http://localhost:8090}
