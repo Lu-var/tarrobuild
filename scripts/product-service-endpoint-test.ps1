@@ -136,7 +136,7 @@ try {
 Test-Group "Phase 3: CRUD Operations"
 
 # Create product and get actual ID from response
-$createBody = '{"name":"Test Product","description":"Test description","price":100000,"categoryId":1,"brand":"TestBrand","model":"TestModel"}'
+$createBody = '{"name":"Test Product","description":"Test description","msrp":100000,"categoryId":1,"brand":"TestBrand","model":"TestModel"}'
 $createStatus = Get-StatusCode -Url "$BASE/api/products" -Method POST -Body $createBody
 if ($createStatus -eq 201) {
     $created = Invoke-WebRequest -Uri "$BASE/api/products" -Method GET -UseBasicParsing -ErrorAction Stop
@@ -152,14 +152,14 @@ Test-Endpoint "POST /api/products (create)" "$BASE/api/products" -Method POST -B
 Test-Endpoint "GET /api/products/$testProductId" "$BASE/api/products/$testProductId" -Expected 200
 
 # Update product
-$updateBody = '{"name":"Updated Product","description":"Updated","price":150000,"categoryId":1,"brand":"TestBrand","model":"TestModel"}'
+$updateBody = '{"name":"Updated Product","description":"Updated","msrp":150000,"categoryId":1,"brand":"TestBrand","model":"TestModel"}'
 Test-Endpoint "PUT /api/products/$testProductId" "$BASE/api/products/$testProductId" -Method PUT -Body $updateBody -Expected 200
 
 # Deactivate product
 Test-Endpoint "PATCH /api/products/$testProductId/deactivate" "$BASE/api/products/$testProductId/deactivate" -Method PATCH -Expected 204
 
 # Reactivate product
-$reactivateBody = '{"name":"Reactivated","price":100000,"categoryId":1,"brand":"TestBrand","model":"TestModel","isActive":true}'
+$reactivateBody = '{"name":"Reactivated","msrp":100000,"categoryId":1,"brand":"TestBrand","model":"TestModel","isActive":true}'
 Test-Endpoint "PUT /api/products/$testProductId (reactivate)" "$BASE/api/products/$testProductId" -Method PUT -Body $reactivateBody -Expected 200
 
 # Delete product
@@ -175,7 +175,7 @@ Test-Endpoint "GET /api/products/$testProductId (deleted)" "$BASE/api/products/$
 Test-Group "Phase 3b: Attribute Operations"
 
 # Create new product for attributes
-$attrProductBody = '{"name":"Attr Test Product","price":50000,"categoryId":1,"brand":"Test","model":"AttrTest"}'
+$attrProductBody = '{"name":"Attr Test Product","msrp":50000,"categoryId":1,"brand":"Test","model":"AttrTest"}'
 Test-Endpoint "POST /api/products (for attributes)" "$BASE/api/products" -Method POST -Body $attrProductBody -Expected 201
 
 # Get the new product ID
@@ -224,18 +224,18 @@ Test-Endpoint "DELETE /api/products/$attrProductId/attributes/99999 (not found)"
 Test-Group "Phase 3c: Validation Tests"
 
 # Product validation
-Test-Endpoint "POST /api/products (empty name)" "$BASE/api/products" -Method POST -Body '{"name":"","price":100000,"categoryId":1,"brand":"Test","model":"Test"}' -Expected 400
-Test-Endpoint "POST /api/products (name too short)" "$BASE/api/products" -Method POST -Body '{"name":"A","price":100000,"categoryId":1,"brand":"Test","model":"Test"}' -Expected 400
-Test-Endpoint "POST /api/products (null name)" "$BASE/api/products" -Method POST -Body '{"price":100000,"categoryId":1,"brand":"Test","model":"Test"}' -Expected 400
+Test-Endpoint "POST /api/products (empty name)" "$BASE/api/products" -Method POST -Body '{"name":"","msrp":100000,"categoryId":1,"brand":"Test","model":"Test"}' -Expected 400
+Test-Endpoint "POST /api/products (name too short)" "$BASE/api/products" -Method POST -Body '{"name":"A","msrp":100000,"categoryId":1,"brand":"Test","model":"Test"}' -Expected 400
+Test-Endpoint "POST /api/products (null name)" "$BASE/api/products" -Method POST -Body '{"msrp":100000,"categoryId":1,"brand":"Test","model":"Test"}' -Expected 400
 Test-Endpoint "POST /api/products (null price)" "$BASE/api/products" -Method POST -Body '{"name":"Test","categoryId":1,"brand":"Test","model":"Test"}' -Expected 400
-Test-Endpoint "POST /api/products (negative price)" "$BASE/api/products" -Method POST -Body '{"name":"Test","price":-100,"categoryId":1,"brand":"Test","model":"Test"}' -Expected 400
-Test-Endpoint "POST /api/products (null categoryId)" "$BASE/api/products" -Method POST -Body '{"name":"Test","price":100000,"brand":"Test","model":"Test"}' -Expected 400
-Test-Endpoint "POST /api/products (empty brand)" "$BASE/api/products" -Method POST -Body '{"name":"Test","price":100000,"categoryId":1,"brand":"","model":"Test"}' -Expected 400
-Test-Endpoint "POST /api/products (empty model)" "$BASE/api/products" -Method POST -Body '{"name":"Test","price":100000,"categoryId":1,"brand":"Test","model":""}' -Expected 400
+Test-Endpoint "POST /api/products (negative price)" "$BASE/api/products" -Method POST -Body '{"name":"Test","msrp":-100,"categoryId":1,"brand":"Test","model":"Test"}' -Expected 400
+Test-Endpoint "POST /api/products (null categoryId)" "$BASE/api/products" -Method POST -Body '{"name":"Test","msrp":100000,"brand":"Test","model":"Test"}' -Expected 400
+Test-Endpoint "POST /api/products (empty brand)" "$BASE/api/products" -Method POST -Body '{"name":"Test","msrp":100000,"categoryId":1,"brand":"","model":"Test"}' -Expected 400
+Test-Endpoint "POST /api/products (empty model)" "$BASE/api/products" -Method POST -Body '{"name":"Test","msrp":100000,"categoryId":1,"brand":"Test","model":""}' -Expected 400
 Test-Endpoint "POST /api/products (empty body)" "$BASE/api/products" -Method POST -Body '{}' -Expected 400
 
 # Category validation via RestClient → category-service
-Test-Endpoint "POST /api/products (invalid categoryId 99)" "$BASE/api/products" -Method POST -Body '{"name":"Test","price":100000,"categoryId":99,"brand":"Test","model":"Test"}' -Expected 404
+Test-Endpoint "POST /api/products (invalid categoryId 99)" "$BASE/api/products" -Method POST -Body '{"name":"Test","msrp":100000,"categoryId":99,"brand":"Test","model":"Test"}' -Expected 404
 
 # Attribute validation
 Test-Endpoint "POST /api/products/$attrProductId/attributes (empty name)" "$BASE/api/products/$attrProductId/attributes" -Method POST -Body '{"attributeName":"","attributeValue":"Test"}' -Expected 400
@@ -243,7 +243,7 @@ Test-Endpoint "POST /api/products/$attrProductId/attributes (empty value)" "$BAS
 
 # Not found scenarios
 Test-Endpoint "GET /api/products/99999 (not found)" "$BASE/api/products/99999" -Expected 404
-Test-Endpoint "PUT /api/products/99999 (not found)" "$BASE/api/products/99999" -Method PUT -Body '{"name":"Test","price":100000,"categoryId":1,"brand":"Test","model":"Test"}' -Expected 404
+Test-Endpoint "PUT /api/products/99999 (not found)" "$BASE/api/products/99999" -Method PUT -Body '{"name":"Test","msrp":100000,"categoryId":1,"brand":"Test","model":"Test"}' -Expected 404
 Test-Endpoint "DELETE /api/products/99999 (not found)" "$BASE/api/products/99999" -Method DELETE -Expected 404
 Test-Endpoint "PATCH /api/products/99999/deactivate (not found)" "$BASE/api/products/99999/deactivate" -Method PATCH -Expected 404
 Test-Endpoint "GET /api/products/99999/attributes (product not found)" "$BASE/api/products/99999/attributes" -Expected 404

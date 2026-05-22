@@ -1,4 +1,4 @@
-INSERT INTO products (name, description, price, category_id, brand, model, is_active) VALUES
+INSERT INTO products (name, description, msrp, category_id, brand, model, is_active) VALUES
 ('Intel Core i7-14700K', 'High-performance processor with 20 cores and 28 threads', 450000, 1, 'Intel', 'Core i7-14700K', true),
 ('AMD Ryzen 7 7800X3D', 'Gaming-focused processor with 8 cores and 16 threads', 420000, 1, 'AMD', 'Ryzen 7 7800X3D', true),
 ('Intel Core i5-14600K', 'Mid-range processor with 14 cores and 20 threads', 320000, 1, 'Intel', 'Core i5-14600K', true),

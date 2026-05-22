@@ -19,7 +19,7 @@
 - [ ] **RF-13** — Upgrade recommendations
 - [x] **RF-14** — CRUD components/attributes
 - [x] **RF-15** — CRUD compatibility rules
-- [x] **RF-16** — CRUD price references
+- [x] **RF-16** — CRUD provider references
 - [ ] **RF-17** — Price/availability alerts
 - [ ] **RF-18** — Auto-notifications
 
@@ -56,11 +56,16 @@
 ### Cross-cutting
 
 **Pending**
+- [ ] Add MissingRequestHeaderException → 401 handler to every GlobalExceptionHandler
 - [ ] Add MethodArgumentTypeMismatchException → 400 handler to every GlobalExceptionHandler (Bugs #2–8)
+- [ ] Add HttpRequestMethodNotSupportedException → 405 handler to every GlobalExceptionHandler
 - [ ] Ensure correlation ID propagation is consistently planned across all services (RNF-03)
 - [ ] Add user identity propagation — gateway forwards userId/email/role as headers, downstream services consume them (Gap #17)
 - [ ] Add ResourceAccessException → 503 handler to every GlobalExceptionHandler (Gap #18)
 - [ ] (optional) Split profiles into `dev`/`prod` (environment) + `h2`/`mysql` (database)
+- [ ] Fix dependency chain in `.opencode/agents/shared-context.md` — add `user-service` before `category-service` (currently omitted, but `auth-service` depends on it)
+- [ ] Fix dependency chain in `.opencode/agents/planner.md` — same missing `user-service` fix
+- [ ] Fix `.opencode/agents/implementor.md` — change "entity" to "model" as the package name (actual package is `model/`, not `entity/`)
 
 ---
 ### api-gateway :8080
@@ -184,6 +189,11 @@
 - [ ] Tests
 
 ---
+
+### OpenCode context
+
+**Pending**
+- [ ] Align `.opencode/agents/shared-context.md` admin role description to use `msrp` instead of `prices`
 
 ---
 

@@ -6,7 +6,7 @@ public record ProductClientResponse(
         Long id,
         String name,
         String description,
-        int price,
+        int msrp,
         Long categoryId,
         String brand,
         String model,

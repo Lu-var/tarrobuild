@@ -40,18 +40,18 @@ public class EstimateService {
         BuildClientResponse build = buildRestClient.getBuildById(request.buildId());
         log.info("Build found: id={}, items={}", build.id(), build.items().size());
 
-        int totalPrice = build.items().stream()
+        int totalCost = build.items().stream()
                 .mapToInt(item -> {
                     var product = productRestClient.getProductById(item.productId());
-                    log.debug("Product {} price: {} x {}", item.productId(), product.price(), item.quantity());
-                    return product.price() * item.quantity();
+                    log.debug("Product {} msrp: {} x {}", item.productId(), product.msrp(), item.quantity());
+                    return product.msrp() * item.quantity();
                 })
                 .sum();
-        log.info("Total price calculated: {}", totalPrice);
+        log.info("Total cost calculated: {}", totalCost);
 
         Estimate estimate = new Estimate();
         estimate.setBuildId(request.buildId());
-        estimate.setTotalPrice(totalPrice);
+        estimate.setTotalCost(totalCost);
         estimate.setCurrency(request.currency() != null ? request.currency() : "USD");
 
         Estimate saved = estimateRepository.save(estimate);
@@ -60,7 +60,7 @@ public class EstimateService {
         notificationRestClient.sendNotification(new NotificationClientRequest(
                 build.userId(),
                 "ESTIMATE",
-                "Your build \"" + build.name() + "\" estimate is $" + totalPrice,
+                "Your build \"" + build.name() + "\" estimate is $" + totalCost,
                 "INFO"
         ));
 
@@ -94,7 +94,7 @@ public class EstimateService {
         return new EstimateResponse(
                 estimate.getId(),
                 estimate.getBuildId(),
-                estimate.getTotalPrice(),
+                estimate.getTotalCost(),
                 estimate.getCurrency(),
                 estimate.getCreatedAt()
         );

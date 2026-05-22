@@ -3,56 +3,56 @@
 -- =========================
 
 -- CPUs (category_id = 1)
-INSERT INTO products (name, description, price, category_id, brand, model, is_active) VALUES
+INSERT INTO products (name, description, msrp, category_id, brand, model, is_active) VALUES
 ('Intel Core i7-14700K', 'High-performance processor with 20 cores and 28 threads', 450000, 1, 'Intel', 'Core i7-14700K', true),
 ('AMD Ryzen 7 7800X3D', 'Gaming-focused processor with 8 cores and 16 threads', 420000, 1, 'AMD', 'Ryzen 7 7800X3D', true),
 ('Intel Core i5-14600K', 'Mid-range processor with 14 cores and 20 threads', 320000, 1, 'Intel', 'Core i5-14600K', true),
 ('AMD Ryzen 5 7600X', 'Budget-friendly processor with 6 cores and 12 threads', 220000, 1, 'AMD', 'Ryzen 5 7600X', true);
 
 -- GPUs (category_id = 2)
-INSERT INTO products (name, description, price, category_id, brand, model, is_active) VALUES
+INSERT INTO products (name, description, msrp, category_id, brand, model, is_active) VALUES
 ('NVIDIA GeForce RTX 4080 Super', 'High-end graphics card with 16GB GDDR6X', 1200000, 2, 'NVIDIA', 'RTX 4080 Super', true),
 ('NVIDIA GeForce RTX 4070 Ti Super', 'Mid-high graphics card with 16GB GDDR6X', 850000, 2, 'NVIDIA', 'RTX 4070 Ti Super', true),
 ('AMD Radeon RX 7900 XTX', 'High-end graphics card with 24GB GDDR6', 950000, 2, 'AMD', 'RX 7900 XTX', true),
 ('NVIDIA GeForce RTX 4060 Ti', 'Mid-range graphics card with 8GB GDDR6', 450000, 2, 'NVIDIA', 'RTX 4060 Ti', true);
 
 -- RAM (category_id = 3)
-INSERT INTO products (name, description, price, category_id, brand, model, is_active) VALUES
+INSERT INTO products (name, description, msrp, category_id, brand, model, is_active) VALUES
 ('Corsair Vengeance RGB 32GB DDR5', '32GB (2x16GB) DDR5-6000MHz CL30', 180000, 3, 'Corsair', 'Vengeance RGB', true),
 ('G.Skill Trident Z5 64GB DDR5', '64GB (2x32GB) DDR5-6400MHz CL32', 320000, 3, 'G.Skill', 'Trident Z5', true),
 ('Kingston Fury Beast 16GB DDR5', '16GB (2x8GB) DDR5-5600MHz CL40', 85000, 3, 'Kingston', 'Fury Beast', true),
 ('Corsair Dominator Platinum 32GB DDR5', '32GB (2x16GB) DDR5-6600MHz CL34', 220000, 3, 'Corsair', 'Dominator Platinum', true);
 
 -- Motherboards (category_id = 4)
-INSERT INTO products (name, description, price, category_id, brand, model, is_active) VALUES
+INSERT INTO products (name, description, msrp, category_id, brand, model, is_active) VALUES
 ('ASUS ROG Strix Z790-E Gaming WiFi', 'Intel Z790 ATX motherboard for 12th/13th/14th Gen', 450000, 4, 'ASUS', 'ROG Strix Z790-E', true),
 ('MSI MEG Z790 ACE', 'Intel Z790 E-ATX motherboard with premium features', 520000, 4, 'MSI', 'MEG Z790 ACE', true),
 ('Gigabyte X670E AORUS Master', 'AMD X670E ATX motherboard for Ryzen 7000', 380000, 4, 'Gigabyte', 'X670E AORUS Master', true),
 ('ASUS TUF Gaming B650-Plus WiFi', 'AMD B650 ATX motherboard for Ryzen 7000', 180000, 4, 'ASUS', 'TUF Gaming B650-Plus', true);
 
 -- Storage (category_id = 5)
-INSERT INTO products (name, description, price, category_id, brand, model, is_active) VALUES
+INSERT INTO products (name, description, msrp, category_id, brand, model, is_active) VALUES
 ('Samsung 990 Pro 2TB NVMe', '2TB NVMe M.2 SSD with 7450MB/s read', 220000, 5, 'Samsung', '990 Pro', true),
 ('WD Black SN850X 1TB NVMe', '1TB NVMe M.2 SSD with 7300MB/s read', 110000, 5, 'WD', 'Black SN850X', true),
 ('Crucial P3 Plus 2TB NVMe', '2TB NVMe M.2 SSD with 5000MB/s read', 140000, 5, 'Crucial', 'P3 Plus', true),
 ('Seagate Barracuda 4TB HDD', '4TB 5400RPM 3.5" HDD', 85000, 5, 'Seagate', 'Barracuda', true);
 
 -- Power Supply (category_id = 6)
-INSERT INTO products (name, description, price, category_id, brand, model, is_active) VALUES
+INSERT INTO products (name, description, msrp, category_id, brand, model, is_active) VALUES
 ('Corsair RM1000x', '1000W 80+ Gold fully modular PSU', 220000, 6, 'Corsair', 'RM1000x', true),
 ('EVGA SuperNOVA 850 G7', '850W 80+ Gold fully modular PSU', 150000, 6, 'EVGA', 'SuperNOVA 850 G7', true),
 ('Seasonic Focus GX-750', '750W 80+ Gold fully modular PSU', 120000, 6, 'Seasonic', 'Focus GX-750', true),
 ('Corsair CV650', '650W 80+ Bronze non-modular PSU', 65000, 6, 'Corsair', 'CV650', true);
 
 -- Cases (category_id = 7)
-INSERT INTO products (name, description, price, category_id, brand, model, is_active) VALUES
+INSERT INTO products (name, description, msrp, category_id, brand, model, is_active) VALUES
 ('Lian Li O11 Dynamic EVO', 'Mid-tower ATX case with modular design', 180000, 7, 'Lian Li', 'O11 Dynamic EVO', true),
 ('NZXT H7 Flow', 'Mid-tower ATX case with high airflow', 150000, 7, 'NZXT', 'H7 Flow', true),
 ('Corsair 4000D Airflow', 'Mid-tower ATX case with optimized airflow', 110000, 7, 'Corsair', '4000D Airflow', true),
 ('Cooler Master NR200P', 'Mini-ITX case with compact design', 130000, 7, 'Cooler Master', 'NR200P', true);
 
 -- Cooling (category_id = 8)
-INSERT INTO products (name, description, price, category_id, brand, model, is_active) VALUES
+INSERT INTO products (name, description, msrp, category_id, brand, model, is_active) VALUES
 ('Noctua NH-D15', 'Premium tower air cooler with 140mm fans', 120000, 8, 'Noctua', 'NH-D15', true),
 ('be quiet! Dark Rock Pro 4', 'High-performance tower air cooler', 95000, 8, 'be quiet!', 'Dark Rock Pro 4', true),
 ('Corsair iCUE H150i Elite', '360mm AIO liquid CPU cooler with RGB', 220000, 8, 'Corsair', 'iCUE H150i Elite', true),

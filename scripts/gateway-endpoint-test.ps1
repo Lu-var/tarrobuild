@@ -172,7 +172,7 @@ if ($script:adminToken) {
 Test-Group "Phase 4: Admin Endpoints"
 
 if ($script:userToken) {
-    Test-Endpoint -Name "POST /api/products (user → 403)" -Method POST -Url "$BaseUrl/api/products" -Headers @{Authorization = "Bearer $script:userToken"} -Body '{"name":"Test","price":100000,"categoryId":1,"brand":"Test","model":"Test"}' -Expected 403
+    Test-Endpoint -Name "POST /api/products (user → 403)" -Method POST -Url "$BaseUrl/api/products" -Headers @{Authorization = "Bearer $script:userToken"} -Body '{"name":"Test","msrp":100000,"categoryId":1,"brand":"Test","model":"Test"}' -Expected 403
 }
 
 if ($script:adminToken) {

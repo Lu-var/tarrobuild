@@ -144,8 +144,8 @@ Test -Name "GET /api/products/1/attributes/99999 - attr not found" -Url "$BaseUr
 
 Product CRUD (with token - USER role, should be 403 on write)
 if ($global:userToken) {
-    Test -Name "POST /api/products - user → 403" -Method POST -Url "$BaseUrl/api/products" -Headers @{Authorization = "Bearer $global:userToken"} -Body '{`"name`":`"Test`",`"price`":100000,`"categoryId`":1,`"brand`":`"T`",`"model`":`"T`"}' -Expected 403
-    Test -Name "PUT /api/products/1 - user → 403" -Method PUT -Url "$BaseUrl/api/products/1" -Headers @{Authorization = "Bearer $global:userToken"} -Body '{`"name`":`"Test`",`"price`":100000,`"categoryId`":1,`"brand`":`"T`",`"model`":`"T`"}' -Expected 403
+    Test -Name "POST /api/products - user → 403" -Method POST -Url "$BaseUrl/api/products" -Headers @{Authorization = "Bearer $global:userToken"} -Body '{`"name`":`"Test`",`"msrp`":100000,`"categoryId`":1,`"brand`":`"T`",`"model`":`"T`"}' -Expected 403
+    Test -Name "PUT /api/products/1 - user → 403" -Method PUT -Url "$BaseUrl/api/products/1" -Headers @{Authorization = "Bearer $global:userToken"} -Body '{`"name`":`"Test`",`"msrp`":100000,`"categoryId`":1,`"brand`":`"T`",`"model`":`"T`"}' -Expected 403
     Test -Name "DELETE /api/products/1 - user → 403" -Method DELETE -Url "$BaseUrl/api/products/1" -Headers @{Authorization = "Bearer $global:userToken"} -Expected 403
 }
 

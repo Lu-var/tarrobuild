@@ -13,9 +13,9 @@ public record ProductRequest(
         @Size(max = 500, message = "Description cannot exceed 500 characters")
         String description,
 
-        @NotNull(message = "Price cannot be null")
-        @Min(value = 0, message = "Price must be equal or greater than 0")
-        Integer price,
+        @NotNull(message = "MSRP cannot be null")
+        @Min(value = 0, message = "MSRP must be equal or greater than 0")
+        Integer msrp,
 
         @NotNull(message = "Category ID cannot be null")
         Long categoryId,
