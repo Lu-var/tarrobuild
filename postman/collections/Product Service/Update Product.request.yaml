@@ -12,7 +12,7 @@ body:
     {
       "name": "Intel Core i9-14900K Updated",
       "description": "Updated description",
-      "price": 700000,
+      "msrp": 700000,
       "categoryId": 1,
       "brand": "Intel",
       "model": "Core i9-14900K"

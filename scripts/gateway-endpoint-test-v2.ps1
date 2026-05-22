@@ -106,7 +106,7 @@ Test -Name "POST /api/auth/login - blank password" -Method POST -Url "$BaseUrl/a
 Test -Name "POST /api/auth/login - empty body" -Method POST -Url "$BaseUrl/api/auth/login" -Body '{}' -Expected 400
 
 # Validate endpoint edge cases
-Test -Name "GET /api/auth/validate - wrong bearer prefix" -Url "$BaseUrl/api/auth/validate" -Headers @{Authorization = "bearer $global:userToken"} -Expected 500
+Test -Name "GET /api/auth/validate - wrong bearer prefix" -Url "$BaseUrl/api/auth/validate" -Headers @{Authorization = "bearer $global:userToken"} -Expected 401
 
 Test -Name "GET /api/auth/validate - expired format token" -Url "$BaseUrl/api/auth/validate" -Headers @{Authorization = "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0QHRlc3QuY29tIiwiZXhwIjoxNTAwMDAwMDAwfQ.test"} -Expected 401
 

@@ -8,7 +8,7 @@
 - [x] **RF-02** — Authenticate user (JWT)
 - [x] **RF-03** — List catalog components
 - [x] **RF-04** — Component detail
-- [ ] **RF-05** — Filter by category/brand/price
+- [x] **RF-05** — Filter by category/brand/price
 - [x] **RF-06** — Create build
 - [x] **RF-07** — Manage build items
 - [ ] **RF-08** — Compatibility check
@@ -56,12 +56,8 @@
 ### Cross-cutting
 
 **Pending**
-- [ ] Add MissingRequestHeaderException → 401 handler to every GlobalExceptionHandler
-- [ ] Add MethodArgumentTypeMismatchException → 400 handler to every GlobalExceptionHandler (Bugs #2–8)
-- [ ] Add HttpRequestMethodNotSupportedException → 405 handler to every GlobalExceptionHandler
 - [ ] Ensure correlation ID propagation is consistently planned across all services (RNF-03)
 - [ ] Add user identity propagation — gateway forwards userId/email/role as headers, downstream services consume them (Gap #17)
-- [ ] Add ResourceAccessException → 503 handler to every GlobalExceptionHandler (Gap #18)
 - [ ] (optional) Split profiles into `dev`/`prod` (environment) + `h2`/`mysql` (database)
 - [ ] Fix dependency chain in `.opencode/agents/shared-context.md` — add `user-service` before `category-service` (currently omitted, but `auth-service` depends on it)
 - [ ] Fix dependency chain in `.opencode/agents/planner.md` — same missing `user-service` fix
@@ -71,7 +67,6 @@
 ### api-gateway :8080
 
 **Pending**
-- [ ] Add `RestClientConfig` (missing explicit bean, currently using Spring auto-config)
 - [ ] Propagate user identity (userId/email/role) as headers to downstream services
 - [ ] Tests
 
@@ -80,11 +75,7 @@
 ### auth-service :8081
 
 **Pending**
-- [ ] Align application-h2.yaml to use `data.sql` + `ddl-auto: create-drop` (like other services)
 - [ ] Correlation ID propagation to downstream services
-- [ ] Add MissingRequestHeaderException → 401 handler
-- [ ] Generate correct BCrypt hash for 'admin123' and replace placeholder in V2__seed_data.sql
-- [ ] Add ResourceAccessException → 503 to GlobalExceptionHandler (downstream service unavailable)
 - [ ] Endpoint tests script
 - [ ] Tests
 
@@ -124,9 +115,7 @@
 ### compatibility-service :8085
 
 **Pending**
-- [ ] `evaluateRule()` business logic
 - [ ] Correlation ID propagation to downstream services
-- [ ] Align CompatibilityCheck entity in README.md: add `buildId` and `createdAt`
 - [ ] Endpoint tests script
 - [ ] Tests
 
@@ -143,6 +132,9 @@
 ---
 
 ### build-service :8087
+
+**In Progress**
+- [🔥] Fix `GET /api/builds` — filter by authenticated user instead of returning all builds (no ownership check, leaks all users' builds)
 
 **Pending**
 - [ ] (optional) Log who performed each action (Module 8 — extra challenge)
@@ -189,11 +181,6 @@
 - [ ] Tests
 
 ---
-
-### OpenCode context
-
-**Pending**
-- [ ] Align `.opencode/agents/shared-context.md` admin role description to use `msrp` instead of `prices`
 
 ---
 
@@ -281,13 +268,7 @@
 
 | # | Service | Endpoint | Got | Expected | Root Cause |
 |---|---------|----------|-----|----------|------------|
-| 1 | auth-service | `GET /api/auth/validate` (no header) | 500 | 401 | `MissingRequestHeaderException` unhandled → generic handler |
-| 2 | user-service | `GET /api/users/{nonNumeric}` | 500 | 400 | `MethodArgumentTypeMismatchException` (wraps `NumberFormatException`) unhandled |
-| 3 | category-service | `GET /api/categories/{nonNumeric}` | 500 | 400 | Same `MethodArgumentTypeMismatchException` as #2 |
 | 4 | category-service | `PUT /api/categories/{id}` | 405 | 200 | PUT endpoint removed entirely — feature missing, not a 500 bug |
-| 5 | product-service | `GET /api/products/{nonNumeric}` | 500 | 400 | Same `MethodArgumentTypeMismatchException` as #2 |
-| 6 | product-service | `GET /api/products/category/{nonNumeric}` | 500 | 400 | Same `MethodArgumentTypeMismatchException` as #2 |
-| 7 | product-service | `GET /api/products/price?minPrice=abc` | 500 | 400 | Same `MethodArgumentTypeMismatchException` on `@RequestParam` |
 | 8 | product-service | `GET /api/products/{id}/attributes/{badId}` | 404 | 404 | Endpoint removed entirely — GET single attribute feature missing |
 
 ### Medium: Missing/incorrect validation
@@ -301,12 +282,6 @@
 
 | # | Service | Endpoint | Got | Expected | Root Cause |
 |---|---------|----------|-----|----------|------------| -->
-
-### Seed data issues
-
-| # | Service | Details |
-|---|---------|---------|
-| 15 | auth-service | Admin BCrypt hash in `V2__seed_data.sql` doesn't match password "admin123" — placeholder hash used |
 
 ---
 
