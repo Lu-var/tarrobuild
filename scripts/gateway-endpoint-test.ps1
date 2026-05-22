@@ -122,10 +122,10 @@ if ($userRegResult.Code -eq 201) {
 
 # Seed admin credentials have incorrect BCrypt hash — login will fail
 $script:adminToken = ""
-$adminLogin = Invoke-AndGetStatusCode -Method POST -Url "$BaseUrl/api/auth/login" -Body '{"email":"admin@tarrobuild.com","password":"admin123"}'
+$adminLogin = Invoke-AndGetStatusCode -Method POST -Url "$BaseUrl/api/auth/login" -Body '{"email":"admin@tarrobuild.cl","password":"admin123"}'
 if ($adminLogin.Code -ne 200) {
-    Write-Host "  [!] Admin seed credentials have mismatched BCrypt hash (skip admin-only tests)" -ForegroundColor Yellow
-    $global:failureNotes += "Admin seed credentials (admin@tarrobuild.com) BCrypt hash doesn't match 'admin123'. Register endpoint sets USER role only."
+    Write-Host "  [!] Admin login failed (skip admin-only tests)" -ForegroundColor Yellow
+    $global:failureNotes += "Admin login failed."
 }
 
 # ============================================================
@@ -136,7 +136,7 @@ Test-Group "Phase 1: Token Validation"
 if ($script:userToken) {
     Test-Endpoint -Name "GET /api/auth/validate (valid token)" -Url "$BaseUrl/api/auth/validate" -Headers @{Authorization = "Bearer $script:userToken"} -Expected 200 -ShowBody $true
 }
-Test-Endpoint -Name "GET /api/auth/validate (no token)" -Url "$BaseUrl/api/auth/validate" -Expected 500
+Test-Endpoint -Name "GET /api/auth/validate (no token)" -Url "$BaseUrl/api/auth/validate" -Expected 401
 Test-Endpoint -Name "GET /api/auth/validate (invalid token)" -Url "$BaseUrl/api/auth/validate" -Headers @{Authorization = "Bearer invalidtoken123"} -Expected 401
 
 # ============================================================

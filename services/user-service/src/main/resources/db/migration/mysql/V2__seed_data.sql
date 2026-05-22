@@ -1,6 +1,6 @@
 INSERT INTO users (name, last_name, email, phone, created_at) VALUES
-('Lucas', 'Vargas', 'lucas@test.com', '912345678', NOW()),
-('Admin', 'System', 'admin@test.com', '987654321', NOW()),
+('Admin', 'System', 'admin@tarrobuild.cl', '987654321', NOW()),
+('User', 'Test', 'user@tarrobuild.cl', '912345678', NOW()),
 ('Juan', 'Pérez', 'juan@test.com', '923456789', NOW()),
 ('María', 'Rojas', 'maria.rojas@test.com', '934567801', NOW()),
 ('Pedro', 'Soto', 'pedro.soto@test.com', '945678012', NOW()),

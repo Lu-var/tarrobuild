@@ -1,8 +1,0 @@
-{
-  "info": {
-    "name": "API Gateway",
-    "description": "# API Gateway\n\nBase URL: `http://localhost:8080`\n\nEntry point for all client requests. Routes to the appropriate microservice.",
-    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
-  },
-  "item": []
-}

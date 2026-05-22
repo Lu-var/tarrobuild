@@ -1,6 +1,21 @@
 spring:
   application:
     name: api-gateway
+  profiles:
+    active: ${SPRING_PROFILES_ACTIVE:h2}
 
 server:
   port: ${SERVER_PORT:8080}
+
+app:
+  environment: production
+
+logging:
+  level:
+    cl.tarrobuild: INFO
+  file:
+    name: logs/api-gateway.log
+  logback:
+    rollingpolicy:
+      max-file-size: 10MB
+      max-history: 10

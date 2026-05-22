@@ -12,7 +12,7 @@ body:
     {
       "name": "Test",
       "description": "Test",
-      "price": 100,
+      "msrp": 100,
       "categoryId": 1,
       "brand": "Test",
       "model": "Test"

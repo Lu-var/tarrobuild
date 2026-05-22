@@ -173,7 +173,7 @@ Test -Name "POST user empty body" -Method POST -Url "$($G.User)/api/users" -Body
 
 Test -Name "POST user blank name" -Method POST -Url "$($G.User)/api/users" -Body "{`"name`":`"`",`"lastName`":`"Test`",`"email`":`"blankname$uniqueId@test.com`",`"phone`":`"123456789`"}" -Expected 400
 
-Test -Name "PUT update user" -Method PUT -Url "$($G.User)/api/users/1" -Body "{`"name`":`"Updated`",`"lastName`":`"Admin`",`"email`":`"admin@tarrobuild.com`",`"phone`":`"111111111`"}" -Expected 200
+Test -Name "PUT update user" -Method PUT -Url "$($G.User)/api/users/1" -Body "{`"name`":`"Updated`",`"lastName`":`"Admin`",`"email`":`"admin@tarrobuild.cl`",`"phone`":`"111111111`"}" -Expected 200
 
 # Try numeric path params with non-numeric values
 $getUserAbc = Invoke-Request -Method GET -Url "$($G.User)/api/users/abc"

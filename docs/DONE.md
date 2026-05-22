@@ -33,23 +33,11 @@
 - [x] GlobalExceptionHandler (Module 9)
 - [x] Per-profile log levels (Module 8)
 - [x] NumberFormatException → 400 + AccessDeniedException → 403
-
-### user-service :8082
-
-- [x] Model / Entity (User) (Module 2)
-- [x] Repository (Module 2)
-- [x] DTOs, Service, Controller, Exception handling (Module 1)
-- [x] Seed data (20 users) (Module 2)
-- [x] `@Slf4j` + `log.info()` in CRUD
-- [x] GlobalExceptionHandler (Module 9)
-- [x] HttpMessageNotReadableException → 400
-- [x] Per-profile log levels (Module 8)
-- [x] NumberFormatException → 400 + AccessDeniedException → 403
-- [x] Flyway migrations (Module 6)
+- [x] Align application-h2.yaml to use `data.sql` + `ddl-auto: create-drop` (Flyway H2 removed)
+- [x] Generate correct BCrypt hash for admin123 / test123 in seed data (Bug #15)
+- [x] H2 console secured behind admin role
 
 ### category-service :8084
-
-- [x] Model / Entity (Category, AttributeDefinition) (Module 2)
 - [x] Repository (Module 2)
 - [x] DTOs, Service, Controller, Exception handling (Module 1)
 - [x] Seed data (8 categories, ~30 attributes) (Module 2)
@@ -90,6 +78,8 @@
 - [x] Flyway migrations (Module 6)
 - [x] RestClient → product-service (Module 5)
 - [x] RestClientConfig, ProductRestClient, DTOs
+- [x] `evaluateRule()` business logic (stub — always passes, pending attribute comparison logic)
+- [x] Align CompatibilityCheck entity in README.md: added `buildId` and `createdAt`
 
 ### provider-service :8086
 
@@ -165,3 +155,25 @@
 - [x] Per-profile log levels (Module 8)
 - [x] NumberFormatException → 400 + AccessDeniedException → 403
 - [x] Flyway migrations (Module 6)
+
+---
+
+### Cross-cutting (GlobalExceptionHandler additions)
+
+- [x] MissingRequestHeaderException → 401 handler in all services (Bug #1)
+- [x] MethodArgumentTypeMismatchException → 400 handler in all services (Bugs #2–8)
+- [x] HttpRequestMethodNotSupportedException → 405 handler in all services
+- [x] ResourceAccessException → 503 handler in all services (Gap #18)
+
+### Product renaming
+
+- [x] Product entity `price` → `msrp` (entity, DTOs, repository, client DTOs, SQL)
+- [x] Estimate entity `totalPrice` → `totalCost` (model, DTO, SQL)
+- [x] Test scripts + Postman request bodies updated to `msrp`
+- [x] Docs: ARCHITECTURE.md, PROGRESS.md, shared-context.md, INTER-SERVICE-WIRING.md updated
+
+### Bugs fixed
+
+- [x] Bug #1: `MissingRequestHeaderException` → 401 in auth-service
+- [x] Bugs #2–8: `MethodArgumentTypeMismatchException` → 400 in all services
+- [x] Bug #15: Admin BCrypt hash corrected in auth-service seed data

@@ -29,12 +29,3 @@ logging:
 
 server:
   port: ${SERVER_PORT:8088}
-
-product-service:
-  url: ${PRODUCT_SERVICE_URL:http://localhost:8083}
-
-build-service:
-  url: ${BUILD_SERVICE_URL:http://localhost:8087}
-
-notification-service:
-  url: ${NOTIFICATION_SERVICE_URL:http://localhost:8090}
