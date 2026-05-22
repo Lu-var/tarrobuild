@@ -76,7 +76,7 @@
         "description": "Creates a new product. Required fields: `name`, `price`, `categoryId`, `brand`, `model`.\n\n**Expected:** 201 Created",
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"name\": \"Intel Core i9-14900K\",\n  \"description\": \"High-performance processor\",\n  \"price\": 650000,\n  \"categoryId\": 1,\n  \"brand\": \"Intel\",\n  \"model\": \"Core i9-14900K\",\n  \"isActive\": true\n}",
+          "raw": "{\n  \"name\": \"Intel Core i9-14900K\",\n  \"description\": \"High-performance processor\",\n  \"msrp\": 650000,\n  \"categoryId\": 1,\n  \"brand\": \"Intel\",\n  \"model\": \"Core i9-14900K\",\n  \"isActive\": true\n}",
           "options": {
             "raw": {
               "language": "json"
@@ -94,7 +94,7 @@
         "description": "Negative test -- sends null/empty required fields and invalid price.\n\n**Expected:** 400 Bad Request (validation error)",
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"name\": \"\",\n  \"description\": \"Test\",\n  \"price\": -100,\n  \"categoryId\": null,\n  \"brand\": \"\",\n  \"model\": \"\"\n}",
+          "raw": "{\n  \"name\": \"\",\n  \"description\": \"Test\",\n  \"msrp\": -100,\n  \"categoryId\": null,\n  \"brand\": \"\",\n  \"model\": \"\"\n}",
           "options": {
             "raw": {
               "language": "json"
@@ -112,7 +112,7 @@
         "description": "Updates an existing product's details.\n\n**Expected:** 200 OK",
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"name\": \"Intel Core i9-14900K Updated\",\n  \"description\": \"Updated description\",\n  \"price\": 700000,\n  \"categoryId\": 1,\n  \"brand\": \"Intel\",\n  \"model\": \"Core i9-14900K\"\n}",
+          "raw": "{\n  \"name\": \"Intel Core i9-14900K Updated\",\n  \"description\": \"Updated description\",\n  \"msrp\": 700000,\n  \"categoryId\": 1,\n  \"brand\": \"Intel\",\n  \"model\": \"Core i9-14900K\"\n}",
           "options": {
             "raw": {
               "language": "json"
@@ -130,7 +130,7 @@
         "description": "Negative test -- tries to update a non-existent product.\n\n**Expected:** 404 Not Found",
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"name\": \"Test\",\n  \"description\": \"Test\",\n  \"price\": 100,\n  \"categoryId\": 1,\n  \"brand\": \"Test\",\n  \"model\": \"Test\"\n}",
+          "raw": "{\n  \"name\": \"Test\",\n  \"description\": \"Test\",\n  \"msrp\": 100,\n  \"categoryId\": 1,\n  \"brand\": \"Test\",\n  \"model\": \"Test\"\n}",
           "options": {
             "raw": {
               "language": "json"

@@ -175,7 +175,7 @@ public class SomeService {
 
         for (BuildItemClientResponse item : build.items()) {
             ProductClientResponse product = productClient.getProductById(item.productId());
-            log.info("Product: {} - ${}", product.name(), product.price());
+            log.info("Product: {} - ${}", product.name(), product.msrp());
         }
     }
 }

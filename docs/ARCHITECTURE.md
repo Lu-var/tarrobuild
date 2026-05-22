@@ -155,9 +155,9 @@ NotificationLog { Long id, Long userId, String type, String content, Notificatio
 | compatibility-service | → | product-service | Get product specs | RestClient |
 | build-service | → | product-service | Get product info | Feign |
 | build-service | → | compatibility-service | Check compatibility | Feign |
-| build-service | → | provider-service | Get provider prices | Feign |
+| build-service | → | provider-service | Get provider references | Feign |
 | estimate-service | → | build-service | Get build | RestClient |
-| estimate-service | → | product-service | Get prices | RestClient |
+| estimate-service | → | product-service | Get msrp | RestClient |
 | estimate-service | → | notification-service | Send notification | RestClient |
 | product-service | → | category-service | Validate category | RestClient |
 | hardware-advisor-service | → | build-service | Get build | Feign |
@@ -171,7 +171,7 @@ NotificationLog { Long id, Long userId, String type, String content, Notificatio
 |-------|------|--------|
 | Usuario no registrado | — (public) | Catalog exploration, product detail, filtering, compatibility checks |
 | Usuario registrado | USER | Own builds, estimates, recommendations, notifications, alerts |
-| Administrador | ADMIN | CRUD products, categories, attributes, compatibility rules, providers, prices |
+| Administrador | ADMIN | CRUD products, categories, attributes, compatibility rules, provider references |
 | Sistema | — | Internal automated operations (validations, calculations, notifications) |
 
 ## Security
@@ -193,7 +193,7 @@ GET  /api/auth/validate  → JWT validated → user info returned → 200
 | Role | Description |
 |------|-------------|
 | `USER` | Registered user. Manages own builds, items, estimates, recommendations, notifications. |
-| `ADMIN` | Full system management. CRUD products, categories, attributes, compatibility rules, providers, prices. |
+| `ADMIN` | Full system management. CRUD products, categories, attributes, compatibility rules, provider references. |
 
 ### Access control
 

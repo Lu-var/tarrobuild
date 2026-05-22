@@ -22,7 +22,7 @@ public class Estimate {
     private Long buildId;
 
     @Column(nullable = false)
-    private Integer totalPrice;
+    private Integer totalCost;
 
     @Column(nullable = false)
     private String currency = "CLP";

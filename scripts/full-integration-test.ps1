@@ -271,7 +271,7 @@ if ($getProdPrice.Code -ne 400) {
 }
 
 # Product CRUD
-$prodBody = "{`"name`":`"IntTestProd$uniqueId`",`"description`":`"Integration test`",`"price`":50000,`"categoryId`":1,`"brand`":`"TestBrand`",`"model`":`"TM-$uniqueId`"}"
+$prodBody = "{`"name`":`"IntTestProd$uniqueId`",`"description`":`"Integration test`",`"msrp`":50000,`"categoryId`":1,`"brand`":`"TestBrand`",`"model`":`"TM-$uniqueId`"}"
 $createProd = Test -Name "POST create product" -Method POST -Url "$($G.Product)/api/products" -Body $prodBody -Expected 201
 
 $prodId = 0
@@ -279,7 +279,7 @@ if ($createProd.Code -eq 201) { try { $prodId = ($createProd.Body | ConvertFrom-
 
 if ($prodId -gt 0) {
     Test -Name "GET created product" -Url "$($G.Product)/api/products/$prodId" -Expected 200
-    Test -Name "PUT update product" -Method PUT -Url "$($G.Product)/api/products/$prodId" -Body "{`"name`":`"UpdatedProd`",`"price`":75000,`"categoryId`":1,`"brand`":`"TestBrand`",`"model`":`"TM-$uniqueId`"}" -Expected 200
+    Test -Name "PUT update product" -Method PUT -Url "$($G.Product)/api/products/$prodId" -Body "{`"name`":`"UpdatedProd`",`"msrp`":75000,`"categoryId`":1,`"brand`":`"TestBrand`",`"model`":`"TM-$uniqueId`"}" -Expected 200
     
     # Attribute CRUD
     $attr1 = Test -Name "POST add attribute" -Method POST -Url "$($G.Product)/api/products/$prodId/attributes" -Body "{`"attributeName`":`"Color`",`"attributeValue`":`"Red`"}" -Expected 201
@@ -307,13 +307,13 @@ if ($prodId -gt 0) {
 }
 
 # Product validation
-Test -Name "POST product null name" -Method POST -Url "$($G.Product)/api/products" -Body "{`"price`":100000,`"categoryId`":1,`"brand`":`"T`",`"model`":`"T`"}" -Expected 400
+Test -Name "POST product null name" -Method POST -Url "$($G.Product)/api/products" -Body "{`"msrp`":100000,`"categoryId`":1,`"brand`":`"T`",`"model`":`"T`"}" -Expected 400
 
 Test -Name "POST product null price" -Method POST -Url "$($G.Product)/api/products" -Body "{`"name`":`"Test`",`"categoryId`":1,`"brand`":`"T`",`"model`":`"T`"}" -Expected 400
 
-Test -Name "POST product negative price" -Method POST -Url "$($G.Product)/api/products" -Body "{`"name`":`"Test`",`"price`":-100,`"categoryId`":1,`"brand`":`"T`",`"model`":`"T`"}" -Expected 400
+Test -Name "POST product negative price" -Method POST -Url "$($G.Product)/api/products" -Body "{`"name`":`"Test`",`"msrp`":-100,`"categoryId`":1,`"brand`":`"T`",`"model`":`"T`"}" -Expected 400
 
-Test -Name "POST product invalid category → 404" -Method POST -Url "$($G.Product)/api/products" -Body "{`"name`":`"Test`",`"price`":100000,`"categoryId`":999,`"brand`":`"T`",`"model`":`"T`"}" -Expected 404
+Test -Name "POST product invalid category → 404" -Method POST -Url "$($G.Product)/api/products" -Body "{`"name`":`"Test`",`"msrp`":100000,`"categoryId`":999,`"brand`":`"T`",`"model`":`"T`"}" -Expected 404
 
 Test -Name "POST product empty body" -Method POST -Url "$($G.Product)/api/products" -Body '{}' -Expected 400
 

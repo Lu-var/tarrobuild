@@ -24,7 +24,7 @@ public class Product {
     private String description;
 
     @Column(nullable = false)
-    private Integer price;
+    private Integer msrp;
 
     @Column(name = "category_id", nullable = false)
     private Long categoryId;

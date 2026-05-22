@@ -16,6 +16,8 @@ jwt:
 
 app:
   environment: production
+  security:
+    frame-options: sameorigin
 
 logging:
   level:

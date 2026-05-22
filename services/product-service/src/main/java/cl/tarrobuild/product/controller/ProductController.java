@@ -46,7 +46,7 @@ public class ProductController {
     public ResponseEntity<List<ProductResponse>> getProductsByPriceRange(
             @RequestParam Integer minPrice,
             @RequestParam Integer maxPrice) {
-        return ResponseEntity.ok(productService.getProductsByPriceRange(minPrice, maxPrice));
+        return ResponseEntity.ok(productService.getProductsByMsrpRange(minPrice, maxPrice));
     }
 
     @PostMapping
