@@ -49,8 +49,8 @@ La ausencia de una plataforma inteligente y centralizada obliga a los usuarios a
 | **RF-06** | Crear una nueva build personalizada asociada a un usuario autenticado. | Usuario registrado |
 | **RF-07** | Agregar, actualizar o eliminar componentes dentro de una build activa. | Usuario registrado |
 | **RF-08** | Verificar automáticamente la compatibilidad entre todos los componentes de una build. | Usuario (registrado o no registrado) |
-| **RF-09** | Calcular consumo energético estimado y potencia recomendada de fuente de poder para una build. | Usuario (registrado o no registrado) |
-| **RF-10** | Obtener precios referenciales y disponibilidad aproximada desde vendedores registrados. | Usuario (registrado o no registrado) |
+| **RF-09** | Calcular costo total de una build (estimate-service) y validar consumo energético / potencia de fuente de poder (compatibility-service). | Usuario (registrado o no registrado) |
+| **RF-10** | Obtener referencias de vendedores registrados para componentes del catálogo. | Usuario (registrado o no registrado) |
 | **RF-11** | Generar análisis consolidado de build incluyendo compatibilidad, costo estimado y advertencias. | Usuario registrado |
 | **RF-12** | Guardar builds favoritas e historial de configuraciones. | Usuario registrado |
 | **RF-13** | Generar recomendaciones de mejora o upgrade según presupuesto o uso objetivo. | Usuario registrado |
@@ -68,7 +68,7 @@ La ausencia de una plataforma inteligente y centralizada obliga a los usuarios a
 | **RNF-02** | Todos los endpoints deben validar los datos de entrada y retornar códigos HTTP semánticos (200, 201, 400, 401, 403, 404, 409, 500) con cuerpo de error estructurado en JSON. |
 | **RNF-03** | Cada microservicio debe mantener logs estructurados (nivel INFO/ERROR) con identificador de correlación para trazabilidad entre servicios. |
 | **RNF-04** | Cada microservicio debe tener su propia base de datos independiente. Está estrictamente prohibido que dos servicios compartan tablas o esquemas directamente. |
-| **RNF-05** | La comunicación entre microservicios debe realizarse exclusivamente vía API REST usando WebClient o Feign Client. No se permite acceso directo a bases de datos ajenas. |
+| **RNF-05** | La comunicación entre microservicios debe realizarse exclusivamente vía API REST usando RestClient o Feign Client. No se permite acceso directo a bases de datos ajenas. |
 | **RNF-06** | Las contraseñas de usuarios deben almacenarse encriptadas con BCrypt. Ningún endpoint debe retornar contraseñas en texto plano bajo ninguna circunstancia. |
 
 # **3\. Solución Propuesta**
@@ -83,7 +83,7 @@ El sistema no gestiona directamente procesos de venta física ni despacho de pro
 
 La principal característica diferenciadora es que la plataforma no se limita a mostrar componentes, sino que interpreta técnicamente la combinación seleccionada por el usuario y genera un informe consolidado que reduce errores de compatibilidad y mejora la toma de decisiones antes de una compra real en el mercado.
 
-Cada microservicio opera con su propia base de datos independiente y se comunica mediante WebClient o Feign Client bajo un modelo REST desacoplado.
+Cada microservicio opera con su propia base de datos independiente y se comunica mediante RestClient o Feign Client bajo un modelo REST desacoplado.
 
 ## **3.2 Justificación del uso de microservicios**
 
@@ -124,7 +124,7 @@ AUTH   USER   PRODUCT  CATEGORY  COMPAT.  PROVIDER  BUILD
 ### Características de la arquitectura
 
 1. Cada microservicio cuenta con base de datos independiente (H2 / MySQL).
-2. La comunicación entre servicios se realiza mediante WebClient o Feign Client.
+2. La comunicación entre servicios se realiza mediante RestClient o Feign Client.
 3. El API Gateway actúa como único punto de entrada del sistema.
 4. La arquitectura prioriza la separación de responsabilidades y la escalabilidad.
 
@@ -142,13 +142,13 @@ Estas relaciones muestran qué servicio consulta a cuál para resolver cada caso
 
 - estimate-service → product-service: obtiene precios y atributos técnicos actualizados
 
-- hardware-advisor → build-service: analiza la configuración actual del usuario
+- hardware-advisor-service → build-service: analiza la configuración actual del usuario
 
-- hardware-advisor → product-service: obtiene catálogo para generar sugerencias
+- hardware-advisor-service → product-service: obtiene catálogo para generar sugerencias
 
 - estimate-service → notification-service: envía notificación al usuario al generar una cotización
 
-- hardware-advisor → notification-service: notifica recomendaciones relevantes generadas al usuario
+- hardware-advisor-service → notification-service: notifica recomendaciones relevantes generadas al usuario
 
 
 ## 4. Historias de Usuario
@@ -321,7 +321,7 @@ A continuacion se define cada uno de los 11 microservicios del sistema TarroBuil
 | MS-06 · compatibility-service (puerto :8085) | |
 | :---- | :---- |
 | **Responsabilidad** | Valida compatibilidad técnica entre componentes de hardware basándose en reglas definidas. |
-| **Entidades JPA** | CompatibilityRule { id, sourceCategory, sourceAttributeName, operator, targetCategory, targetAttributeName, incompatibilityReason } / CompatibilityCheck { id, productIds, result, details } |
+| **Entidades JPA** | CompatibilityRule { id, sourceCategory, sourceAttributeName, operator, targetCategory, targetAttributeName, incompatibilityReason } / CompatibilityCheck { id, buildId, productIds, result, details, createdAt } |
 | **Endpoints REST** | POST /api/compatibility/check, CRUD de reglas de compatibilidad. |
 | **Comunica con** | Consulta product-service para obtener atributos técnicos. |
 | **Base de datos** | db_compatibility |
@@ -358,7 +358,7 @@ A continuacion se define cada uno de los 11 microservicios del sistema TarroBuil
 
 ---
 
-| MS-10 · hardware-advisor (puerto :8089) | |
+| MS-10 · hardware-advisor-service (puerto :8089) | |
 | :---- | :---- |
 | **Responsabilidad** | Genera recomendaciones de componentes compatibles o mejoras para una configuración existente. |
 | **Entidades JPA** | Recommendation { id, buildId, ruleApplied, suggestedProductId, reason, createdAt } |
@@ -373,7 +373,7 @@ A continuacion se define cada uno de los 11 microservicios del sistema TarroBuil
 | **Responsabilidad** | Envía notificaciones al usuario sobre eventos del sistema (estimaciones, recomendaciones, cambios en builds). |
 | **Entidades JPA** | NotificationLog { id, userId, type, content, status, timestamp } |
 | **Endpoints REST** | POST /api/notifications/send, GET /api/notifications/logs |
-| **Comunica con** | Es consultado por estimate-service y hardware-advisor. Consulta user-service para obtener el email del destinatario. |
+| **Comunica con** | Es consultado por estimate-service y hardware-advisor-service. |
 | **Base de datos** | db_notifications |
 
 ## 5.1 Resumen de comunicación inter-servicio
@@ -386,10 +386,10 @@ A continuacion se define cada uno de los 11 microservicios del sistema TarroBuil
 | **estimate-service** | **build-service** | Obtener configuración completa para calcular el costo total |
 | **estimate-service** | **product-service** | Obtener precios actualizados de los componentes |
 | **estimate-service** | **notification-service** | Solicitar notificación al usuario cuando se genera una estimación de build |
-| **hardware-advisor** | **build-service** | Analizar la configuración actual del usuario para generar sugerencias |
-| **hardware-advisor** | **product-service** | Obtener catálogo de componentes para generar recomendaciones |
-| **hardware-advisor** | **compatibility-service** | Validar compatibilidad de recomendaciones generadas |
-| **hardware-advisor** | **notification-service** | Solicitar notificación de recomendaciones de mejora o compatibilidad al usuario |
+| **hardware-advisor-service** | **build-service** | Analizar la configuración actual del usuario para generar sugerencias |
+| **hardware-advisor-service** | **product-service** | Obtener catálogo de componentes para generar recomendaciones |
+| **hardware-advisor-service** | **compatibility-service** | Validar compatibilidad de recomendaciones generadas |
+| **hardware-advisor-service** | **notification-service** | Solicitar notificación de recomendaciones de mejora o compatibilidad al usuario |
 | **auth-service** | **user-service** | Asociar credenciales con perfil de usuario durante autenticación y registro |
 | **api-gateway** | **auth-service** | Validar tokens JWT en cada solicitud entrante |
 ```

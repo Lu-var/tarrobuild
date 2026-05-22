@@ -51,7 +51,7 @@ AUTH   USER   PRODUCT CATEGORY COMPAT PROVIDER  BUILD
 | MS-07 | provider-service | 8086 | External vendor references and pricing. | Provider, ProviderProduct | db_providers |
 | MS-08 | build-service | 8087 | User build configurations (core service). | Build, BuildItem | db_builds |
 | MS-09 | estimate-service | 8088 | Cost calculation for a build. | Estimate | db_estimates |
-| MS-10 | hardware-advisor | 8089 | Upgrade/suggestion recommendations. | Recommendation | db_advisor |
+| MS-10 | hardware-advisor-service | 8089 | Upgrade/suggestion recommendations. | Recommendation | db_advisor |
 | MS-11 | notification-service | 8090 | Send and log system notifications. | NotificationLog | db_notifications |
 
 ## Database
@@ -113,7 +113,7 @@ AttributeDefinition { Long id, String attributeName, AttributeValueType valueTyp
                       @ManyToOne Category category }
 
 // product-service
-Product { Long id, String name, String description, Integer price, Long categoryId,
+Product { Long id, String name, String description, Integer msrp, Long categoryId,
           String brand, String model, Boolean isActive,
           @OneToMany List<ProductAttribute> attributes }
 ProductAttribute { Long id, String attributeName, String attributeValue,
@@ -160,10 +160,10 @@ NotificationLog { Long id, Long userId, String type, String content, Notificatio
 | estimate-service | → | product-service | Get prices | RestClient |
 | estimate-service | → | notification-service | Send notification | RestClient |
 | product-service | → | category-service | Validate category | RestClient |
-| hardware-advisor | → | build-service | Get build | Feign |
-| hardware-advisor | → | product-service | Get products | Feign |
-| hardware-advisor | → | compatibility-service | Check compatibility | Feign |
-| hardware-advisor | → | notification-service | Send notification | Feign |
+| hardware-advisor-service | → | build-service | Get build | Feign |
+| hardware-advisor-service | → | product-service | Get products | Feign |
+| hardware-advisor-service | → | compatibility-service | Check compatibility | Feign |
+| hardware-advisor-service | → | notification-service | Send notification | Feign |
 
 ## Actors
 
@@ -282,7 +282,7 @@ public record ApiError(String message, String details, String timestamp) {}
 Each service has:
 
 - `application.yaml` — name, port, default profile (h2)
-- `application-h2.yaml` — H2 + Flyway (`db/migration/h2/`), `ddl-auto: validate`
+- `application-h2.yaml` — H2 (`ddl-auto: create-drop` + `data.sql`)
 - `application-mysql.yaml` — MySQL + Flyway (`db/migration/mysql/`), `ddl-auto: validate`
 - `V1__init.sql` — schema creation (in `db/migration/{profile}/`)
 - `V2__seed_data.sql` — reference data (in `db/migration/{profile}/`)
