@@ -1,0 +1,10 @@
+$kind: http-request
+description: Negative test -- tries to get a non-existent product.
+
+  **Expected:** 404 Not Found
+url: "{{product_service}}/api/products/9999"
+method: GET
+order: 3000
+tests:
+  - name: "Returns 404"
+    statusCode: 404

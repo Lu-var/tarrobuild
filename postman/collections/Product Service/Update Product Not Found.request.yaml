@@ -1,0 +1,22 @@
+$kind: http-request
+description: |-
+  Negative test -- tries to update a non-existent product.
+
+  **Expected:** 404 Not Found
+url: "{{product_service}}/api/products/9999"
+method: PUT
+order: 10000
+body:
+  type: json
+  content: |-
+    {
+      "name": "Test",
+      "description": "Test",
+      "msrp": 100,
+      "categoryId": 1,
+      "brand": "Test",
+      "model": "Test"
+    }
+tests:
+  - name: "Returns 404"
+    statusCode: 404

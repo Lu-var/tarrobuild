@@ -1,0 +1,8 @@
+$kind: http-request
+description: Retrieves all attributes for a specific product.
+url: "{{product_service}}/api/products/1/attributes"
+method: GET
+order: 14000
+tests:
+  - name: "Returns 200"
+    statusCode: 200

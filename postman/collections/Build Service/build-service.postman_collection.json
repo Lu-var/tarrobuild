@@ -1,207 +1,788 @@
 {
-  "info": {
-    "name": "Build Service",
-    "description": "# Build Service\n\nBase URL: `http://localhost:8087`\n\nManages PC builds and their items. Supports full CRUD for both builds and build items, including error/edge-case scenarios.",
-    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
-  },
-  "item": [
-    {
-      "name": "Get All Builds",
-      "request": {
-        "method": "GET",
-        "header": [],
-        "url": "{{build_service}}/api/builds",
-        "description": "Retrieves all builds in the system. No filters or pagination applied."
-      }
-    },
-    {
-      "name": "Get Build By Id",
-      "request": {
-        "method": "GET",
-        "header": [],
-        "url": "{{build_service}}/api/builds/1",
-        "description": "Retrieves a single build by its ID. Returns 404 if not found."
-      }
-    },
-    {
-      "name": "Get Builds By User Id",
-      "request": {
-        "method": "GET",
-        "header": [],
-        "url": "{{build_service}}/api/builds/user/1",
-        "description": "Retrieves all builds belonging to a specific user by user ID."
-      }
-    },
-    {
-      "name": "Get Build By Id And User Id",
-      "request": {
-        "method": "GET",
-        "header": [],
-        "url": "{{build_service}}/api/builds/user/1/1",
-        "description": "Retrieves a specific build by both build ID and user ID."
-      }
-    },
-    {
-      "name": "Create Build",
-      "request": {
-        "method": "POST",
-        "header": [],
-        "url": "{{build_service}}/api/builds",
-        "description": "Creates a new build for a user. Requires `userId` and `name`.\n\n**Expected:** 201 Created",
-        "body": {
-          "mode": "raw",
-          "raw": "{\n  \"userId\": 1,\n  \"name\": \"My New Build\"\n}",
-          "options": {
-            "raw": {
-              "language": "json"
-            }
-          }
-        }
-      }
-    },
-    {
-      "name": "Create Build Invalid",
-      "request": {
-        "method": "POST",
-        "header": [],
-        "url": "{{build_service}}/api/builds",
-        "description": "Negative test -- sends null `userId` and empty `name`.\n\n**Expected:** 400 Bad Request (validation error)",
-        "body": {
-          "mode": "raw",
-          "raw": "{\n  \"userId\": null,\n  \"name\": \"\"\n}",
-          "options": {
-            "raw": {
-              "language": "json"
-            }
-          }
-        }
-      }
-    },
-    {
-      "name": "Update Build",
-      "request": {
-        "method": "PUT",
-        "header": [],
-        "url": "{{build_service}}/api/builds/1",
-        "description": "Updates an existing build's name. Requires `userId` and `name`.\n\n**Expected:** 200 OK",
-        "body": {
-          "mode": "raw",
-          "raw": "{\n  \"userId\": 1,\n  \"name\": \"Updated Build Name\"\n}",
-          "options": {
-            "raw": {
-              "language": "json"
-            }
-          }
-        }
-      }
-    },
-    {
-      "name": "Delete Build",
-      "request": {
-        "method": "DELETE",
-        "header": [],
-        "url": "{{build_service}}/api/builds/1",
-        "description": "Deletes a build by ID.\n\n**Expected:** 204 No Content"
-      }
-    },
-    {
-      "name": "Delete Build Not Found",
-      "request": {
-        "method": "DELETE",
-        "header": [],
-        "url": "{{build_service}}/api/builds/9999",
-        "description": "Negative test -- tries to delete a non-existent build.\n\n**Expected:** 404 Not Found"
-      }
-    },
-    {
-      "name": "Get Items By Build Id",
-      "request": {
-        "method": "GET",
-        "header": [],
-        "url": "{{build_service}}/api/builds/1/items",
-        "description": "Retrieves all items associated with a specific build."
-      }
-    },
-    {
-      "name": "Get Item By Id",
-      "request": {
-        "method": "GET",
-        "header": [],
-        "url": "{{build_service}}/api/builds/1/items/1",
-        "description": "Retrieves a single item from a build by item ID. Returns 404 if not found."
-      }
-    },
-    {
-      "name": "Create Build Item",
-      "request": {
-        "method": "POST",
-        "header": [],
-        "url": "{{build_service}}/api/builds/1/items",
-        "description": "Adds a product item to a build. Requires `productId` and `quantity` (> 0).\n\n**Expected:** 201 Created",
-        "body": {
-          "mode": "raw",
-          "raw": "{\n  \"productId\": 101,\n  \"quantity\": 1\n}",
-          "options": {
-            "raw": {
-              "language": "json"
-            }
-          }
-        }
-      }
-    },
-    {
-      "name": "Create Build Item Invalid Quantity",
-      "request": {
-        "method": "POST",
-        "header": [],
-        "url": "{{build_service}}/api/builds/1/items",
-        "description": "Negative test -- sends quantity = 0 (must be > 0).\n\n**Expected:** 400 Bad Request (validation error)",
-        "body": {
-          "mode": "raw",
-          "raw": "{\n  \"productId\": 101,\n  \"quantity\": 0\n}",
-          "options": {
-            "raw": {
-              "language": "json"
-            }
-          }
-        }
-      }
-    },
-    {
-      "name": "Create Build Item Build Not Found",
-      "request": {
-        "method": "POST",
-        "header": [],
-        "url": "{{build_service}}/api/builds/9999/items",
-        "description": "Negative test -- tries to add an item to a non-existent build.\n\n**Expected:** 404 Not Found",
-        "body": {
-          "mode": "raw",
-          "raw": "{\n  \"productId\": 101,\n  \"quantity\": 1\n}",
-          "options": {
-            "raw": {
-              "language": "json"
-            }
-          }
-        }
-      }
-    },
-    {
-      "name": "Delete Build Item",
-      "request": {
-        "method": "DELETE",
-        "header": [],
-        "url": "{{build_service}}/api/builds/1/items/1",
-        "description": "Deletes a specific item from a build.\n\n**Expected:** 204 No Content"
-      }
-    },
-    {
-      "name": "Delete Build Item Not Found",
-      "request": {
-        "method": "DELETE",
-        "header": [],
-        "url": "{{build_service}}/api/builds/1/items/9999",
-        "description": "Negative test -- tries to delete a non-existent item.\n\n**Expected:** 404 Not Found"
-      }
-    }
-  ]
+    "info":  {
+                 "name":  "Build Service",
+                 "description":  "# Build Service\n\nBase URL: `http://localhost:8087`\n\nManages PC builds and their items. Supports full CRUD for both builds and build items, including error/edge-case scenarios.",
+                 "schema":  "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+             },
+    "item":  [
+                 {
+                     "name":  "Direct Requests",
+                     "item":  [
+                                  {
+                                      "name":  "Get All Builds",
+                                      "request":  {
+                                                      "method":  "GET",
+                                                      "header":  [
+
+                                                                 ],
+                                                      "url":  {
+                                                                  "host":  [
+                                                                               "{{build_service}}{{api_prefix}}"
+                                                                           ],
+                                                                  "raw":  "{{build_service}}{{api_prefix}}/builds",
+                                                                  "path":  [
+                                                                               "builds"
+                                                                           ]
+                                                              },
+                                                      "description":  "Retrieves all builds in the system. No filters or pagination applied."
+                                                  }
+                                  },
+                                  {
+                                      "name":  "Get Build By Id",
+                                      "request":  {
+                                                      "method":  "GET",
+                                                      "header":  [
+
+                                                                 ],
+                                                      "url":  {
+                                                                  "host":  [
+                                                                               "{{build_service}}{{api_prefix}}"
+                                                                           ],
+                                                                  "raw":  "{{build_service}}{{api_prefix}}/builds/1",
+                                                                  "path":  [
+                                                                               "builds",
+                                                                               "1"
+                                                                           ]
+                                                              },
+                                                      "description":  "Retrieves a single build by its ID. Returns 404 if not found."
+                                                  }
+                                  },
+                                  {
+                                      "name":  "Get Builds By User Id",
+                                      "request":  {
+                                                      "method":  "GET",
+                                                      "header":  [
+
+                                                                 ],
+                                                      "url":  {
+                                                                  "host":  [
+                                                                               "{{build_service}}{{api_prefix}}"
+                                                                           ],
+                                                                  "raw":  "{{build_service}}{{api_prefix}}/builds/user/1",
+                                                                  "path":  [
+                                                                               "builds",
+                                                                               "user",
+                                                                               "1"
+                                                                           ]
+                                                              },
+                                                      "description":  "Retrieves all builds belonging to a specific user by user ID."
+                                                  }
+                                  },
+                                  {
+                                      "name":  "Get Build By Id And User Id",
+                                      "request":  {
+                                                      "method":  "GET",
+                                                      "header":  [
+
+                                                                 ],
+                                                      "url":  {
+                                                                  "host":  [
+                                                                               "{{build_service}}{{api_prefix}}"
+                                                                           ],
+                                                                  "raw":  "{{build_service}}{{api_prefix}}/builds/user/1/1",
+                                                                  "path":  [
+                                                                               "builds",
+                                                                               "user",
+                                                                               "1",
+                                                                               "1"
+                                                                           ]
+                                                              },
+                                                      "description":  "Retrieves a specific build by both build ID and user ID."
+                                                  }
+                                  },
+                                  {
+                                      "name":  "Create Build",
+                                      "request":  {
+                                                      "method":  "POST",
+                                                      "header":  [
+
+                                                                 ],
+                                                      "url":  {
+                                                                  "host":  [
+                                                                               "{{build_service}}{{api_prefix}}"
+                                                                           ],
+                                                                  "raw":  "{{build_service}}{{api_prefix}}/builds",
+                                                                  "path":  [
+                                                                               "builds"
+                                                                           ]
+                                                              },
+                                                      "description":  "Creates a new build for a user. Requires `userId` and `name`.\n\n**Expected:** 201 Created",
+                                                      "body":  {
+                                                                   "mode":  "raw",
+                                                                   "raw":  "{\n  \"userId\": 1,\n  \"name\": \"My New Build\"\n}",
+                                                                   "options":  {
+                                                                                   "raw":  {
+                                                                                               "language":  "json"
+                                                                                           }
+                                                                               }
+                                                               }
+                                                  }
+                                  },
+                                  {
+                                      "name":  "Create Build Invalid",
+                                      "request":  {
+                                                      "method":  "POST",
+                                                      "header":  [
+
+                                                                 ],
+                                                      "url":  {
+                                                                  "host":  [
+                                                                               "{{build_service}}{{api_prefix}}"
+                                                                           ],
+                                                                  "raw":  "{{build_service}}{{api_prefix}}/builds",
+                                                                  "path":  [
+                                                                               "builds"
+                                                                           ]
+                                                              },
+                                                      "description":  "Negative test -- sends null `userId` and empty `name`.\n\n**Expected:** 400 Bad Request (validation error)",
+                                                      "body":  {
+                                                                   "mode":  "raw",
+                                                                   "raw":  "{\n  \"userId\": null,\n  \"name\": \"\"\n}",
+                                                                   "options":  {
+                                                                                   "raw":  {
+                                                                                               "language":  "json"
+                                                                                           }
+                                                                               }
+                                                               }
+                                                  }
+                                  },
+                                  {
+                                      "name":  "Update Build",
+                                      "request":  {
+                                                      "method":  "PUT",
+                                                      "header":  [
+
+                                                                 ],
+                                                      "url":  {
+                                                                  "host":  [
+                                                                               "{{build_service}}{{api_prefix}}"
+                                                                           ],
+                                                                  "raw":  "{{build_service}}{{api_prefix}}/builds/1",
+                                                                  "path":  [
+                                                                               "builds",
+                                                                               "1"
+                                                                           ]
+                                                              },
+                                                      "description":  "Updates an existing build\u0027s name. Requires `userId` and `name`.\n\n**Expected:** 200 OK",
+                                                      "body":  {
+                                                                   "mode":  "raw",
+                                                                   "raw":  "{\n  \"userId\": 1,\n  \"name\": \"Updated Build Name\"\n}",
+                                                                   "options":  {
+                                                                                   "raw":  {
+                                                                                               "language":  "json"
+                                                                                           }
+                                                                               }
+                                                               }
+                                                  }
+                                  },
+                                  {
+                                      "name":  "Delete Build",
+                                      "request":  {
+                                                      "method":  "DELETE",
+                                                      "header":  [
+
+                                                                 ],
+                                                      "url":  {
+                                                                  "host":  [
+                                                                               "{{build_service}}{{api_prefix}}"
+                                                                           ],
+                                                                  "raw":  "{{build_service}}{{api_prefix}}/builds/1",
+                                                                  "path":  [
+                                                                               "builds",
+                                                                               "1"
+                                                                           ]
+                                                              },
+                                                      "description":  "Deletes a build by ID.\n\n**Expected:** 204 No Content"
+                                                  }
+                                  },
+                                  {
+                                      "name":  "Delete Build Not Found",
+                                      "request":  {
+                                                      "method":  "DELETE",
+                                                      "header":  [
+
+                                                                 ],
+                                                      "url":  {
+                                                                  "host":  [
+                                                                               "{{build_service}}{{api_prefix}}"
+                                                                           ],
+                                                                  "raw":  "{{build_service}}{{api_prefix}}/builds/9999",
+                                                                  "path":  [
+                                                                               "builds",
+                                                                               "9999"
+                                                                           ]
+                                                              },
+                                                      "description":  "Negative test -- tries to delete a non-existent build.\n\n**Expected:** 404 Not Found"
+                                                  }
+                                  },
+                                  {
+                                      "name":  "Get Items By Build Id",
+                                      "request":  {
+                                                      "method":  "GET",
+                                                      "header":  [
+
+                                                                 ],
+                                                      "url":  {
+                                                                  "host":  [
+                                                                               "{{build_service}}{{api_prefix}}"
+                                                                           ],
+                                                                  "raw":  "{{build_service}}{{api_prefix}}/builds/1/items",
+                                                                  "path":  [
+                                                                               "builds",
+                                                                               "1",
+                                                                               "items"
+                                                                           ]
+                                                              },
+                                                      "description":  "Retrieves all items associated with a specific build."
+                                                  }
+                                  },
+                                  {
+                                      "name":  "Get Item By Id",
+                                      "request":  {
+                                                      "method":  "GET",
+                                                      "header":  [
+
+                                                                 ],
+                                                      "url":  {
+                                                                  "host":  [
+                                                                               "{{build_service}}{{api_prefix}}"
+                                                                           ],
+                                                                  "raw":  "{{build_service}}{{api_prefix}}/builds/1/items/1",
+                                                                  "path":  [
+                                                                               "builds",
+                                                                               "1",
+                                                                               "items",
+                                                                               "1"
+                                                                           ]
+                                                              },
+                                                      "description":  "Retrieves a single item from a build by item ID. Returns 404 if not found."
+                                                  }
+                                  },
+                                  {
+                                      "name":  "Create Build Item",
+                                      "request":  {
+                                                      "method":  "POST",
+                                                      "header":  [
+
+                                                                 ],
+                                                      "url":  {
+                                                                  "host":  [
+                                                                               "{{build_service}}{{api_prefix}}"
+                                                                           ],
+                                                                  "raw":  "{{build_service}}{{api_prefix}}/builds/1/items",
+                                                                  "path":  [
+                                                                               "builds",
+                                                                               "1",
+                                                                               "items"
+                                                                           ]
+                                                              },
+                                                      "description":  "Adds a product item to a build. Requires `productId` and `quantity` (\u003e 0).\n\n**Expected:** 201 Created",
+                                                      "body":  {
+                                                                   "mode":  "raw",
+                                                                   "raw":  "{\n  \"productId\": 101,\n  \"quantity\": 1\n}",
+                                                                   "options":  {
+                                                                                   "raw":  {
+                                                                                               "language":  "json"
+                                                                                           }
+                                                                               }
+                                                               }
+                                                  }
+                                  },
+                                  {
+                                      "name":  "Create Build Item Invalid Quantity",
+                                      "request":  {
+                                                      "method":  "POST",
+                                                      "header":  [
+
+                                                                 ],
+                                                      "url":  {
+                                                                  "host":  [
+                                                                               "{{build_service}}{{api_prefix}}"
+                                                                           ],
+                                                                  "raw":  "{{build_service}}{{api_prefix}}/builds/1/items",
+                                                                  "path":  [
+                                                                               "builds",
+                                                                               "1",
+                                                                               "items"
+                                                                           ]
+                                                              },
+                                                      "description":  "Negative test -- sends quantity = 0 (must be \u003e 0).\n\n**Expected:** 400 Bad Request (validation error)",
+                                                      "body":  {
+                                                                   "mode":  "raw",
+                                                                   "raw":  "{\n  \"productId\": 101,\n  \"quantity\": 0\n}",
+                                                                   "options":  {
+                                                                                   "raw":  {
+                                                                                               "language":  "json"
+                                                                                           }
+                                                                               }
+                                                               }
+                                                  }
+                                  },
+                                  {
+                                      "name":  "Create Build Item Build Not Found",
+                                      "request":  {
+                                                      "method":  "POST",
+                                                      "header":  [
+
+                                                                 ],
+                                                      "url":  {
+                                                                  "host":  [
+                                                                               "{{build_service}}{{api_prefix}}"
+                                                                           ],
+                                                                  "raw":  "{{build_service}}{{api_prefix}}/builds/9999/items",
+                                                                  "path":  [
+                                                                               "builds",
+                                                                               "9999",
+                                                                               "items"
+                                                                           ]
+                                                              },
+                                                      "description":  "Negative test -- tries to add an item to a non-existent build.\n\n**Expected:** 404 Not Found",
+                                                      "body":  {
+                                                                   "mode":  "raw",
+                                                                   "raw":  "{\n  \"productId\": 101,\n  \"quantity\": 1\n}",
+                                                                   "options":  {
+                                                                                   "raw":  {
+                                                                                               "language":  "json"
+                                                                                           }
+                                                                               }
+                                                               }
+                                                  }
+                                  },
+                                  {
+                                      "name":  "Delete Build Item",
+                                      "request":  {
+                                                      "method":  "DELETE",
+                                                      "header":  [
+
+                                                                 ],
+                                                      "url":  {
+                                                                  "host":  [
+                                                                               "{{build_service}}{{api_prefix}}"
+                                                                           ],
+                                                                  "raw":  "{{build_service}}{{api_prefix}}/builds/1/items/1",
+                                                                  "path":  [
+                                                                               "builds",
+                                                                               "1",
+                                                                               "items",
+                                                                               "1"
+                                                                           ]
+                                                              },
+                                                      "description":  "Deletes a specific item from a build.\n\n**Expected:** 204 No Content"
+                                                  }
+                                  },
+                                  {
+                                      "name":  "Delete Build Item Not Found",
+                                      "request":  {
+                                                      "method":  "DELETE",
+                                                      "header":  [
+
+                                                                 ],
+                                                      "url":  {
+                                                                  "host":  [
+                                                                               "{{build_service}}{{api_prefix}}"
+                                                                           ],
+                                                                  "raw":  "{{build_service}}{{api_prefix}}/builds/1/items/9999",
+                                                                  "path":  [
+                                                                               "builds",
+                                                                               "1",
+                                                                               "items",
+                                                                               "9999"
+                                                                           ]
+                                                              },
+                                                      "description":  "Negative test -- tries to delete a non-existent item.\n\n**Expected:** 404 Not Found"
+                                                  }
+                                  }
+                              ]
+                 },
+                 {
+                     "name":  "Proxy Requests",
+                     "item":  [
+                                  {
+                                      "name":  "Get All Builds (via gateway)",
+                                      "request":  {
+                                                      "method":  "GET",
+                                                      "header":  [
+
+                                                                 ],
+                                                      "url":  {
+                                                                  "raw":  "{{api_gateway}}{{api_prefix}}/builds",
+                                                                  "host":  [
+                                                                               "{{api_gateway}}{{api_prefix}}"
+                                                                           ],
+                                                                  "path":  [
+                                                                               "builds"
+                                                                           ]
+                                                              },
+                                                      "description":  "Through gateway: Retrieves all builds in the system. No filters or pagination applied."
+                                                  }
+                                  },
+                                  {
+                                      "name":  "Get Build By Id (via gateway)",
+                                      "request":  {
+                                                      "method":  "GET",
+                                                      "header":  [
+
+                                                                 ],
+                                                      "url":  {
+                                                                  "raw":  "{{api_gateway}}{{api_prefix}}/builds/1",
+                                                                  "host":  [
+                                                                               "{{api_gateway}}{{api_prefix}}"
+                                                                           ],
+                                                                  "path":  [
+                                                                               "builds",
+                                                                               "1"
+                                                                           ]
+                                                              },
+                                                      "description":  "Through gateway: Retrieves a single build by its ID. Returns 404 if not found."
+                                                  }
+                                  },
+                                  {
+                                      "name":  "Get Builds By User Id (via gateway)",
+                                      "request":  {
+                                                      "method":  "GET",
+                                                      "header":  [
+
+                                                                 ],
+                                                      "url":  {
+                                                                  "raw":  "{{api_gateway}}{{api_prefix}}/builds/user/1",
+                                                                  "host":  [
+                                                                               "{{api_gateway}}{{api_prefix}}"
+                                                                           ],
+                                                                  "path":  [
+                                                                               "builds",
+                                                                               "user",
+                                                                               "1"
+                                                                           ]
+                                                              },
+                                                      "description":  "Through gateway: Retrieves all builds belonging to a specific user by user ID."
+                                                  }
+                                  },
+                                  {
+                                      "name":  "Get Build By Id And User Id (via gateway)",
+                                      "request":  {
+                                                      "method":  "GET",
+                                                      "header":  [
+
+                                                                 ],
+                                                      "url":  {
+                                                                  "raw":  "{{api_gateway}}{{api_prefix}}/builds/user/1/1",
+                                                                  "host":  [
+                                                                               "{{api_gateway}}{{api_prefix}}"
+                                                                           ],
+                                                                  "path":  [
+                                                                               "builds",
+                                                                               "user",
+                                                                               "1",
+                                                                               "1"
+                                                                           ]
+                                                              },
+                                                      "description":  "Through gateway: Retrieves a specific build by both build ID and user ID."
+                                                  }
+                                  },
+                                  {
+                                      "name":  "Create Build (via gateway)",
+                                      "request":  {
+                                                      "method":  "POST",
+                                                      "header":  [
+
+                                                                 ],
+                                                      "url":  {
+                                                                  "raw":  "{{api_gateway}}{{api_prefix}}/builds",
+                                                                  "host":  [
+                                                                               "{{api_gateway}}{{api_prefix}}"
+                                                                           ],
+                                                                  "path":  [
+                                                                               "builds"
+                                                                           ]
+                                                              },
+                                                      "description":  "Through gateway: Creates a new build for a user. Requires `userId` and `name`.\n\n**Expected:** 201 Created",
+                                                      "body":  {
+                                                                   "mode":  "raw",
+                                                                   "raw":  "{\n  \"userId\": 1,\n  \"name\": \"My New Build\"\n}",
+                                                                   "options":  {
+                                                                                   "raw":  {
+                                                                                               "language":  "json"
+                                                                                           }
+                                                                               }
+                                                               }
+                                                  }
+                                  },
+                                  {
+                                      "name":  "Create Build Invalid (via gateway)",
+                                      "request":  {
+                                                      "method":  "POST",
+                                                      "header":  [
+
+                                                                 ],
+                                                      "url":  {
+                                                                  "raw":  "{{api_gateway}}{{api_prefix}}/builds",
+                                                                  "host":  [
+                                                                               "{{api_gateway}}{{api_prefix}}"
+                                                                           ],
+                                                                  "path":  [
+                                                                               "builds"
+                                                                           ]
+                                                              },
+                                                      "description":  "Through gateway: Negative test -- sends null `userId` and empty `name`.\n\n**Expected:** 400 Bad Request (validation error)",
+                                                      "body":  {
+                                                                   "mode":  "raw",
+                                                                   "raw":  "{\n  \"userId\": null,\n  \"name\": \"\"\n}",
+                                                                   "options":  {
+                                                                                   "raw":  {
+                                                                                               "language":  "json"
+                                                                                           }
+                                                                               }
+                                                               }
+                                                  }
+                                  },
+                                  {
+                                      "name":  "Update Build (via gateway)",
+                                      "request":  {
+                                                      "method":  "PUT",
+                                                      "header":  [
+
+                                                                 ],
+                                                      "url":  {
+                                                                  "raw":  "{{api_gateway}}{{api_prefix}}/builds/1",
+                                                                  "host":  [
+                                                                               "{{api_gateway}}{{api_prefix}}"
+                                                                           ],
+                                                                  "path":  [
+                                                                               "builds",
+                                                                               "1"
+                                                                           ]
+                                                              },
+                                                      "description":  "Through gateway: Updates an existing build\u0027s name. Requires `userId` and `name`.\n\n**Expected:** 200 OK",
+                                                      "body":  {
+                                                                   "mode":  "raw",
+                                                                   "raw":  "{\n  \"userId\": 1,\n  \"name\": \"Updated Build Name\"\n}",
+                                                                   "options":  {
+                                                                                   "raw":  {
+                                                                                               "language":  "json"
+                                                                                           }
+                                                                               }
+                                                               }
+                                                  }
+                                  },
+                                  {
+                                      "name":  "Delete Build (via gateway)",
+                                      "request":  {
+                                                      "method":  "DELETE",
+                                                      "header":  [
+
+                                                                 ],
+                                                      "url":  {
+                                                                  "raw":  "{{api_gateway}}{{api_prefix}}/builds/1",
+                                                                  "host":  [
+                                                                               "{{api_gateway}}{{api_prefix}}"
+                                                                           ],
+                                                                  "path":  [
+                                                                               "builds",
+                                                                               "1"
+                                                                           ]
+                                                              },
+                                                      "description":  "Through gateway: Deletes a build by ID.\n\n**Expected:** 204 No Content"
+                                                  }
+                                  },
+                                  {
+                                      "name":  "Delete Build Not Found (via gateway)",
+                                      "request":  {
+                                                      "method":  "DELETE",
+                                                      "header":  [
+
+                                                                 ],
+                                                      "url":  {
+                                                                  "raw":  "{{api_gateway}}{{api_prefix}}/builds/9999",
+                                                                  "host":  [
+                                                                               "{{api_gateway}}{{api_prefix}}"
+                                                                           ],
+                                                                  "path":  [
+                                                                               "builds",
+                                                                               "9999"
+                                                                           ]
+                                                              },
+                                                      "description":  "Through gateway: Negative test -- tries to delete a non-existent build.\n\n**Expected:** 404 Not Found"
+                                                  }
+                                  },
+                                  {
+                                      "name":  "Get Items By Build Id (via gateway)",
+                                      "request":  {
+                                                      "method":  "GET",
+                                                      "header":  [
+
+                                                                 ],
+                                                      "url":  {
+                                                                  "raw":  "{{api_gateway}}{{api_prefix}}/builds/1/items",
+                                                                  "host":  [
+                                                                               "{{api_gateway}}{{api_prefix}}"
+                                                                           ],
+                                                                  "path":  [
+                                                                               "builds",
+                                                                               "1",
+                                                                               "items"
+                                                                           ]
+                                                              },
+                                                      "description":  "Through gateway: Retrieves all items associated with a specific build."
+                                                  }
+                                  },
+                                  {
+                                      "name":  "Get Item By Id (via gateway)",
+                                      "request":  {
+                                                      "method":  "GET",
+                                                      "header":  [
+
+                                                                 ],
+                                                      "url":  {
+                                                                  "raw":  "{{api_gateway}}{{api_prefix}}/builds/1/items/1",
+                                                                  "host":  [
+                                                                               "{{api_gateway}}{{api_prefix}}"
+                                                                           ],
+                                                                  "path":  [
+                                                                               "builds",
+                                                                               "1",
+                                                                               "items",
+                                                                               "1"
+                                                                           ]
+                                                              },
+                                                      "description":  "Through gateway: Retrieves a single item from a build by item ID. Returns 404 if not found."
+                                                  }
+                                  },
+                                  {
+                                      "name":  "Create Build Item (via gateway)",
+                                      "request":  {
+                                                      "method":  "POST",
+                                                      "header":  [
+
+                                                                 ],
+                                                      "url":  {
+                                                                  "raw":  "{{api_gateway}}{{api_prefix}}/builds/1/items",
+                                                                  "host":  [
+                                                                               "{{api_gateway}}{{api_prefix}}"
+                                                                           ],
+                                                                  "path":  [
+                                                                               "builds",
+                                                                               "1",
+                                                                               "items"
+                                                                           ]
+                                                              },
+                                                      "description":  "Through gateway: Adds a product item to a build. Requires `productId` and `quantity` (\u003e 0).\n\n**Expected:** 201 Created",
+                                                      "body":  {
+                                                                   "mode":  "raw",
+                                                                   "raw":  "{\n  \"productId\": 101,\n  \"quantity\": 1\n}",
+                                                                   "options":  {
+                                                                                   "raw":  {
+                                                                                               "language":  "json"
+                                                                                           }
+                                                                               }
+                                                               }
+                                                  }
+                                  },
+                                  {
+                                      "name":  "Create Build Item Invalid Quantity (via gateway)",
+                                      "request":  {
+                                                      "method":  "POST",
+                                                      "header":  [
+
+                                                                 ],
+                                                      "url":  {
+                                                                  "raw":  "{{api_gateway}}{{api_prefix}}/builds/1/items",
+                                                                  "host":  [
+                                                                               "{{api_gateway}}{{api_prefix}}"
+                                                                           ],
+                                                                  "path":  [
+                                                                               "builds",
+                                                                               "1",
+                                                                               "items"
+                                                                           ]
+                                                              },
+                                                      "description":  "Through gateway: Negative test -- sends quantity = 0 (must be \u003e 0).\n\n**Expected:** 400 Bad Request (validation error)",
+                                                      "body":  {
+                                                                   "mode":  "raw",
+                                                                   "raw":  "{\n  \"productId\": 101,\n  \"quantity\": 0\n}",
+                                                                   "options":  {
+                                                                                   "raw":  {
+                                                                                               "language":  "json"
+                                                                                           }
+                                                                               }
+                                                               }
+                                                  }
+                                  },
+                                  {
+                                      "name":  "Create Build Item Build Not Found (via gateway)",
+                                      "request":  {
+                                                      "method":  "POST",
+                                                      "header":  [
+
+                                                                 ],
+                                                      "url":  {
+                                                                  "raw":  "{{api_gateway}}{{api_prefix}}/builds/9999/items",
+                                                                  "host":  [
+                                                                               "{{api_gateway}}{{api_prefix}}"
+                                                                           ],
+                                                                  "path":  [
+                                                                               "builds",
+                                                                               "9999",
+                                                                               "items"
+                                                                           ]
+                                                              },
+                                                      "description":  "Through gateway: Negative test -- tries to add an item to a non-existent build.\n\n**Expected:** 404 Not Found",
+                                                      "body":  {
+                                                                   "mode":  "raw",
+                                                                   "raw":  "{\n  \"productId\": 101,\n  \"quantity\": 1\n}",
+                                                                   "options":  {
+                                                                                   "raw":  {
+                                                                                               "language":  "json"
+                                                                                           }
+                                                                               }
+                                                               }
+                                                  }
+                                  },
+                                  {
+                                      "name":  "Delete Build Item (via gateway)",
+                                      "request":  {
+                                                      "method":  "DELETE",
+                                                      "header":  [
+
+                                                                 ],
+                                                      "url":  {
+                                                                  "raw":  "{{api_gateway}}{{api_prefix}}/builds/1/items/1",
+                                                                  "host":  [
+                                                                               "{{api_gateway}}{{api_prefix}}"
+                                                                           ],
+                                                                  "path":  [
+                                                                               "builds",
+                                                                               "1",
+                                                                               "items",
+                                                                               "1"
+                                                                           ]
+                                                              },
+                                                      "description":  "Through gateway: Deletes a specific item from a build.\n\n**Expected:** 204 No Content"
+                                                  }
+                                  },
+                                  {
+                                      "name":  "Delete Build Item Not Found (via gateway)",
+                                      "request":  {
+                                                      "method":  "DELETE",
+                                                      "header":  [
+
+                                                                 ],
+                                                      "url":  {
+                                                                  "raw":  "{{api_gateway}}{{api_prefix}}/builds/1/items/9999",
+                                                                  "host":  [
+                                                                               "{{api_gateway}}{{api_prefix}}"
+                                                                           ],
+                                                                  "path":  [
+                                                                               "builds",
+                                                                               "1",
+                                                                               "items",
+                                                                               "9999"
+                                                                           ]
+                                                              },
+                                                      "description":  "Through gateway: Negative test -- tries to delete a non-existent item.\n\n**Expected:** 404 Not Found"
+                                                  }
+                                  }
+                              ]
+                 }
+             ]
 }
+

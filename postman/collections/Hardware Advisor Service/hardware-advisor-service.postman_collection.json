@@ -4,5 +4,15 @@
     "description": "# Hardware Advisor Service\n\nBase URL: `http://localhost:8089`\n\nProvides hardware recommendations and suggestions.",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
-  "item": []
+  "item": [
+    {
+      "name": "Direct Requests",
+      "item": []
+    },
+    {
+      "name": "Proxy Requests",
+      "item": []
+    }
+  ]
 }
+

@@ -1,0 +1,22 @@
+$kind: http-request
+description: |-
+  Updates an existing product's details.
+
+  **Expected:** 200 OK
+url: "{{product_service}}/api/products/1"
+method: PUT
+order: 9000
+body:
+  type: json
+  content: |-
+    {
+      "name": "Intel Core i9-14900K Updated",
+      "description": "Updated description",
+      "msrp": 700000,
+      "categoryId": 1,
+      "brand": "Intel",
+      "model": "Core i9-14900K"
+    }
+tests:
+  - name: "Returns 200"
+    statusCode: 200

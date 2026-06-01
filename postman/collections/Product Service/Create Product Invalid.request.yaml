@@ -1,0 +1,22 @@
+$kind: http-request
+description: |-
+  Negative test -- sends null/empty required fields and invalid price.
+
+  **Expected:** 400 Bad Request (validation error)
+url: "{{product_service}}/api/products"
+method: POST
+order: 8000
+body:
+  type: json
+  content: |-
+    {
+      "name": "",
+      "description": "Test",
+      "msrp": -100,
+      "categoryId": null,
+      "brand": "",
+      "model": ""
+    }
+tests:
+  - name: "Returns 400"
+    statusCode: 400

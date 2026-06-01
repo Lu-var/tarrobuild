@@ -1,0 +1,18 @@
+$kind: http-request
+description: |-
+  Updates an existing product attribute.
+
+  **Expected:** 200 OK
+url: "{{product_service}}/api/products/1/attributes/1"
+method: PUT
+order: 17000
+body:
+  type: json
+  content: |-
+    {
+      "attributeName": "Socket Updated",
+      "attributeValue": "AM5"
+    }
+tests:
+  - name: "Returns 200"
+    statusCode: 200

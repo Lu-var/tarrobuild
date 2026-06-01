@@ -1,0 +1,17 @@
+$kind: http-request
+description: |-
+  Creates a new category. Required fields: `name`, `slug`.
+
+  **Expected:** 201 Created
+url: "{{category_service}}/api/categories"
+method: POST
+body:
+  type: json
+  content: |-
+    {
+      "name": "GPU",
+      "slug": "gpu",
+      "description": "Graphics cards",
+      "isActive": true
+    }
+order: 3000

@@ -5,4 +5,27 @@ spring:
     active: ${SPRING_PROFILES_ACTIVE:h2}
 
 server:
-  port: 8081
+  port: ${SERVER_PORT:8081}
+
+user-service:
+  url: ${USER_SERVICE_URL:http://localhost:8082}
+
+jwt:
+  secret: ${JWT_SECRET:aB3dEfGhIjKlMnOpQrStUvWxYz0123456789AbCdEfGhIjKlMnOpQrStUv}
+  expiration: ${JWT_EXPIRATION:3600000}
+
+app:
+  environment: production
+  security:
+    frame-options: sameorigin
+
+logging:
+  level:
+    cl.tarrobuild: INFO
+    org.hibernate.SQL: WARN
+  file:
+    name: logs/auth-service.log
+  logback:
+    rollingpolicy:
+      max-file-size: 10MB
+      max-history: 10

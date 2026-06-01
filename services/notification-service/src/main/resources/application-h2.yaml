@@ -4,6 +4,8 @@ spring:
     driverClassName: org.h2.Driver
     username: sa
     password:
+  flyway:
+    enabled: false
   h2:
     console:
       enabled: true
@@ -12,3 +14,11 @@ spring:
     defer-datasource-initialization: true
     hibernate:
       ddl-auto: create-drop
+
+app:
+  environment: development
+
+logging:
+  level:
+    cl.tarrobuild: DEBUG
+    org.hibernate.SQL: DEBUG

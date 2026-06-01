@@ -1,0 +1,8 @@
+$kind: http-request
+description: Retrieves a single product by its ID. Returns 404 if not found.
+url: "{{product_service}}/api/products/1"
+method: GET
+order: 2000
+tests:
+  - name: "Returns 200"
+    statusCode: 200

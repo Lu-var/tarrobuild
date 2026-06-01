@@ -1,11 +1,13 @@
 package cl.tarrobuild.build.service;
 
-import cl.tarrobuild.build.dto.BuildItemResponse;
-import cl.tarrobuild.build.dto.BuildRequest;
-import cl.tarrobuild.build.dto.BuildResponse;
+import cl.tarrobuild.build.client.ProductFeignClient;
+import cl.tarrobuild.build.dto.*;
 import cl.tarrobuild.build.model.Build;
 import cl.tarrobuild.build.model.BuildItem;
+import cl.tarrobuild.build.model.BuildStatus;
+import cl.tarrobuild.build.repository.BuildItemRepository;
 import cl.tarrobuild.build.repository.BuildRepository;
+import feign.FeignException;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -18,9 +20,13 @@ import java.util.Optional;
 public class BuildService {
 
     private final BuildRepository buildRepository;
+    private final BuildItemRepository buildItemRepository;
+    private final ProductFeignClient productFeignClient;
 
-    public BuildService(BuildRepository buildRepository) {
+    public BuildService(BuildRepository buildRepository, BuildItemRepository buildItemRepository, ProductFeignClient productFeignClient) {
         this.buildRepository = buildRepository;
+        this.buildItemRepository = buildItemRepository;
+        this.productFeignClient = productFeignClient;
     }
 
     public List<BuildResponse> getBuilds() {
@@ -37,14 +43,14 @@ public class BuildService {
                 .orElseThrow(() -> new EntityNotFoundException("Build with ID " + id + " not found"));
     }
 
-    public List<BuildResponse> getBuildsByUserId(Long userId){
+    public List<BuildResponse> getBuildsByUserId(Long userId) {
         log.info("Getting builds for userId: {}", userId);
         return buildRepository.findByUserId(userId).stream()
                 .map(this::toResponse)
                 .toList();
     }
 
-    public BuildResponse getBuildByIdAndUserId(Long buildId, Long userId){
+    public BuildResponse getBuildByIdAndUserId(Long buildId, Long userId) {
         log.info("Getting build by id: {} and userId: {}", buildId, userId);
         return buildRepository.findByIdAndUserId(buildId, userId)
                 .map(this::toResponse)
@@ -61,6 +67,16 @@ public class BuildService {
         return toResponse(saved);
     }
 
+    public BuildResponse updateBuildStatus(Long id, BuildStatus status) {
+        log.info("Updating status for build: {}", id);
+        Build targetBuild = buildRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Build with ID " + id + " not found"));
+        targetBuild.setStatus(status);
+
+        Build saved = buildRepository.save(targetBuild);
+        return toResponse(saved);
+    }
+
     public BuildResponse updateBuild(Long id, BuildRequest request) {
         log.info("Updating build id: {} with name: \"{}\" from userId: {}", id, request.name(), request.userId());
         return buildRepository.findById(id)
@@ -74,13 +90,76 @@ public class BuildService {
                 .orElseThrow(() -> new EntityNotFoundException("Build with ID " + id + " not found"));
     }
 
-    public void deleteBuild(Long id) {
+    public boolean deleteBuild(Long id) {
         if (!buildRepository.existsById(id)) {
             log.info("Build with id: {} not found for deletion", id);
-            throw new EntityNotFoundException("Build with ID " + id + " not found");
+            return false;
         }
         buildRepository.deleteById(id);
         log.info("Build with id: {} deleted successfully", id);
+        return true;
+    }
+
+    public List<BuildItemResponse> getItemsByBuildId(Long buildId) {
+        log.info("Getting items for buildId: {}", buildId);
+        buildRepository.findById(buildId)
+                .orElseThrow(() -> new EntityNotFoundException("Build with ID " + buildId + " not found"));
+
+        return buildItemRepository.findByBuild_Id(buildId)
+                .stream()
+                .map(this::toItemResponse)
+                .toList();
+    }
+
+    public BuildItemResponse getItemByIdAndBuildId(Long itemId, Long buildId) {
+        log.info("Getting item with ID {} for buildId: {}", itemId, buildId);
+        return buildItemRepository.findByIdAndBuild_Id(itemId, buildId)
+                .map(this::toItemResponse)
+                .orElseThrow(() -> new EntityNotFoundException("Item with ID " + itemId + " not found for build " + buildId));
+    }
+
+    public BuildItemResponse createItem(Long buildId, BuildItemRequest request) {
+        log.info("Creating item for buildId: {}", buildId);
+        Build targetBuild = buildRepository.findById(buildId)
+                .orElseThrow(() -> new EntityNotFoundException("Build with ID " + buildId + " not found"));
+
+        try {
+            ProductClientResponse product = productFeignClient.getProductById(request.productId());
+            if (!product.isActive()) {
+                throw new IllegalArgumentException("Product with ID " + request.productId() + " is not active");
+            }
+        } catch (FeignException.NotFound e) {
+            log.warn("Product with ID {} not found in product-service", request.productId());
+            throw new EntityNotFoundException("Product with ID " + request.productId() + " not found");
+        }
+
+        log.info("Creating item with productId: {} and quantity: {}", request.productId(), request.quantity());
+        BuildItem newItem = new BuildItem();
+        newItem.setProductId(request.productId());
+        newItem.setQuantity(request.quantity());
+        newItem.setBuild(targetBuild);
+
+        BuildItem saved = buildItemRepository.save(newItem);
+        return toItemResponse(saved);
+    }
+
+    public BuildItemResponse updateItem(Long buildId, Long itemId, BuildItemRequest request) {
+        log.info("Updating item for buildId: {}", buildId);
+        Build targetBuild = buildRepository.findById(buildId)
+                .orElseThrow(() -> new EntityNotFoundException("Build with ID " + buildId + " not found"));
+        BuildItem targetItem = buildItemRepository.findByIdAndBuild_Id(itemId, buildId)
+                .orElseThrow(() -> new EntityNotFoundException("Item with ID " + itemId + " not found"));
+        targetItem.setProductId(request.productId());
+        targetItem.setQuantity(request.quantity());
+        BuildItem saved = buildItemRepository.save(targetItem);
+        return toItemResponse(saved);
+    }
+
+    public void deleteItem(Long itemId, Long buildId) {
+        log.info("Deleting item with ID {} for buildId: {}", itemId, buildId);
+        BuildItem item = buildItemRepository.findByIdAndBuild_Id(itemId, buildId)
+                .orElseThrow(() -> new EntityNotFoundException("Item with ID " + itemId + " not found for build " + buildId));
+        buildItemRepository.delete(item);
     }
 
     private BuildResponse toResponse(Build build) {
@@ -111,4 +190,3 @@ public class BuildService {
         );
     }
 }
-

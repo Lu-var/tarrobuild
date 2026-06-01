@@ -5,13 +5,13 @@ import cl.tarrobuild.user.dto.UserUpdateRequest;
 import cl.tarrobuild.user.dto.UserResponse;
 import cl.tarrobuild.user.model.User;
 import cl.tarrobuild.user.repository.UserRepository;
+import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 @Slf4j
 @Service
@@ -74,7 +74,7 @@ public class UserService {
     public UserResponse createUser(UserRequest request) {
         log.info("Creating user with email: {}", request.email());
         if (userRepository.existsByEmail(request.email())) {
-            throw new IllegalArgumentException("Email: \"" + request.email() + "\" already exists");
+            throw new EntityExistsException("Email: \"" + request.email() + "\" already exists");
         }
         User user = new User();
         user.setName(request.name());

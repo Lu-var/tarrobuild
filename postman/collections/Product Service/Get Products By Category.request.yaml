@@ -1,0 +1,8 @@
+$kind: http-request
+description: Retrieves all products belonging to a specific category by category ID.
+url: "{{product_service}}/api/products/category/1"
+method: GET
+order: 4000
+tests:
+  - name: "Returns 200"
+    statusCode: 200

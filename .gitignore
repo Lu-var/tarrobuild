@@ -5,8 +5,12 @@
 #VS Code
 .vscode/
 
-#Maven
+#Maven & Spring Boot Logs
 target/
+**/target/
+*.log
+logs/
+**/logs/
 
 #Postman
 .postman/
@@ -16,3 +20,9 @@ target/
 *.env
 **/.env
 !.env.example
+
+
+
+#OpenCode
+.opencode/
+!.opencode/agents/

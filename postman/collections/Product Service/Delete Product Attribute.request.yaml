@@ -1,0 +1,11 @@
+$kind: http-request
+description: |-
+  Deletes a product attribute by ID.
+
+  **Expected:** 204 No Content
+url: "{{product_service}}/api/products/1/attributes/1"
+method: DELETE
+order: 19000
+tests:
+  - name: "Returns 204"
+    statusCode: 204

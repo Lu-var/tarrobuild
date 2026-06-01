@@ -1,17 +1,25 @@
 package cl.tarrobuild.user.exception;
 
+import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 
+import java.nio.file.AccessDeniedException;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
+import org.springframework.web.bind.MissingRequestHeaderException;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
+import org.springframework.web.client.ResourceAccessException;
 
 @ControllerAdvice
 @Slf4j
@@ -55,21 +63,81 @@ public class GlobalExceptionHandler {
                 .body(new ApiError(e.getMessage(), details, LocalDateTime.now().toString()));
     }
 
-    // Unused Credentials Handling
+    @ExceptionHandler(EntityExistsException.class)
+    public ResponseEntity<?> handleConflict(EntityExistsException e) {
+        log.warn("Conflict: {}", e.getMessage());
 
-    // @ExceptionHandler(BadCredentialsException.class)
-    // public ResponseEntity<?> handleBadCredentials(BadCredentialsException e) {
-    // log.warn("Credenciales inválidas: {}", e.getMessage());
-    // return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-    // .body(new ApiError("Credenciales inválidas"));
-    // }
-    //
-    // @ExceptionHandler(AccessDeniedException.class)
-    // public ResponseEntity<?> handleAccessDenied(AccessDeniedException e) {
-    // log.warn("Acceso denegado: {}", e.getMessage());
-    // return ResponseEntity.status(HttpStatus.FORBIDDEN)
-    // .body(new ApiError("Acceso denegado"));
-    // }
+        String details = isDevelopment() ? Arrays.toString(e.getStackTrace()) : null;
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body(new ApiError(e.getMessage(), details, LocalDateTime.now().toString()));
+    }
+
+    @ExceptionHandler(NoResourceFoundException.class)
+    public ResponseEntity<?> handleNoResourceFound(NoResourceFoundException e) {
+        log.warn("Resource not found: {}", e.getMessage());
+
+        String details = isDevelopment() ? Arrays.toString(e.getStackTrace()) : null;
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(new ApiError(e.getMessage(), details, LocalDateTime.now().toString()));
+    }
+
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<?> handleMessageNotReadable(HttpMessageNotReadableException e) {
+        log.warn("Invalid request body: {}", e.getMessage());
+        String details = isDevelopment() ? Arrays.toString(e.getStackTrace()) : null;
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(new ApiError("Invalid request body", details, LocalDateTime.now().toString()));
+    }
+
+    @ExceptionHandler(NumberFormatException.class)
+    public ResponseEntity<?> handleNumberFormat(NumberFormatException e) {
+        log.warn("Invalid number format: {}", e.getMessage());
+
+        String details = isDevelopment() ? Arrays.toString(e.getStackTrace()) : null;
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(new ApiError("Invalid number format: " + e.getMessage(), details, LocalDateTime.now().toString()));
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<?> handleAccessDenied(AccessDeniedException e) {
+        log.warn("Access denied: {}", e.getMessage());
+
+        String details = isDevelopment() ? Arrays.toString(e.getStackTrace()) : null;
+        return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                .body(new ApiError("Access denied", details, LocalDateTime.now().toString()));
+    }
+
+    @ExceptionHandler(MissingRequestHeaderException.class)
+    public ResponseEntity<?> handleMissingHeader(MissingRequestHeaderException e) {
+        log.warn("Missing request header: {}", e.getMessage());
+        String details = isDevelopment() ? Arrays.toString(e.getStackTrace()) : null;
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(new ApiError(e.getMessage(), details, LocalDateTime.now().toString()));
+    }
+
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    public ResponseEntity<?> handleTypeMismatch(MethodArgumentTypeMismatchException e) {
+        log.warn("Type mismatch: {}", e.getMessage());
+        String details = isDevelopment() ? Arrays.toString(e.getStackTrace()) : null;
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(new ApiError("Invalid parameter: " + e.getName(), details, LocalDateTime.now().toString()));
+    }
+
+    @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+    public ResponseEntity<?> handleMethodNotAllowed(HttpRequestMethodNotSupportedException e) {
+        log.warn("Method not allowed: {}", e.getMessage());
+        String details = isDevelopment() ? Arrays.toString(e.getStackTrace()) : null;
+        return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED)
+                .body(new ApiError(e.getMessage(), details, LocalDateTime.now().toString()));
+    }
+
+    @ExceptionHandler(ResourceAccessException.class)
+    public ResponseEntity<?> handleResourceAccess(ResourceAccessException e) {
+        log.error("Downstream service unavailable", e);
+        String details = isDevelopment() ? Arrays.toString(e.getStackTrace()) : null;
+        return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE)
+                .body(new ApiError("Downstream service unavailable", details, LocalDateTime.now().toString()));
+    }
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<?> handleGeneric(Exception e) {

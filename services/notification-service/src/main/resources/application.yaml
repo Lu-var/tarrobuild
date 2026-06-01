@@ -5,4 +5,18 @@ spring:
     active: ${SPRING_PROFILES_ACTIVE:h2}
 
 server:
-  port: 8090
+  port: ${SERVER_PORT:8090}
+
+app:
+  environment: production
+
+logging:
+  level:
+    cl.tarrobuild: INFO
+    org.hibernate.SQL: WARN
+  file:
+    name: logs/notification-service.log
+  logback:
+    rollingpolicy:
+      max-file-size: 10MB
+      max-history: 10

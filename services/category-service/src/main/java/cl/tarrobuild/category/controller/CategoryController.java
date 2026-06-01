@@ -1,8 +1,9 @@
 package cl.tarrobuild.category.controller;
 
+import cl.tarrobuild.category.dto.AttributeDefinitionRequest;
+import cl.tarrobuild.category.dto.AttributeDefinitionResponse;
 import cl.tarrobuild.category.dto.CategoryRequest;
 import cl.tarrobuild.category.dto.CategoryResponse;
-import cl.tarrobuild.category.model.Category;
 import cl.tarrobuild.category.service.CategoryService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -34,5 +35,21 @@ public class CategoryController {
     @GetMapping("/{id}")
     public ResponseEntity<CategoryResponse> getCategoryById(@PathVariable Long id) {
         return ResponseEntity.ok(categoryService.getCategoryById(id));
+    }
+
+    @PostMapping("/{categoryId}/attributes")
+    public ResponseEntity<AttributeDefinitionResponse> createAttribute(
+            @PathVariable Long categoryId,
+            @Valid @RequestBody AttributeDefinitionRequest request) {
+        return new ResponseEntity<>(
+                categoryService.createAttribute(categoryId, request),
+                HttpStatus.CREATED
+        );
+    }
+
+    @GetMapping("/{categoryId}/attributes")
+    public ResponseEntity<List<AttributeDefinitionResponse>> getAttributesByCategory(
+            @PathVariable Long categoryId) {
+        return ResponseEntity.ok(categoryService.getAttributesByCategory(categoryId));
     }
 }

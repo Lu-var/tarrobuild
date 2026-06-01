@@ -1,0 +1,11 @@
+$kind: http-request
+description: |-
+  Negative test -- tries to delete a non-existent product.
+
+  **Expected:** 404 Not Found
+url: "{{product_service}}/api/products/9999"
+method: DELETE
+order: 12000
+tests:
+  - name: "Returns 404"
+    statusCode: 404
