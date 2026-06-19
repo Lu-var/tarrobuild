@@ -1,9 +1,11 @@
 package cl.tarrobuild.compatibility.service;
 
+import cl.tarrobuild.compatibility.client.ProductClient;
 import cl.tarrobuild.compatibility.dto.CompatibilityCheckRequest;
 import cl.tarrobuild.compatibility.dto.CompatibilityCheckResponse;
 import cl.tarrobuild.compatibility.dto.CompatibilityRuleRequest;
 import cl.tarrobuild.compatibility.dto.CompatibilityRuleResponse;
+import cl.tarrobuild.compatibility.dto.ProductDTO;
 import cl.tarrobuild.compatibility.model.CompatibilityCheck;
 import cl.tarrobuild.compatibility.model.CompatibilityRule;
 import cl.tarrobuild.compatibility.repository.CompatibilityCheckRepository;
@@ -13,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -21,11 +24,14 @@ public class CompatibilityService {
 
     private final CompatibilityRuleRepository ruleRepository;
     private final CompatibilityCheckRepository checkRepository;
+    private final ProductClient productClient;
 
     public CompatibilityService(CompatibilityRuleRepository ruleRepository,
-                                CompatibilityCheckRepository checkRepository) {
+                                CompatibilityCheckRepository checkRepository,
+                                ProductClient productClient) {
         this.ruleRepository = ruleRepository;
         this.checkRepository = checkRepository;
+        this.productClient = productClient;
     }
 
     public CompatibilityCheckResponse check(CompatibilityCheckRequest request) {
@@ -79,9 +85,41 @@ public class CompatibilityService {
     }
 
     private boolean evaluateRule(CompatibilityRule rule, List<Long> productIds) {
-        // Por ahora las reglas pasan por defecto hasta conectar con los datos de productos
-        log.debug("Rule evaluation stub — returning true for rule: {}",
-                rule.getIncompatibilityReason());
+        log.debug("Consumiendo cliente REST remoto para validar reglas distribuidas");
+
+        List<ProductDTO> products = productIds.stream()
+                .map(id -> {
+                    try {
+                        return productClient.getProductById(id);
+                    } catch (Exception e) {
+                        log.error("Error de comunicación remota con product-service para ID: {}", id, e);
+                        return null;
+                    }
+                })
+                .filter(Objects::nonNull)
+                .toList();
+
+        ProductDTO sourceProduct = products.stream()
+                .filter(p -> p.categoryName() != null && p.categoryName().equalsIgnoreCase(rule.getSourceCategory()))
+                .findFirst()
+                .orElse(null);
+
+        ProductDTO targetProduct = products.stream()
+                .filter(p -> p.categoryName() != null && p.categoryName().equalsIgnoreCase(rule.getTargetCategory()))
+                .findFirst()
+                .orElse(null);
+
+        if (sourceProduct == null || targetProduct == null) {
+            return true;
+        }
+
+        if ("socketType".equalsIgnoreCase(rule.getSourceAttributeName()) && "EQUALS".equalsIgnoreCase(rule.getOperator())) {
+            if (sourceProduct.socketType() == null || targetProduct.socketType() == null) {
+                return false;
+            }
+            return sourceProduct.socketType().equalsIgnoreCase(targetProduct.socketType());
+        }
+
         return true;
     }
 
@@ -93,7 +131,6 @@ public class CompatibilityService {
                         "No compatibility check found for build ID " + buildId));
     }
 
-    // Soluciona el error en el controlador para buscar un check individual
     public CompatibilityCheckResponse getCheckById(Long id) {
         log.info("Getting compatibility check by id: {}", id);
         return checkRepository.findById(id)
@@ -102,7 +139,6 @@ public class CompatibilityService {
                         "Compatibility check with ID " + id + " not found"));
     }
 
-    // Soluciona el error en el controlador para crear reglas
     public CompatibilityRuleResponse createRule(CompatibilityRuleRequest request) {
         log.info("Creating compatibility rule: {} {} {} -> {} {}",
                 request.sourceCategory(), request.sourceAttributeName(), request.operator(),
@@ -121,7 +157,6 @@ public class CompatibilityService {
         return toRuleResponse(saved);
     }
 
-    // Soluciona el error en el controlador para listar las reglas
     public List<CompatibilityRuleResponse> getAllRules() {
         log.info("Getting all compatibility rules");
         return ruleRepository.findAll().stream()
@@ -129,7 +164,6 @@ public class CompatibilityService {
                 .toList();
     }
 
-    // Soluciona el error en el controlador para buscar una regla por ID
     public CompatibilityRuleResponse getRuleById(Long id) {
         log.info("Getting compatibility rule by id: {}", id);
         return ruleRepository.findById(id)
@@ -138,7 +172,6 @@ public class CompatibilityService {
                         "Compatibility rule with ID " + id + " not found"));
     }
 
-    // Soluciona el error en el controlador para actualizar reglas
     public CompatibilityRuleResponse updateRule(Long id, CompatibilityRuleRequest request) {
         log.info("Updating compatibility rule id: {}", id);
         return ruleRepository.findById(id)
@@ -157,7 +190,6 @@ public class CompatibilityService {
                         "Compatibility rule with ID " + id + " not found"));
     }
 
-    // Soluciona el error en el controlador para eliminar reglas
     public boolean deleteRule(Long id) {
         if (!ruleRepository.existsById(id)) {
             log.info("Compatibility rule with id: {} not found for deletion", id);
