@@ -18,6 +18,7 @@ spring:
 server:
   port: ${SERVER_PORT:8085}
 
+<<<<<<< HEAD
 
 app:
   services:
@@ -37,3 +38,21 @@ spring:
 app:
   services:
     product-url: ${PRODUCT_SERVICE_URL}
+=======
+product-service:
+  url: ${PRODUCT_SERVICE_URL:http://localhost:8083}
+  
+app:
+  environment: production
+
+logging:
+  level:
+    cl.tarrobuild: INFO
+    org.hibernate.SQL: WARN
+  file:
+    name: logs/compatibility-service.log
+  logback:
+    rollingpolicy:
+      max-file-size: 10MB
+      max-history: 10
+>>>>>>> 359538b20ea549989577a1bd554b33ceb61461a2

@@ -6,7 +6,22 @@ spring:
   jpa:
     database-platform: org.hibernate.dialect.MySQLDialect
     hibernate:
-      ddl-auto: update
+      ddl-auto: validate
     properties:
       hibernate:
         format_sql: true
+  flyway:
+    locations: classpath:db/migration/mysql
+    baseline-on-migrate: true
+
+logging:
+  level:
+    root: WARN
+    cl.tarrobuild: INFO
+    org.springframework: WARN
+  file:
+    name: /var/log/build-service/build-service.log
+  logback:
+    rollingpolicy:
+      max-file-size: 100MB
+      max-history: 30

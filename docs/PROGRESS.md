@@ -6,317 +6,181 @@
 
 - [x] **RF-01** — Register user with bcrypt
 - [x] **RF-02** — Authenticate user (JWT)
-- [ ] **RF-03** — List catalog components
-- [ ] **RF-04** — Component detail
-- [ ] **RF-05** — Filter by category/brand/price
-- [ ] **RF-06** — Create build
-- [ ] **RF-07** — Manage build items
+- [x] **RF-03** — List catalog components
+- [x] **RF-04** — Component detail
+- [x] **RF-05** — Filter by category/brand/price
+- [x] **RF-06** — Create build
+- [x] **RF-07** — Manage build items
 - [ ] **RF-08** — Compatibility check
-- [ ] **RF-09** — Power consumption estimate
-- [ ] **RF-10** — Reference prices from providers
+- [ ] **RF-09** — Power consumption estimate (cost: done via estimate-service, power validation: pending in compatibility-service)
+- [x] **RF-10** — Provider references (SKU / external links)
 - [ ] **RF-11** — Consolidated build analysis
 - [ ] **RF-12** — Save favorite builds
 - [ ] **RF-13** — Upgrade recommendations
-- [ ] **RF-14** — CRUD components/attributes
-- [ ] **RF-15** — CRUD compatibility rules
-- [ ] **RF-16** — CRUD price references
+- [x] **RF-14** — CRUD components/attributes
+- [x] **RF-15** — CRUD compatibility rules
+- [x] **RF-16** — CRUD provider references
 - [ ] **RF-17** — Price/availability alerts
 - [ ] **RF-18** — Auto-notifications
 
 ## Non-functional requirements (RNF)
 
 - [ ] **RNF-01** — Response < 500ms
-- [ ] **RNF-02** — Validation + semantic HTTP codes
-- [ ] **RNF-03** — Structured logs with correlation ID
-- [ ] **RNF-04** — Independent DB per service
-- [ ] **RNF-05** — REST-only inter-service communication
+- [x] **RNF-02** — Validation + semantic HTTP codes
+- [ ] **RNF-03** — Structured logs with correlation ID and downstream propagation
+- [x] **RNF-04** — Independent DB per service
+- [x] **RNF-05** — REST-only inter-service communication
 - [x] **RNF-06** — BCrypt password encryption
 
 ## User stories (HU)
 
 - [x] **HU-01** — User registration
 - [x] **HU-02** — Authentication
-- [ ] **HU-03** — Catalog exploration
-- [ ] **HU-04** — Build creation
+- [x] **HU-03** — Catalog exploration
+- [x] **HU-04** — Build creation
 - [ ] **HU-05** — Compatibility validation
-- [ ] **HU-06** — Cost estimation
+- [x] **HU-06** — Cost estimation
 - [ ] **HU-07** — Component recommendations
-- [ ] **HU-08** — Build history
-- [ ] **HU-09** — System notifications
-- [ ] **HU-10** — Admin catalog management
+- [x] **HU-08** — Build history
+- [x] **HU-09** — System notifications
+- [x] **HU-10** — Admin catalog management
 
 ---
 
 
 ## Services
 
-> Current progress per service
+> Current progress per service. Completed items archived in [DONE.md](DONE.md).
+
+---
+### Cross-cutting
+
+**Pending**
+- [ ] Ensure correlation ID propagation is consistently planned across all services (RNF-03)
+- [ ] Add user identity propagation — gateway forwards userId/email/role as headers, downstream services consume them (Gap #17)
+- [ ] (optional) Split profiles into `dev`/`prod` (environment) + `h2`/`mysql` (database)
+- [ ] Fix dependency chain in `.opencode/agents/shared-context.md` — add `user-service` before `category-service` (currently omitted, but `auth-service` depends on it)
+- [ ] Fix dependency chain in `.opencode/agents/planner.md` — same missing `user-service` fix
+- [ ] Fix `.opencode/agents/implementor.md` — change "entity" to "model" as the package name (actual package is `model/`, not `entity/`)
 
 ---
 ### api-gateway :8080
 
 **Pending**
+- [ ] Propagate user identity (userId/email/role) as headers to downstream services
 - [ ] Tests
 
-**Done**
-- [x] `spring-boot-starter-security` in `pom.xml`
-- [x] `GatewayRoutesConfig` — `RouterFunction<ServerResponse>` with `GatewayRouterFunctions.route()` + `BeforeFilterFunctions.uri()` (replaced YAML routes)
-- [x] All 9 `*_SERVICE_URL` vars in `.env.example`
-- [x] `AuthClientResponse` — DTO record for auth-service validate response
-- [x] `RestClientConfig` — `RestClient.Builder` bean
-- [x] `AuthRestClient` — RestClient → `auth-service:8081/api/auth/validate` for token delegation (Module 5)
-- [x] `JwtAuthFilter` — `OncePerRequestFilter` that extracts Bearer token, delegates to auth-service, populates `SecurityContext`. Blocks invalid tokens with 401 immediately (Module 7)
-- [x] `SecurityConfig` — `SecurityFilterChain` with STATELESS sessions, CSRF disabled, public vs. user vs. admin route rules per ARCHITECTURE.md (Module 7)
-- [x] `CorrelationIdFilter` — MDC-based `X-Correlation-Id` request tracing (Module 8)
-- [x] `ApiError` record — `{ message, details, timestamp }` (Module 9)
-- [x] `GlobalExceptionHandler` — `@ControllerAdvice` with `IllegalArgument`→400, `MethodArgumentNotValid`→400, `NoResourceFound`→404, `HttpMessageNotReadable`→400, `BadCredentials`→401, `AccessDenied`→403, generic `Exception`→500 (Module 9)
-- [x] Endpoint tests script — `scripts/gateway-endpoint-test.ps1` + `scripts/gateway-endpoint-test-v2.ps1`
-
 ---
+
 ### auth-service :8081
 
 **Pending**
-- [ ] Align application-h2.yaml to use `data.sql` + `ddl-auto: create-drop` (like other services)
-- [ ] Per-profile log levels + correlation ID filter
-- [ ] Add AccessDeniedException → 403 to GlobalExceptionHandler (Module 9)
-- [ ] Add ResourceAccessException → 503 to GlobalExceptionHandler (downstream service unavailable)
-- [ ] Endpoint tests script (notification as template)
+- [ ] Correlation ID propagation to downstream services
+- [ ] Endpoint tests script
 - [ ] Tests
-
-**Done**
-- [x] Model / Entity (Credential) (Module 2)
-- [x] Repository (Module 2)
-- [x] DTOs (Request / Response) (Module 1)
-- [x] Service (Module 1)
-- [x] Controller (Module 1)
-- [x] Exception handling (Module 1)
-- [x] Seed credentials for admin + test users (link to existing user-service profiles)
-- [x] BCrypt password hashing (Module 7)
-- [x] JWT token generation / validation (Module 7)
-- [x] Roles: USER / ADMIN (Module 7)
-- [x] Flyway migrations — MySQL (Module 6)
-- [x] `@Slf4j` on services + `log.info()` in CRUD
-- [x] GlobalExceptionHandler (Module 9)
 
 ---
 ### user-service :8082
 
 **Pending**
-- [ ] User with unique email (Module 3)
+- [ ] User with unique email (Module 3) — add `@Column(unique = true)` to `User.email`
 - [ ] Ensure email uniqueness validated across user-service and auth-service (duplicate check in register flow)
-- [ ] Flyway migrations (Module 6)
-- [ ] Per-profile log levels + correlation ID filter
-- [ ] Add AccessDeniedException → 403 to GlobalExceptionHandler (Module 9)
-- [ ] Endpoint tests script (notification as template)
+- [ ] PATCH endpoint for partial user updates
+- [ ] Correlation ID propagation to downstream services
+- [ ] Endpoint tests script
 - [ ] Tests
 
-**Done**
-- [x] Model / Entity (User) (Module 2)
-- [x] Repository (Module 2)
-- [x] DTOs (Request / Response) (Module 1)
-- [x] Service (Module 1)
-- [x] Controller (Module 1)
-- [x] Exception handling (Module 1)
-- [x] Seed data (20 users) (Module 2)
-- [x] `@Slf4j` on services + `log.info()` in CRUD
-- [x] GlobalExceptionHandler (Module 9)
-- [x] Handle HttpMessageNotReadableException in GlobalExceptionHandler (invalid enums return 400)
-
 ---
+
 ### category-service :8084
 
 **Pending**
-- [ ] Flyway migrations (Module 6)
-- [ ] Per-profile log levels + correlation ID filter
-- [ ] Add AccessDeniedException → 403 to GlobalExceptionHandler (Module 9)
-- [ ] Endpoint tests script (notification as template)
+- [ ] PATCH endpoint for partial category updates
+- [ ] Correlation ID propagation to downstream services
+- [ ] Endpoint tests script
 - [ ] Tests
 
-**Done**
-- [x] Model / Entity (Category, AttributeDefinition) (Module 2)
-- [x] Repository (Module 2)
-- [x] DTOs (Request / Response) (Module 1)
-- [x] Service (Module 1)
-- [x] Controller (Module 1)
-- [x] Exception handling (Module 1)
-- [x] Seed data (8 categories, ~30 attributes) (Module 2)
-- [x] `@OneToMany` Category -> AttributeDefinition (Module 3)
-- [x] `@Slf4j` on services + `log.info()` in CRUD
-- [x] GlobalExceptionHandler (Module 9)
-- [x] Handle HttpMessageNotReadableException in GlobalExceptionHandler (invalid enums return 400)
-
 ---
+
 ### product-service :8083
 
 **Pending**
-- [ ] Flyway migrations (Module 6)
-- [ ] Per-profile log levels + correlation ID filter
-- [ ] Add AccessDeniedException → 403 to GlobalExceptionHandler (Module 9)
-- [ ] Refactor endpoint tests script (notification template)
+- [ ] FeignClient fallbacks and configurable timeouts (Module 5)
+- [ ] Correlation ID propagation to downstream services
+- [ ] Endpoint tests script
 - [ ] Tests
 
-**Done**
-- [x] Model / Entity (Product, ProductAttribute) (Module 2)
-- [x] Repository (Module 2)
-- [x] DTOs (Request / Response) (Module 1)
-- [x] Service (Module 1)
-- [x] Controller (Module 1)
-- [x] Exception handling (Module 1)
-- [x] Seed data (32 products, ~100 attributes) (Module 2)
-- [x] `@OneToMany` Product -> ProductAttribute (Module 3)
-- [x] RestClient → category-service (Module 5)
-- [x] Add to ARCHITECTURE.md inter-service table (product → category)
-- [x] `@Slf4j` on services + `log.info()` in CRUD
-- [x] GlobalExceptionHandler (Module 9)
-- [x] Handle HttpMessageNotReadableException in GlobalExceptionHandler (invalid enums return 400)
-
 ---
+
 ### compatibility-service :8085
 
 **Pending**
-- [ ] RestClient → product-service (Module 5)
-- [ ] Flyway migrations (Module 6)
-- [ ] Per-profile log levels + correlation ID filter
-- [ ] Add AccessDeniedException → 403 to GlobalExceptionHandler (Module 9)
-- [ ] Align CompatibilityCheck entity in README.md: add `buildId` and `createdAt`
-- [ ] Endpoint tests script (notification as template)
+- [ ] Correlation ID propagation to downstream services
+- [ ] Endpoint tests script
 - [ ] Tests
-
-**Done**
-- [x] Model / Entity (CompatibilityRule, CompatibilityCheck) (Module 2)
-- [x] Repository (Module 2)
-- [x] DTOs (Request / Response) (Module 1)
-- [x] Service (Module 1)
-- [x] Controller (Module 1)
-- [x] Exception handling (Module 1)
-- [x] Seed data (5 rules) (Module 2)
-- [x] Add to ARCHITECTURE.md inter-service table (compatibility → product)
-- [x] `@Slf4j` on services + `log.info()` in CRUD
-- [x] GlobalExceptionHandler (Module 9)
-- [x] Handle HttpMessageNotReadableException in GlobalExceptionHandler (invalid enums return 400)
 
 ---
 ### provider-service :8086
 
 **Pending**
-- [ ] Flyway migrations (Module 6)
-- [ ] Per-profile log levels + correlation ID filter
-- [ ] Add AccessDeniedException → 403 to GlobalExceptionHandler (Module 9)
-- [ ] Endpoint tests script (notification as template)
+- [ ] Add `@ManyToOne`/`@OneToMany` JPA relations on `Provider` and `ProviderProduct` instead of scalar `Long` fields (Module 3)
+- [ ] PATCH endpoint for partial provider updates
+- [ ] Correlation ID propagation to downstream services
+- [ ] Endpoint tests script
 - [ ] Tests
 
-**Done**
-- [x] Model / Entity (Provider, ProviderProduct) (Module 2)
-- [x] Repository (Module 2)
-- [x] DTOs (Request / Response) (Module 1)
-- [x] Service (Module 1)
-- [x] Controller (Module 1)
-- [x] Exception handling (Module 1)
-- [x] Seed data (4 providers) (Module 2)
-- [x] `@Slf4j` on services + `log.info()` in CRUD
-- [x] GlobalExceptionHandler (Module 9)
-- [x] Handle HttpMessageNotReadableException in GlobalExceptionHandler (invalid enums return 400)
-
 ---
+
 ### build-service :8087
 
+**In Progress**
+- [🔥] Fix `GET /api/builds` — filter by authenticated user instead of returning all builds (no ownership check, leaks all users' builds)
+
 **Pending**
-- [ ] Seed data (5 builds, ~25 items) (Module 2) — product IDs (101–124) don't match product-service (1–32)
-- [ ] PATCH /api/builds/{id}/status for partial updates (Module 3)
-- [ ] FeignClient → product-service (Module 5)
-- [ ] FeignClient → compatibility-service (Module 5)
-- [ ] FeignClient → provider-service (Module 5)
-- [ ] Flyway migrations (Module 6)
-- [ ] Per-profile log levels + correlation ID filter
-- [ ] Add AccessDeniedException → 403 to GlobalExceptionHandler (Module 9)
-- [ ] Endpoint tests script (notification as template)
+- [ ] (optional) Log who performed each action (Module 8 — extra challenge)
+- [ ] FeignClient fallbacks and configurable timeouts (Module 5)
+- [ ] Propagate user identity (userId/email/role) from incoming request for build ownership checks
+- [ ] Correlation ID propagation to downstream services
 - [ ] Tests
 
-**Done**
-- [x] Model / Entity (Build, BuildItem) (Module 2)
-- [x] Repository (Module 2)
-- [x] DTOs (Request / Response) (Module 1)
-- [x] Service (Module 1)
-- [x] Controller (Module 1)
-- [x] Exception handling (Module 1)
-- [x] `@OneToMany` Build -> BuildItem (Module 3)
-- [x] `@Slf4j` on services + `log.info()` in CRUD
-- [x] GlobalExceptionHandler (Module 9)
-- [x] Handle HttpMessageNotReadableException in GlobalExceptionHandler (invalid enums return 400)
-
 ---
+
 ### estimate-service :8088
 
 **Pending**
-- [ ] Seed data (Module 2)
-- [ ] RestClient → build-service (Module 5)
-- [ ] RestClient → product-service (Module 5)
-- [ ] RestClient → notification-service (Module 5)
-- [ ] Flyway migrations (Module 6)
-- [ ] Per-profile log levels + correlation ID filter
-- [ ] Add AccessDeniedException → 403 to GlobalExceptionHandler (Module 9)
+- [ ] Deduplicate keys in `application.yaml` (build/product/notification service URLs + server.port are duplicated)
+- [ ] Correlation ID propagation to downstream services
 - [ ] Endpoint tests script (notification as template)
 - [ ] Tests
 
-**Done**
-- [x] Model / Entity (Estimate) (Module 2)
-- [x] Repository (Module 2)
-- [x] DTOs (Request / Response) (Module 1)
-- [x] Service (Module 1)
-- [x] Controller (Module 1)
-- [x] Exception handling (Module 1)
-- [x] `@Slf4j` on services + `log.info()` in CRUD
-- [x] GlobalExceptionHandler (Module 9)
-- [x] Handle HttpMessageNotReadableException in GlobalExceptionHandler (invalid enums return 400)
-
 ---
-### hardware-advisor :8089
+
+### hardware-advisor-service :8089
 
 **Pending**
-- [ ] Seed data (Module 2)
 - [ ] FeignClient → build-service (Module 5)
 - [ ] FeignClient → product-service (Module 5)
 - [ ] FeignClient → compatibility-service (Module 5)
 - [ ] FeignClient → notification-service (Module 5)
-- [ ] Flyway migrations (Module 6)
-- [ ] Per-profile log levels + correlation ID filter
-- [ ] Add AccessDeniedException → 403 to GlobalExceptionHandler (Module 9)
+- [ ] FeignClient fallbacks and configurable timeouts (Module 5)
+- [ ] Correlation ID propagation to downstream services
+- [ ] Implement generate() recommendation logic (fetch build → compare catalog → apply rules → persist)
 - [ ] Endpoint tests script (notification as template)
 - [ ] Tests
 
-**Done**
-- [x] Model / Entity (Recommendation) (Module 2)
-- [x] Repository (Module 2)
-- [x] DTOs (Request / Response) (Module 1)
-- [x] Service (Module 1)
-- [x] Controller (Module 1)
-- [x] Exception handling (Module 1)
-- [x] `@Slf4j` on services + `log.info()` in CRUD
-- [x] GlobalExceptionHandler (Module 9)
-- [x] Handle HttpMessageNotReadableException in GlobalExceptionHandler (invalid enums return 400)
-
 ---
+
 ### notification-service :8090
 
 **Pending**
-- [ ] Seed data (Module 2)
-- [ ] Flyway migrations (Module 6)
-- [ ] Per-profile log levels + correlation ID filter
-- [ ] Add AccessDeniedException → 403 to GlobalExceptionHandler (Module 9)
+- [ ] Replace `NoSuchElementException` with `EntityNotFoundException` for 404 responses
+- [ ] Add `EntityNotFoundException` handler to `GlobalExceptionHandler`
+- [ ] Add UserRestClient → user-service to resolve email on send()
+- [ ] Correlation ID propagation to downstream services
 - [ ] Endpoint tests script (no script file found)
 - [ ] Tests
 
-**Done**
-- [x] Model / Entity (NotificationLog) (Module 2)
-- [x] Repository (Module 2)
-- [x] DTOs (Request / Response) (Module 1)
-- [x] Service (Module 1)
-- [x] Controller (Module 1)
-- [x] Exception handling (Module 1)
-- [x] Migrate to JPA + database (Module 2)
-- [x] `@Slf4j` on services + `log.info()` in CRUD
-- [x] GlobalExceptionHandler (Module 9)
-- [x] Handle HttpMessageNotReadableException in GlobalExceptionHandler (invalid enums return 400)
+---
 
 ---
 
@@ -380,7 +244,7 @@
 - `@Slf4j` from Lombok on Services
 - `log.info()` on create / update / delete
 - Log levels per profile
-- Correlation ID for request tracing
+- Correlation ID for request tracing with downstream propagation
 
 ### Module 9: Global Exception Handling (Lesson 18)
 
@@ -404,36 +268,20 @@
 
 | # | Service | Endpoint | Got | Expected | Root Cause |
 |---|---------|----------|-----|----------|------------|
-| 1 | auth-service | `GET /api/auth/validate` (no header) | 500 | 401 | `@RequestHeader` throws `MissingRequestHeaderException`, generic handler → 500 |
-| 2 | user-service | `GET /api/users/{nonNumeric}` | 500 | 400 | `Long` path param throws `NumberFormatException` |
-| 3 | category-service | `GET /api/categories/{nonNumeric}` | 500 | 400 | Same `NumberFormatException` |
-| 4 | category-service | `PUT /api/categories/{id}` | 500 | 200 | Update operation fails with unhandled exception |
-| 5 | product-service | `GET /api/products/{nonNumeric}` | 500 | 400 | `NumberFormatException` |
-| 6 | product-service | `GET /api/products/category/{nonNumeric}` | 500 | 400 | `NumberFormatException` |
-| 7 | product-service | `GET /api/products/price?minPrice=abc` | 500 | 400 | Bad request param parsing |
-| 8 | product-service | `GET /api/products/{id}/attributes/{badId}` | 500 | 404 | Child entity not found, throws unknown exception |
-| 9 | build-service | `PUT /api/builds/{id}/items/{itemId}` | 500 | 200 | Item update fails with unhandled exception |
+| 4 | category-service | `PUT /api/categories/{id}` | 405 | 200 | PUT endpoint removed entirely — feature missing, not a 500 bug |
+| 8 | product-service | `GET /api/products/{id}/attributes/{badId}` | 404 | 404 | Endpoint removed entirely — GET single attribute feature missing |
 
 ### Medium: Missing/incorrect validation
 
 | # | Service | Endpoint | Got | Expected | Root Cause |
 |---|---------|----------|-----|----------|------------|
-| 10 | build-service | `POST /api/builds/{id}/items` (bad productId=99999) | 201 | 404 | No validation that productId exists before adding to build |
-| 11 | estimate-service | `POST /api/estimate/calculate` (bad buildId=99999) | 201 | 404 | Creates estimate for nonexistent build |
-| 12 | hardware-advisor | `GET /api/recommendations/{badBuildId}` | 200 (empty) | 404 | Returns empty list instead of 404 for nonexistent build |
-| 13 | hardware-advisor | `POST /api/recommendations/generate` (bad buildId) | 201 | 404 | Generates recommendations for nonexistent build |
+| 12 | hardware-advisor-service | `GET /api/recommendations/{badBuildId}` | 200 (empty) | 404 | Returns empty list instead of 404 for nonexistent build — blocked on FeignClient → build-service |
+| 13 | hardware-advisor-service | `POST /api/recommendations/generate` (bad buildId) | 201 | 404 | Generates recommendations for nonexistent build — blocked on FeignClient → build-service |
 
-### Low: Missing feature
+<!-- ### Low: Missing feature
 
 | # | Service | Endpoint | Got | Expected | Root Cause |
-|---|---------|----------|-----|----------|------------|
-| 14 | build-service | `PATCH /api/builds/{id}/status` | 404 | 200 | PATCH endpoint for status updates not implemented |
-
-### Seed data issues
-
-| # | Service | Details |
-|---|---------|---------|
-| 15 | auth-service | Admin BCrypt hash in `V2__seed_data.sql` doesn't match password "admin123" — placeholder hash used |
+|---|---------|----------|-----|----------|------------| -->
 
 ---
 

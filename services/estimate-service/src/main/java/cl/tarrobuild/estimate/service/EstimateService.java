@@ -1,7 +1,12 @@
 package cl.tarrobuild.estimate.service;
 
+import cl.tarrobuild.estimate.client.BuildRestClient;
+import cl.tarrobuild.estimate.client.NotificationRestClient;
+import cl.tarrobuild.estimate.client.ProductRestClient;
+import cl.tarrobuild.estimate.dto.BuildClientResponse;
 import cl.tarrobuild.estimate.dto.EstimateRequest;
 import cl.tarrobuild.estimate.dto.EstimateResponse;
+import cl.tarrobuild.estimate.dto.NotificationClientRequest;
 import cl.tarrobuild.estimate.model.Estimate;
 import cl.tarrobuild.estimate.repository.EstimateRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -15,23 +20,50 @@ import java.util.List;
 public class EstimateService {
 
     private final EstimateRepository estimateRepository;
+    private final BuildRestClient buildRestClient;
+    private final ProductRestClient productRestClient;
+    private final NotificationRestClient notificationRestClient;
 
-    public EstimateService(EstimateRepository estimateRepository) {
+    public EstimateService(EstimateRepository estimateRepository,
+                           BuildRestClient buildRestClient,
+                           ProductRestClient productRestClient,
+                           NotificationRestClient notificationRestClient) {
         this.estimateRepository = estimateRepository;
+        this.buildRestClient = buildRestClient;
+        this.productRestClient = productRestClient;
+        this.notificationRestClient = notificationRestClient;
     }
 
     public EstimateResponse calculate(EstimateRequest request) {
         log.info("Calculating estimate for buildId: {}", request.buildId());
 
+        BuildClientResponse build = buildRestClient.getBuildById(request.buildId());
+        log.info("Build found: id={}, items={}", build.id(), build.items().size());
+
+        int totalCost = build.items().stream()
+                .mapToInt(item -> {
+                    var product = productRestClient.getProductById(item.productId());
+                    log.debug("Product {} msrp: {} x {}", item.productId(), product.msrp(), item.quantity());
+                    return product.msrp() * item.quantity();
+                })
+                .sum();
+        log.info("Total cost calculated: {}", totalCost);
+
         Estimate estimate = new Estimate();
         estimate.setBuildId(request.buildId());
-        estimate.setTotalPrice(0);
-        if (request.currency() != null) {
-            estimate.setCurrency(request.currency());
-        }
+        estimate.setTotalCost(totalCost);
+        estimate.setCurrency(request.currency() != null ? request.currency() : "USD");
 
         Estimate saved = estimateRepository.save(estimate);
         log.info("Estimate created with id: {} for buildId: {}", saved.getId(), saved.getBuildId());
+
+        notificationRestClient.sendNotification(new NotificationClientRequest(
+                build.userId(),
+                "ESTIMATE",
+                "Your build \"" + build.name() + "\" estimate is $" + totalCost,
+                "INFO"
+        ));
+
         return toResponse(saved);
     }
 
@@ -62,7 +94,7 @@ public class EstimateService {
         return new EstimateResponse(
                 estimate.getId(),
                 estimate.getBuildId(),
-                estimate.getTotalPrice(),
+                estimate.getTotalCost(),
                 estimate.getCurrency(),
                 estimate.getCreatedAt()
         );

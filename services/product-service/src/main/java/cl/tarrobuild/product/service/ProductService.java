@@ -55,9 +55,9 @@ public class ProductService {
                 .toList();
     }
 
-    public List<ProductResponse> getProductsByPriceRange(Integer minPrice, Integer maxPrice) {
-        log.info("Getting products by price range: {} - {}", minPrice, maxPrice);
-        return productRepository.findByPriceBetween(minPrice, maxPrice)
+    public List<ProductResponse> getProductsByMsrpRange(Integer minMsrp, Integer maxMsrp) {
+        log.info("Getting products by msrp range: {} - {}", minMsrp, maxMsrp);
+        return productRepository.findByMsrpBetween(minMsrp, maxMsrp)
                 .stream()
                 .map(this::toResponse)
                 .toList();
@@ -78,7 +78,7 @@ public class ProductService {
         Product product = new Product();
         product.setName(request.name());
         product.setDescription(request.description());
-        product.setPrice(request.price());
+        product.setMsrp(request.msrp());
         product.setCategoryId(request.categoryId());
         product.setBrand(request.brand());
         product.setModel(request.model());
@@ -97,7 +97,7 @@ public class ProductService {
                 .map(product -> {
                     product.setName(request.name());
                     product.setDescription(request.description());
-                    product.setPrice(request.price());
+                    product.setMsrp(request.msrp());
                     product.setCategoryId(request.categoryId());
                     product.setBrand(request.brand());
                     product.setModel(request.model());
@@ -221,7 +221,7 @@ public class ProductService {
                 product.getId(),
                 product.getName(),
                 product.getDescription(),
-                product.getPrice(),
+                product.getMsrp(),
                 product.getCategoryId(),
                 product.getBrand(),
                 product.getModel(),
