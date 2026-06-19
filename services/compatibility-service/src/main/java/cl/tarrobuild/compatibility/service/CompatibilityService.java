@@ -79,9 +79,7 @@ public class CompatibilityService {
     }
 
     private boolean evaluateRule(CompatibilityRule rule, List<Long> productIds) {
-        // Stub: rules are stored for reference but actual attribute comparison
-        // requires product data from product-service (to be wired later).
-        // For now, all rules pass by default.
+        // Por ahora las reglas pasan por defecto hasta conectar con los datos de productos
         log.debug("Rule evaluation stub — returning true for rule: {}",
                 rule.getIncompatibilityReason());
         return true;
@@ -95,6 +93,7 @@ public class CompatibilityService {
                         "No compatibility check found for build ID " + buildId));
     }
 
+    // Soluciona el error en el controlador para buscar un check individual
     public CompatibilityCheckResponse getCheckById(Long id) {
         log.info("Getting compatibility check by id: {}", id);
         return checkRepository.findById(id)
@@ -103,6 +102,7 @@ public class CompatibilityService {
                         "Compatibility check with ID " + id + " not found"));
     }
 
+    // Soluciona el error en el controlador para crear reglas
     public CompatibilityRuleResponse createRule(CompatibilityRuleRequest request) {
         log.info("Creating compatibility rule: {} {} {} -> {} {}",
                 request.sourceCategory(), request.sourceAttributeName(), request.operator(),
@@ -121,6 +121,7 @@ public class CompatibilityService {
         return toRuleResponse(saved);
     }
 
+    // Soluciona el error en el controlador para listar las reglas
     public List<CompatibilityRuleResponse> getAllRules() {
         log.info("Getting all compatibility rules");
         return ruleRepository.findAll().stream()
@@ -128,6 +129,7 @@ public class CompatibilityService {
                 .toList();
     }
 
+    // Soluciona el error en el controlador para buscar una regla por ID
     public CompatibilityRuleResponse getRuleById(Long id) {
         log.info("Getting compatibility rule by id: {}", id);
         return ruleRepository.findById(id)
@@ -136,6 +138,7 @@ public class CompatibilityService {
                         "Compatibility rule with ID " + id + " not found"));
     }
 
+    // Soluciona el error en el controlador para actualizar reglas
     public CompatibilityRuleResponse updateRule(Long id, CompatibilityRuleRequest request) {
         log.info("Updating compatibility rule id: {}", id);
         return ruleRepository.findById(id)
@@ -154,6 +157,7 @@ public class CompatibilityService {
                         "Compatibility rule with ID " + id + " not found"));
     }
 
+    // Soluciona el error en el controlador para eliminar reglas
     public boolean deleteRule(Long id) {
         if (!ruleRepository.existsById(id)) {
             log.info("Compatibility rule with id: {} not found for deletion", id);

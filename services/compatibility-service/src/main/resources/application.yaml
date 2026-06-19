@@ -4,5 +4,36 @@ spring:
   profiles:
     active: ${SPRING_PROFILES_ACTIVE:h2}
 
+
+  datasource:
+    url: jdbc:h2:mem:db_compatibility;DB_CLOSE_DELAY=-1
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: ""
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+
 server:
   port: ${SERVER_PORT:8085}
+
+
+app:
+  services:
+    product-url: http://localhost:8083
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: prod
+  datasource:
+    url: ${DATABASE_URL}
+    username: ${DATABASE_USERNAME}
+    password: ${DATABASE_PASSWORD}
+
+app:
+  services:
+    product-url: ${PRODUCT_SERVICE_URL}

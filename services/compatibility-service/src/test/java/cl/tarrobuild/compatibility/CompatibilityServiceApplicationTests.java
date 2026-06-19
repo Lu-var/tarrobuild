@@ -9,5 +9,4 @@ class CompatibilityServiceApplicationTests {
     @Test
     void contextLoads() {
     }
-
 }
