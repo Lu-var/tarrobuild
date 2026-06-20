@@ -1,10 +1,11 @@
 package cl.tarrobuild.compatibility.service;
 
-import cl.tarrobuild.compatibility.client.ProductRestClient;
+import cl.tarrobuild.compatibility.client.ProductClient;
 import cl.tarrobuild.compatibility.dto.CompatibilityCheckRequest;
 import cl.tarrobuild.compatibility.dto.CompatibilityCheckResponse;
 import cl.tarrobuild.compatibility.dto.CompatibilityRuleRequest;
 import cl.tarrobuild.compatibility.dto.CompatibilityRuleResponse;
+import cl.tarrobuild.compatibility.dto.ProductDTO;
 import cl.tarrobuild.compatibility.model.CompatibilityCheck;
 import cl.tarrobuild.compatibility.model.CompatibilityRule;
 import cl.tarrobuild.compatibility.repository.CompatibilityCheckRepository;
@@ -14,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -22,14 +24,14 @@ public class CompatibilityService {
 
     private final CompatibilityRuleRepository ruleRepository;
     private final CompatibilityCheckRepository checkRepository;
-    private final ProductRestClient productRestClient;
+    private final ProductClient productClient;
 
     public CompatibilityService(CompatibilityRuleRepository ruleRepository,
                                 CompatibilityCheckRepository checkRepository,
-                                ProductRestClient productRestClient) {
+                                ProductClient productClient) {
         this.ruleRepository = ruleRepository;
         this.checkRepository = checkRepository;
-        this.productRestClient = productRestClient;
+        this.productClient = productClient;
     }
 
     public CompatibilityCheckResponse check(CompatibilityCheckRequest request) {
@@ -83,11 +85,41 @@ public class CompatibilityService {
     }
 
     private boolean evaluateRule(CompatibilityRule rule, List<Long> productIds) {
-        // Stub: rules are stored for reference but actual attribute comparison
-        // requires product data from product-service (to be wired later).
-        // For now, all rules pass by default.
-        log.debug("Rule evaluation stub — returning true for rule: {}",
-                rule.getIncompatibilityReason());
+        log.debug("Consumiendo cliente REST remoto para validar reglas distribuidas");
+
+        List<ProductDTO> products = productIds.stream()
+                .map(id -> {
+                    try {
+                        return productClient.getProductById(id);
+                    } catch (Exception e) {
+                        log.error("Error de comunicación remota con product-service para ID: {}", id, e);
+                        return null;
+                    }
+                })
+                .filter(Objects::nonNull)
+                .toList();
+
+        ProductDTO sourceProduct = products.stream()
+                .filter(p -> p.categoryName() != null && p.categoryName().equalsIgnoreCase(rule.getSourceCategory()))
+                .findFirst()
+                .orElse(null);
+
+        ProductDTO targetProduct = products.stream()
+                .filter(p -> p.categoryName() != null && p.categoryName().equalsIgnoreCase(rule.getTargetCategory()))
+                .findFirst()
+                .orElse(null);
+
+        if (sourceProduct == null || targetProduct == null) {
+            return true;
+        }
+
+        if ("socketType".equalsIgnoreCase(rule.getSourceAttributeName()) && "EQUALS".equalsIgnoreCase(rule.getOperator())) {
+            if (sourceProduct.socketType() == null || targetProduct.socketType() == null) {
+                return false;
+            }
+            return sourceProduct.socketType().equalsIgnoreCase(targetProduct.socketType());
+        }
+
         return true;
     }
 
