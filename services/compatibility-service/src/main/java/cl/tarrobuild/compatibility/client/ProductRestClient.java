@@ -13,7 +13,7 @@ public class ProductRestClient {
     private final RestClient restClient;
 
     public ProductRestClient(RestClient.Builder builder,
-                             @Value("${app.services.product-service.url}") String productServiceUrl) {
+                             @Value("${product-service.url}") String productServiceUrl) {
         this.restClient = builder
                 .baseUrl(productServiceUrl)
                 .build();

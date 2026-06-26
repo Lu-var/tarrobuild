@@ -103,7 +103,7 @@ public class CompatibilityController {
 
     @Operation(summary = "Eliminar una regla", description = "Quita definitivamente una restricción del sistema del repositorio de compatibilidad.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "244", description = "No Content - Regla purgada del sistema satisfactoriamente"),
+            @ApiResponse(responseCode = "204", description = "No Content - Regla purgada del sistema satisfactoriamente"),
             @ApiResponse(responseCode = "404", description = "No se pudo eliminar porque el ID no existe en la base de datos")
     })
     @DeleteMapping("/rules/{id}")

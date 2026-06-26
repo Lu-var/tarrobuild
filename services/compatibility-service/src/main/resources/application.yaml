@@ -3,48 +3,9 @@ spring:
     name: compatibility-service
   profiles:
     active: ${SPRING_PROFILES_ACTIVE:h2}
-  datasource:
-    url: jdbc:h2:mem:db_compatibility;DB_CLOSE_DELAY=-1
-    driver-class-name: org.h2.Driver
-    username: sa
-    password: ""
-  h2:
-    console:
-      enabled: true
-      path: /h2-console
 
 server:
   port: ${SERVER_PORT:8085}
 
-# AQUÍ ESTÁ EL CAMBIO: Declarado directo para que coincida con tu código Java
 product-service:
   url: http://localhost:8083
-
----
-
-spring:
-  config:
-    activate:
-      on-profile: prod
-  datasource:
-    url: ${DATABASE_URL}
-    username: ${DATABASE_USERNAME}
-    password: ${DATABASE_PASSWORD}
-
-# AQUÍ TAMBIÉN: Declarado directo para el entorno de producción
-product-service:
-  url: ${PRODUCT_SERVICE_URL:http://product-service:8082}
-
-app:
-  environment: production
-
-logging:
-  level:
-    cl.tarrobuild: INFO
-    org.hibernate.SQL: WARN
-  file:
-    name: logs/compatibility-service.log
-  logback:
-    rollingpolicy:
-      max-file-size: 10MB
-      max-history: 10
