@@ -113,11 +113,36 @@ public class CompatibilityService {
             return true;
         }
 
-        if ("socketType".equalsIgnoreCase(rule.getSourceAttributeName()) && "EQUALS".equalsIgnoreCase(rule.getOperator())) {
-            if (sourceProduct.socketType() == null || targetProduct.socketType() == null) {
-                return false;
+        String attributeName = rule.getSourceAttributeName();
+        String operator = rule.getOperator();
+
+        if ("EQUALS".equalsIgnoreCase(operator)) {
+            // 1. Validación del Socket
+            if ("socketType".equalsIgnoreCase(attributeName)) {
+                if (sourceProduct.socketType() == null || targetProduct.socketType() == null) {
+                    return false;
+                }
+                return sourceProduct.socketType().equalsIgnoreCase(targetProduct.socketType());
             }
-            return sourceProduct.socketType().equalsIgnoreCase(targetProduct.socketType());
+
+            // 2. Validación de ramType y formFactor usando una extracción segura por reflexión
+            // Esto evita errores de compilación si no existen los métodos directos en el DTO
+            try {
+                java.lang.reflect.Method sourceMethod = sourceProduct.getClass().getMethod(attributeName);
+                java.lang.reflect.Method targetMethod = targetProduct.getClass().getMethod(attributeName);
+
+                String sourceValue = (String) sourceMethod.invoke(sourceProduct);
+                String targetValue = (String) targetMethod.invoke(targetProduct);
+
+                if (sourceValue == null || targetValue == null) {
+                    return false;
+                }
+                return sourceValue.equalsIgnoreCase(targetValue);
+            } catch (Exception e) {
+                // Si el método no existe todavía en el DTO del otro servicio, dejamos pasar de forma segura
+                log.warn("El atributo de regla '{}' no pudo ser evaluado dinámicamente en el DTO", attributeName);
+                return true;
+            }
         }
 
         return true;

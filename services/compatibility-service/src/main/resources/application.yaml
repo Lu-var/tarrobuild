@@ -3,8 +3,6 @@ spring:
     name: compatibility-service
   profiles:
     active: ${SPRING_PROFILES_ACTIVE:h2}
-
-
   datasource:
     url: jdbc:h2:mem:db_compatibility;DB_CLOSE_DELAY=-1
     driver-class-name: org.h2.Driver
@@ -18,11 +16,9 @@ spring:
 server:
   port: ${SERVER_PORT:8085}
 
-<<<<<<< HEAD
-
-app:
-  services:
-    product-url: http://localhost:8083
+# AQUÍ ESTÁ EL CAMBIO: Declarado directo para que coincida con tu código Java
+product-service:
+  url: http://localhost:8083
 
 ---
 
@@ -35,13 +31,10 @@ spring:
     username: ${DATABASE_USERNAME}
     password: ${DATABASE_PASSWORD}
 
-app:
-  services:
-    product-url: ${PRODUCT_SERVICE_URL}
-=======
+# AQUÍ TAMBIÉN: Declarado directo para el entorno de producción
 product-service:
-  url: ${PRODUCT_SERVICE_URL:http://localhost:8083}
-  
+  url: ${PRODUCT_SERVICE_URL:http://product-service:8082}
+
 app:
   environment: production
 
@@ -55,4 +48,3 @@ logging:
     rollingpolicy:
       max-file-size: 10MB
       max-history: 10
->>>>>>> 359538b20ea549989577a1bd554b33ceb61461a2
