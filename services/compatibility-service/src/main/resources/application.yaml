@@ -9,3 +9,6 @@ server:
 
 product-service:
   url: http://localhost:8083
+
+category-service:
+  url: http://localhost:8084
