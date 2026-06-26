@@ -16,10 +16,9 @@ spring:
 server:
   port: ${SERVER_PORT:8085}
 
-app:
-  services:
-    product-service:
-      url: http://localhost:8083
+# AQUÍ ESTÁ EL CAMBIO: Declarado directo para que coincida con tu código Java
+product-service:
+  url: http://localhost:8083
 
 ---
 
@@ -32,10 +31,11 @@ spring:
     username: ${DATABASE_USERNAME}
     password: ${DATABASE_PASSWORD}
 
+# AQUÍ TAMBIÉN: Declarado directo para el entorno de producción
+product-service:
+  url: ${PRODUCT_SERVICE_URL:http://product-service:8082}
+
 app:
-  services:
-    product-service:
-      url: ${PRODUCT_SERVICE_URL:http://product-service:8082}
   environment: production
 
 logging:
