@@ -18,6 +18,7 @@ public class User {
     private Long id;
     private String name;
     private String lastName;
+    @jakarta.persistence.Column(unique = true)
     private String email;
     private String phone;
     private LocalDateTime createdAt;

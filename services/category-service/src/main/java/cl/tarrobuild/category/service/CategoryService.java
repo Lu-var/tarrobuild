@@ -60,6 +60,28 @@ public class CategoryService {
                 .orElseThrow(() -> new EntityNotFoundException("Category not found"));
     }
 
+    public CategoryResponse patchCategory(Long id, CategoryRequest request) {
+        log.info("Patching category id: {}", id);
+        return categoryRepository.findById(id)
+                .map(category -> {
+                    if (request.name() != null) {
+                        category.setName(request.name());
+                    }
+                    if (request.slug() != null && !request.slug().equals(category.getSlug())) {
+                        if (categoryRepository.findBySlug(request.slug()).isPresent()) {
+                            throw new EntityExistsException("Slug already exists");
+                        }
+                        category.setSlug(request.slug());
+                    }
+                    if (request.description() != null) {
+                        category.setDescription(request.description());
+                    }
+                    Category saved = categoryRepository.save(category);
+                    return toResponse(saved);
+                })
+                .orElseThrow(() -> new EntityNotFoundException("Category not found"));
+    }
+
     public AttributeDefinitionResponse createAttribute(Long categoryId, AttributeDefinitionRequest request) {
         log.info("Creating attribute \"{}\" for category id: {}", request.attributeName(), categoryId);
         Category category = categoryRepository.findById(categoryId)

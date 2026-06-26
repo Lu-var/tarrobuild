@@ -37,6 +37,11 @@ public class CategoryController {
         return ResponseEntity.ok(categoryService.getCategoryById(id));
     }
 
+    @PatchMapping("/{id}")
+    public ResponseEntity<CategoryResponse> patchCategory(@PathVariable Long id, @RequestBody CategoryRequest request) {
+        return ResponseEntity.ok(categoryService.patchCategory(id, request));
+    }
+
     @PostMapping("/{categoryId}/attributes")
     public ResponseEntity<AttributeDefinitionResponse> createAttribute(
             @PathVariable Long categoryId,
