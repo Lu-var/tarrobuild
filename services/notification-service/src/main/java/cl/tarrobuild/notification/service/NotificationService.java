@@ -1,6 +1,5 @@
 package cl.tarrobuild.notification.service;
 
-import cl.tarrobuild.notification.client.UserRestClient; // Asegúrate de ajustar este import a tu cliente real
 import cl.tarrobuild.notification.dto.NotificationLogResponse;
 import cl.tarrobuild.notification.dto.SendNotificationRequest;
 import cl.tarrobuild.notification.model.NotificationLog;
@@ -17,24 +16,13 @@ import java.util.List;
 public class NotificationService {
 
     private final NotificationRepository notificationRepository;
-    private final UserRestClient userRestClient;
 
-    public NotificationService(NotificationRepository notificationRepository,
-                               UserRestClient userRestClient) {
+    public NotificationService(NotificationRepository notificationRepository) {
         this.notificationRepository = notificationRepository;
-        this.userRestClient = userRestClient;
     }
 
     public NotificationLogResponse send(SendNotificationRequest request) {
         log.info("Sending notification to userId: {} type: {}", request.userId(), request.type());
-
-        // Resolviendo el email a través del cliente Feign / RestClient antes de proceder
-        try {
-            var userResponse = userRestClient.getUserById(request.userId());
-            log.info("Resolved target email: {} for notification", userResponse.email());
-        } catch (Exception e) {
-            log.error("Could not resolve email for userId: {}. Proceeding anyway.", request.userId());
-        }
 
         NotificationLog record = new NotificationLog();
         record.setUserId(request.userId());
