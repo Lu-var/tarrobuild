@@ -16,9 +16,8 @@ public class ProviderProduct {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "provider_id", nullable = false)
-    private Provider provider;
+    @Column(name = "provider_id", nullable = false)
+    private Long providerId;
 
     @Column(name = "product_id", nullable = false)
     private Long productId;

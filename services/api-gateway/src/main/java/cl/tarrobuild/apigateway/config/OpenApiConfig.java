@@ -1,4 +1,4 @@
-package cl.tarrobuild.gateway.config;
+package cl.tarrobuild.apigateway.config;
 
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
@@ -16,6 +16,6 @@ public class OpenApiConfig {
                         .title("TarroBuild - API Gateway")
                         .description("Puerta de enlace y enrutador central de la arquitectura TarroBuild")
                         .version("1.0")
-                        .license(new License().name("Apache 2.0").url("https://sp:ringdoc.org")));
+                        .license(new License().name("Apache 2.0").url("https://springdoc.org")));
     }
 }
