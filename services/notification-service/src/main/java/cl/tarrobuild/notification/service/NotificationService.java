@@ -4,12 +4,12 @@ import cl.tarrobuild.notification.dto.NotificationLogResponse;
 import cl.tarrobuild.notification.dto.SendNotificationRequest;
 import cl.tarrobuild.notification.model.NotificationLog;
 import cl.tarrobuild.notification.repository.NotificationRepository;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 @Slf4j
 @Service
@@ -54,7 +54,7 @@ public class NotificationService {
         log.info("Getting notification log by id: {}", id);
         return notificationRepository.findById(id)
                 .map(this::toResponse)
-                .orElseThrow(() -> new NoSuchElementException(
+                .orElseThrow(() -> new EntityNotFoundException(
                         "Notification log with ID " + id + " not found"));
     }
 

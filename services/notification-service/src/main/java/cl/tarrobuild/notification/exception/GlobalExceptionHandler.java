@@ -6,6 +6,7 @@ import java.nio.file.AccessDeniedException;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.NoSuchElementException;
+import jakarta.persistence.EntityNotFoundException;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -29,6 +30,15 @@ public class GlobalExceptionHandler {
 
     private boolean isDevelopment() {
         return "development".equalsIgnoreCase(environment);
+    }
+
+    @ExceptionHandler(EntityNotFoundException.class)
+    public ResponseEntity<?> handleEntityNotFound(EntityNotFoundException e) {
+        log.warn("Entity not found: {}", e.getMessage());
+
+        String details = isDevelopment() ? Arrays.toString(e.getStackTrace()) : null;
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(new ApiError(e.getMessage(), details, LocalDateTime.now().toString()));
     }
 
     @ExceptionHandler(IllegalArgumentException.class)
