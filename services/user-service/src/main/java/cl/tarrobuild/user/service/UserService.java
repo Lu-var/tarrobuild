@@ -45,7 +45,7 @@ public class UserService {
         } else if (name != null) {
             users = userRepository.findByName(name);
         } else if (lastName != null) {
-             users = userRepository.findByLastName(lastName);
+            users = userRepository.findByLastName(lastName);
         } else {
             users = userRepository.findAll();
         }
@@ -90,7 +90,7 @@ public class UserService {
     public UserResponse updateUser(Long id, UserUpdateRequest userData) {
         log.info("Updating user id: {}", id);
         return userRepository.findById(id)
-                .map(user ->{
+                .map(user -> {
                     user.setName(userData.name());
                     user.setLastName(userData.lastName());
                     user.setPhone(userData.phone());
@@ -107,5 +107,18 @@ public class UserService {
         }
         userRepository.deleteById(id);
         log.info("User with id: {} deleted successfully", id);
+    }
+
+    public UserResponse patchUser(Long id, UserUpdateRequest userData) {
+        log.info("Patching user id: {}", id);
+        return userRepository.findById(id)
+                .map(user -> {
+                    if (userData.name() != null) user.setName(userData.name());
+                    if (userData.lastName() != null) user.setLastName(userData.lastName());
+                    if (userData.phone() != null) user.setPhone(userData.phone());
+                    User saved = userRepository.save(user);
+                    return toResponse(saved);
+                })
+                .orElseThrow(() -> new EntityNotFoundException("User with ID " + id + " not found"));
     }
 }

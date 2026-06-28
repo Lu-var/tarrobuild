@@ -1,0 +1,170 @@
+version: '3.8'
+
+networks:
+  tarrobuild-net:
+    driver: bridge
+
+volumes:
+  db_auth_data:
+  db_users_data:
+  db_products_data:
+  db_categories_data:
+  db_compatibility_data:
+  db_providers_data:
+  db_builds_data:
+  db_estimates_data:
+  db_recommendations_data:
+  db_notifications_data:
+
+services:
+  # --- BASES DE DATOS ---
+  db_auth:
+    image: mysql:8.0
+    container_name: db_auth
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: db_auth
+    ports:
+      - "3306:3306"
+    networks:
+      - tarrobuild-net
+    volumes:
+      - db_auth_data:/var/lib/mysql
+
+  db_users:
+    image: mysql:8.0
+    container_name: db_users
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: db_users
+    ports:
+      - "3307:3306"
+    networks:
+      - tarrobuild-net
+    volumes:
+      - db_users_data:/var/lib/mysql
+
+  db_products:
+    image: mysql:8.0
+    container_name: db_products
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: db_products
+    ports:
+      - "3308:3306"
+    networks:
+      - tarrobuild-net
+    volumes:
+      - db_products_data:/var/lib/mysql
+
+  db_categories:
+    image: mysql:8.0
+    container_name: db_categories
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: db_categories
+    ports:
+      - "3309:3306"
+    networks:
+      - tarrobuild-net
+    volumes:
+      - db_categories_data:/var/lib/mysql
+
+  db_compatibility:
+    image: mysql:8.0
+    container_name: db_compatibility
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: db_compatibility
+    ports:
+      - "3310:3306"
+    networks:
+      - tarrobuild-net
+    volumes:
+      - db_compatibility_data:/var/lib/mysql
+
+  # --- MICROSERVICIOS BASE ---
+  auth-service:
+    build: ./services/auth-service
+    container_name: auth-service
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+      SPRING_DATASOURCE_URL: jdbc:mysql://db_auth:3306/db_auth
+    depends_on:
+      - db_auth
+    networks:
+      - tarrobuild-net
+
+  user-service:
+    build: ./services/user-service
+    container_name: user-service
+    ports:
+      - "8081:8081"
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+      SPRING_DATASOURCE_URL: jdbc:mysql://db_users:3306/db_users
+    depends_on:
+      - db_users
+    networks:
+      - tarrobuild-net
+
+  category-service:
+    build: ./services/category-service
+    container_name: category-service
+    ports:
+      - "8084:8084"
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+      SPRING_DATASOURCE_URL: jdbc:mysql://db_categories:3306/db_categories
+    depends_on:
+      - db_categories
+    networks:
+      - tarrobuild-net
+
+  # --- MICROSERVICIOS DEPENDIENTES ---
+  product-service:
+    build: ./services/product-service
+    container_name: product-service
+    ports:
+      - "8083:8083"
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+      SPRING_DATASOURCE_URL: jdbc:mysql://db_products:3306/db_products
+    depends_on:
+      - db_products
+      - category-service
+    networks:
+      - tarrobuild-net
+
+  compatibility-service:
+    build: ./services/compatibility-service
+    container_name: compatibility-service
+    ports:
+      - "8085:8085"
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+      SPRING_DATASOURCE_URL: jdbc:mysql://db_compatibility:3306/db_compatibility
+      PRODUCT_SERVICE_URL: http://product-service:8083
+    depends_on:
+      - db_compatibility
+      - product-service
+    networks:
+      - tarrobuild-net
+
+  # --- PUERTA DE ENTRADA ---
+  api-gateway:
+    build: ./services/api-gateway
+    container_name: api-gateway
+    ports:
+      - "8082:8082"
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+    depends_on:
+      - auth-service
+      - user-service
+      - product-service
+      - compatibility-service
+    networks:
+      - tarrobuild-net

@@ -54,6 +54,11 @@ public class UserController {
         return ResponseEntity.ok(userService.updateUser(id, user));
     }
 
+    @PatchMapping("/{id}")
+    public ResponseEntity<UserResponse> patchUser(@PathVariable Long id, @RequestBody UserUpdateRequest user) {
+        return ResponseEntity.ok(userService.patchUser(id, user));
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
         userService.deleteUser(id);

@@ -74,6 +74,30 @@ public class ProviderService {
                         "Provider with ID " + id + " not found"));
     }
 
+    public ProviderResponse patchProvider(Long id, ProviderRequest request) {
+        log.info("Patching provider id: {}", id);
+        return providerRepository.findById(id)
+                .map(provider -> {
+                    if (request.name() != null) {
+                        provider.setName(request.name());
+                    }
+                    if (request.contact() != null) {
+                        provider.setContact(request.contact());
+                    }
+                    if (request.website() != null) {
+                        provider.setWebsite(request.website());
+                    }
+                    if (request.isActive() != null) {
+                        provider.setIsActive(request.isActive());
+                    }
+                    Provider saved = providerRepository.save(provider);
+                    log.info("Provider with id: {} patched", id);
+                    return toResponse(saved);
+                })
+                .orElseThrow(() -> new EntityNotFoundException(
+                        "Provider with ID " + id + " not found"));
+    }
+
     public boolean deleteProvider(Long id) {
         if (!providerRepository.existsById(id)) {
             log.info("Provider with id: {} not found for deletion", id);
