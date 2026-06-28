@@ -7,7 +7,7 @@
 - **Qué:** Resolver conflicto HEAD vs 359538b (duplicación de secciones `---` y `spring.config.activate.on-profile` vs `prod`)
 - **Resultado:** YAML parseable, perfil `prod` funcional con `product-service.url` bajo `app.services`
 
-### [⚠️] Implementar `evaluateRule()` en compatibility-service
+### [✅] Implementar `evaluateRule()` en compatibility-service
 - **Archivo:** `CompatibilityService.java`, `ProductDTO.java`
 - **Qué:** Reemplazar stub que siempre retorna compatible con lógica real que compare atributos de producto según la regla (socket, RAM type, form factor, etc.)
 - **Depende de:** ProductRestClient ya existe

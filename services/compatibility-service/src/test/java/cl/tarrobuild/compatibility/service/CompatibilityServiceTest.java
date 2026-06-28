@@ -1,9 +1,12 @@
 package cl.tarrobuild.compatibility.service;
 
-import cl.tarrobuild.compatibility.client.ProductClient;
+import cl.tarrobuild.compatibility.client.CategoryRestClient;
+import cl.tarrobuild.compatibility.client.ProductRestClient;
+import cl.tarrobuild.compatibility.dto.CategoryClientResponse;
 import cl.tarrobuild.compatibility.dto.CompatibilityCheckRequest;
 import cl.tarrobuild.compatibility.dto.CompatibilityCheckResponse;
-import cl.tarrobuild.compatibility.dto.ProductDTO;
+import cl.tarrobuild.compatibility.dto.ProductAttributeClientResponse;
+import cl.tarrobuild.compatibility.dto.ProductClientResponse;
 import cl.tarrobuild.compatibility.model.CompatibilityRule;
 import cl.tarrobuild.compatibility.repository.CompatibilityCheckRepository;
 import cl.tarrobuild.compatibility.repository.CompatibilityRuleRepository;
@@ -31,61 +34,244 @@ class CompatibilityServiceTest {
     private CompatibilityCheckRepository checkRepository;
 
     @Mock
-    private ProductClient productClient;
+    private ProductRestClient productRestClient;
+
+    @Mock
+    private CategoryRestClient categoryRestClient;
 
     @InjectMocks
     private CompatibilityService compatibilityService;
 
+    // -------------------------------------------------------------------------
+    // Helpers
+    // -------------------------------------------------------------------------
+
+    private ProductClientResponse productResponse(Long id, Long categoryId, String... attrs) {
+        List<ProductAttributeClientResponse> attributes = new ArrayList<>();
+        for (int i = 0; i < attrs.length - 1; i += 2) {
+            attributes.add(new ProductAttributeClientResponse(null, attrs[i], attrs[i + 1], null));
+        }
+        return new ProductClientResponse(id, "Product " + id, null, 0,
+                categoryId, null, null, true, attributes);
+    }
+
+    private CompatibilityRule rule(String srcCat, String srcAttr, String op,
+                                   String tgtCat, String tgtAttr, String reason) {
+        CompatibilityRule r = new CompatibilityRule();
+        r.setSourceCategory(srcCat);
+        r.setSourceAttributeName(srcAttr);
+        r.setOperator(op);
+        r.setTargetCategory(tgtCat);
+        r.setTargetAttributeName(tgtAttr);
+        r.setIncompatibilityReason(reason);
+        return r;
+    }
+
+    // -------------------------------------------------------------------------
+    // Test 1 — no rules → compatible by default
+    // -------------------------------------------------------------------------
+
     @Test
     @DisplayName("Debería responder compatible por defecto si no existen reglas cargadas")
     void check_NoRules_ReturnsCompatibleDefault() {
-
         CompatibilityCheckRequest request = new CompatibilityCheckRequest(100L, List.of(1L, 2L));
 
         Mockito.when(ruleRepository.findAll()).thenReturn(new ArrayList<>());
-        Mockito.when(checkRepository.save(any())).thenAnswer(invocation -> invocation.getArgument(0));
-
+        Mockito.when(checkRepository.save(any())).thenAnswer(inv -> inv.getArgument(0));
 
         CompatibilityCheckResponse response = compatibilityService.check(request);
-
 
         assertNotNull(response);
         assertTrue(response.result());
         assertEquals("No rules defined — no incompatibilities found.", response.details());
     }
 
+    // -------------------------------------------------------------------------
+    // Test 2 — EQ: incompatible sockets
+    // -------------------------------------------------------------------------
+
     @Test
     @DisplayName("Debería detectar incompatibilidad si los sockets de CPU y Motherboard no coinciden")
     void check_IncompatibleSockets_ReturnsFalseWithDetails() {
         CompatibilityCheckRequest request = new CompatibilityCheckRequest(101L, List.of(1L, 2L));
 
+        CompatibilityRule socketRule = rule(
+                "CPU", "Socket", "EQUALS",
+                "Motherboard", "Socket",
+                "El socket del procesador no es compatible con la placa madre.");
 
-        CompatibilityRule rule = new CompatibilityRule();
-        rule.setSourceCategory("CPU");
-        rule.setSourceAttributeName("socketType");
-        rule.setOperator("EQUALS");
-        rule.setTargetCategory("Motherboard");
-        rule.setTargetAttributeName("socketType");
-        rule.setIncompatibilityReason("El socket del procesador no es compatible con la placa madre.");
+        Mockito.when(ruleRepository.findAll()).thenReturn(List.of(socketRule));
 
+        ProductClientResponse cpu = productResponse(1L, 10L, "Socket", "AM4");
+        ProductClientResponse motherboard = productResponse(2L, 20L, "Socket", "LGA1700");
 
-        Mockito.when(ruleRepository.findAll()).thenReturn(List.of(rule));
-
-        ProductDTO cpu = new ProductDTO(1L, "Procesador AMD", "CPU", "AM4", 65);
-        ProductDTO motherboard = new ProductDTO(2L, "Placa Intel", "Motherboard", "LGA1700", 0);
-
-        Mockito.when(productClient.getProductById(1L)).thenReturn(cpu);
-        Mockito.when(productClient.getProductById(2L)).thenReturn(motherboard);
-
-
-        Mockito.when(checkRepository.save(any())).thenAnswer(invocation -> invocation.getArgument(0));
-
+        Mockito.when(productRestClient.getProductById(1L)).thenReturn(cpu);
+        Mockito.when(productRestClient.getProductById(2L)).thenReturn(motherboard);
+        Mockito.when(categoryRestClient.getCategoryById(10L)).thenReturn(new CategoryClientResponse(10L, "CPU"));
+        Mockito.when(categoryRestClient.getCategoryById(20L)).thenReturn(new CategoryClientResponse(20L, "Motherboard"));
+        Mockito.when(checkRepository.save(any())).thenAnswer(inv -> inv.getArgument(0));
 
         CompatibilityCheckResponse response = compatibilityService.check(request);
 
+        assertNotNull(response);
+        assertFalse(response.result());
+        assertTrue(response.details().contains("El socket del procesador no es compatible con la placa madre."));
+    }
+
+    // -------------------------------------------------------------------------
+    // Test 3 — GTE: GPU power draw exceeds PSU wattage → incompatible
+    // -------------------------------------------------------------------------
+
+    @Test
+    @DisplayName("Debería detectar incompatibilidad si el power draw de la GPU supera el wattage del PSU")
+    void check_GTE_InsufficientPSU_ReturnsFalse() {
+        CompatibilityCheckRequest request = new CompatibilityCheckRequest(102L, List.of(1L, 2L));
+
+        CompatibilityRule powerRule = rule(
+                "GPU", "Power Draw", "GTE",
+                "PSU", "Wattage",
+                "Power supply wattage is insufficient for GPU power draw");
+
+        Mockito.when(ruleRepository.findAll()).thenReturn(List.of(powerRule));
+
+        ProductClientResponse gpu = productResponse(1L, 30L, "Power Draw", "350");
+        ProductClientResponse psu = productResponse(2L, 40L, "Wattage", "300");
+
+        Mockito.when(productRestClient.getProductById(1L)).thenReturn(gpu);
+        Mockito.when(productRestClient.getProductById(2L)).thenReturn(psu);
+        Mockito.when(categoryRestClient.getCategoryById(30L)).thenReturn(new CategoryClientResponse(30L, "GPU"));
+        Mockito.when(categoryRestClient.getCategoryById(40L)).thenReturn(new CategoryClientResponse(40L, "PSU"));
+        Mockito.when(checkRepository.save(any())).thenAnswer(inv -> inv.getArgument(0));
+
+        CompatibilityCheckResponse response = compatibilityService.check(request);
 
         assertNotNull(response);
-        assertFalse(response.result()); // Debe dar falso (Incompatible)
-        assertTrue(response.details().contains("El socket del procesador no es compatible con la placa madre."));
+        assertFalse(response.result());
+        assertTrue(response.details().contains("Power supply wattage is insufficient for GPU power draw"));
+    }
+
+    // -------------------------------------------------------------------------
+    // Test 4 — GTE: GPU power draw within PSU wattage → compatible
+    // -------------------------------------------------------------------------
+
+    @Test
+    @DisplayName("Debería confirmar compatibilidad si el wattage del PSU es suficiente para la GPU")
+    void check_GTE_SufficientPSU_ReturnsTrue() {
+        CompatibilityCheckRequest request = new CompatibilityCheckRequest(103L, List.of(1L, 2L));
+
+        CompatibilityRule powerRule = rule(
+                "GPU", "Power Draw", "GTE",
+                "PSU", "Wattage",
+                "Power supply wattage is insufficient for GPU power draw");
+
+        Mockito.when(ruleRepository.findAll()).thenReturn(List.of(powerRule));
+
+        ProductClientResponse gpu = productResponse(1L, 30L, "Power Draw", "250");
+        ProductClientResponse psu = productResponse(2L, 40L, "Wattage", "650");
+
+        Mockito.when(productRestClient.getProductById(1L)).thenReturn(gpu);
+        Mockito.when(productRestClient.getProductById(2L)).thenReturn(psu);
+        Mockito.when(categoryRestClient.getCategoryById(30L)).thenReturn(new CategoryClientResponse(30L, "GPU"));
+        Mockito.when(categoryRestClient.getCategoryById(40L)).thenReturn(new CategoryClientResponse(40L, "PSU"));
+        Mockito.when(checkRepository.save(any())).thenAnswer(inv -> inv.getArgument(0));
+
+        CompatibilityCheckResponse response = compatibilityService.check(request);
+
+        assertNotNull(response);
+        assertTrue(response.result());
+    }
+
+    // -------------------------------------------------------------------------
+    // Test 5 — CONTAINS: case form factor does not support motherboard form factor
+    // -------------------------------------------------------------------------
+
+    @Test
+    @DisplayName("Debería detectar incompatibilidad si el case no soporta el form factor de la placa madre")
+    void check_CONTAINS_UnsupportedFormFactor_ReturnsFalse() {
+        CompatibilityCheckRequest request = new CompatibilityCheckRequest(104L, List.of(1L, 2L));
+
+        CompatibilityRule formRule = rule(
+                "Motherboard", "Form Factor", "CONTAINS",
+                "Case", "Form Factor Support",
+                "Case does not support motherboard form factor");
+
+        Mockito.when(ruleRepository.findAll()).thenReturn(List.of(formRule));
+
+        ProductClientResponse motherboard = productResponse(1L, 20L, "Form Factor", "E-ATX");
+        ProductClientResponse pcCase      = productResponse(2L, 50L, "Form Factor Support", "Mini-ITX, Micro-ATX");
+
+        Mockito.when(productRestClient.getProductById(1L)).thenReturn(motherboard);
+        Mockito.when(productRestClient.getProductById(2L)).thenReturn(pcCase);
+        Mockito.when(categoryRestClient.getCategoryById(20L)).thenReturn(new CategoryClientResponse(20L, "Motherboard"));
+        Mockito.when(categoryRestClient.getCategoryById(50L)).thenReturn(new CategoryClientResponse(50L, "Case"));
+        Mockito.when(checkRepository.save(any())).thenAnswer(inv -> inv.getArgument(0));
+
+        CompatibilityCheckResponse response = compatibilityService.check(request);
+
+        assertNotNull(response);
+        assertFalse(response.result());
+        assertTrue(response.details().contains("Case does not support motherboard form factor"));
+    }
+
+    // -------------------------------------------------------------------------
+    // Test 6 — CONTAINS: case form factor supports motherboard form factor
+    // -------------------------------------------------------------------------
+
+    @Test
+    @DisplayName("Debería confirmar compatibilidad si el case soporta el form factor de la placa madre")
+    void check_CONTAINS_SupportedFormFactor_ReturnsTrue() {
+        CompatibilityCheckRequest request = new CompatibilityCheckRequest(105L, List.of(1L, 2L));
+
+        CompatibilityRule formRule = rule(
+                "Motherboard", "Form Factor", "CONTAINS",
+                "Case", "Form Factor Support",
+                "Case does not support motherboard form factor");
+
+        Mockito.when(ruleRepository.findAll()).thenReturn(List.of(formRule));
+
+        ProductClientResponse motherboard = productResponse(1L, 20L, "Form Factor", "ATX");
+        ProductClientResponse pcCase      = productResponse(2L, 50L, "Form Factor Support", "Mini-ITX, Micro-ATX, ATX");
+
+        Mockito.when(productRestClient.getProductById(1L)).thenReturn(motherboard);
+        Mockito.when(productRestClient.getProductById(2L)).thenReturn(pcCase);
+        Mockito.when(categoryRestClient.getCategoryById(20L)).thenReturn(new CategoryClientResponse(20L, "Motherboard"));
+        Mockito.when(categoryRestClient.getCategoryById(50L)).thenReturn(new CategoryClientResponse(50L, "Case"));
+        Mockito.when(checkRepository.save(any())).thenAnswer(inv -> inv.getArgument(0));
+
+        CompatibilityCheckResponse response = compatibilityService.check(request);
+
+        assertNotNull(response);
+        assertTrue(response.result());
+    }
+
+    // -------------------------------------------------------------------------
+    // Test 7 — null attribute → incompatible
+    // -------------------------------------------------------------------------
+
+    @Test
+    @DisplayName("Debería marcar incompatible si el producto no tiene el atributo requerido por la regla")
+    void check_NullAttribute_ReturnsFalse() {
+        CompatibilityCheckRequest request = new CompatibilityCheckRequest(106L, List.of(1L, 2L));
+
+        CompatibilityRule socketRule = rule(
+                "CPU", "Socket", "EQUALS",
+                "Motherboard", "Socket",
+                "El socket del procesador no es compatible con la placa madre.");
+
+        Mockito.when(ruleRepository.findAll()).thenReturn(List.of(socketRule));
+
+        ProductClientResponse cpu         = productResponse(1L, 10L /* no attrs */);
+        ProductClientResponse motherboard = productResponse(2L, 20L, "Socket", "AM4");
+
+        Mockito.when(productRestClient.getProductById(1L)).thenReturn(cpu);
+        Mockito.when(productRestClient.getProductById(2L)).thenReturn(motherboard);
+        Mockito.when(categoryRestClient.getCategoryById(10L)).thenReturn(new CategoryClientResponse(10L, "CPU"));
+        Mockito.when(categoryRestClient.getCategoryById(20L)).thenReturn(new CategoryClientResponse(20L, "Motherboard"));
+        Mockito.when(checkRepository.save(any())).thenAnswer(inv -> inv.getArgument(0));
+
+        CompatibilityCheckResponse response = compatibilityService.check(request);
+
+        assertNotNull(response);
+        assertFalse(response.result());
     }
 }
