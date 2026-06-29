@@ -203,22 +203,42 @@ services:
       - key: SERVER_PORT
         value: 8080
       - key: AUTH_SERVICE_URL
-        value: https://auth-service.onrender.com
+        fromService:
+          name: auth-service
+          property: url
       - key: USER_SERVICE_URL
-        value: https://user-service.onrender.com
+        fromService:
+          name: user-service
+          property: url
       - key: PRODUCT_SERVICE_URL
-        value: https://product-service.onrender.com
+        fromService:
+          name: product-service
+          property: url
       - key: CATEGORY_SERVICE_URL
-        value: https://category-service.onrender.com
+        fromService:
+          name: category-service
+          property: url
       - key: COMPATIBILITY_SERVICE_URL
-        value: https://compatibility-service.onrender.com
+        fromService:
+          name: compatibility-service
+          property: url
       - key: PROVIDER_SERVICE_URL
-        value: https://provider-service.onrender.com
+        fromService:
+          name: provider-service
+          property: url
       - key: BUILD_SERVICE_URL
-        value: https://build-service.onrender.com
+        fromService:
+          name: build-service
+          property: url
       - key: ESTIMATE_SERVICE_URL
-        value: https://estimate-service.onrender.com
+        fromService:
+          name: estimate-service
+          property: url
       - key: HARDWARE_ADVISOR_SERVICE_URL
-        value: https://hardware-advisor-service.onrender.com
+        fromService:
+          name: hardware-advisor-service
+          property: url
       - key: NOTIFICATION_SERVICE_URL
-        value: https://notification-service.onrender.com
+        fromService:
+          name: notification-service
+          property: url
