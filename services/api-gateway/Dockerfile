@@ -19,6 +19,8 @@ FROM eclipse-temurin:21-jre
 WORKDIR /app
 COPY --from=build /app/services/api-gateway/target/*.jar app.jar
 RUN addgroup --system appgroup && adduser --system appuser --ingroup appgroup
+COPY services/api-gateway/entrypoint.sh .
+RUN chmod +x entrypoint.sh
 USER appuser
 EXPOSE 8080
-ENTRYPOINT ["java", "-jar", "app.jar"]
+ENTRYPOINT ["./entrypoint.sh"]
