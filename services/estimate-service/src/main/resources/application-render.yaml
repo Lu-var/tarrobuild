@@ -1,0 +1,44 @@
+spring:
+  datasource:
+    url: ${DATABASE_URL}
+    driver-class-name: org.postgresql.Driver
+  flyway:
+    enabled: true
+    locations: classpath:db/migration/postgresql
+    baseline-on-migrate: true
+    schemas: estimate
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        default_schema: estimate
+        format_sql: true
+  sql:
+    init:
+      mode: always
+      schema-locations: classpath:schema-render.sql
+
+build-service:
+  url: ${BUILD_SERVICE_URL:http://localhost:8087}
+
+product-service:
+  url: ${PRODUCT_SERVICE_URL:http://localhost:8083}
+
+notification-service:
+  url: ${NOTIFICATION_SERVICE_URL:http://localhost:8090}
+
+app:
+  environment: production
+
+logging:
+  level:
+    cl.tarrobuild: INFO
+    org.hibernate.SQL: WARN
+  file:
+    name: logs/estimate-service.log
+  logback:
+    rollingpolicy:
+      max-file-size: 10MB
+      max-history: 10

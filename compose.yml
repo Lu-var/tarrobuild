@@ -83,26 +83,98 @@ services:
     volumes:
       - db_compatibility_data:/var/lib/mysql
 
+  db_providers:
+    image: mysql:8.0
+    container_name: db_providers
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: db_providers
+    ports:
+      - "3311:3306"
+    networks:
+      - tarrobuild-net
+    volumes:
+      - db_providers_data:/var/lib/mysql
+
+  db_builds:
+    image: mysql:8.0
+    container_name: db_builds
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: db_builds
+    ports:
+      - "3312:3306"
+    networks:
+      - tarrobuild-net
+    volumes:
+      - db_builds_data:/var/lib/mysql
+
+  db_estimates:
+    image: mysql:8.0
+    container_name: db_estimates
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: db_estimates
+    ports:
+      - "3313:3306"
+    networks:
+      - tarrobuild-net
+    volumes:
+      - db_estimates_data:/var/lib/mysql
+
+  db_recommendations:
+    image: mysql:8.0
+    container_name: db_recommendations
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: db_recommendations
+    ports:
+      - "3314:3306"
+    networks:
+      - tarrobuild-net
+    volumes:
+      - db_recommendations_data:/var/lib/mysql
+
+  db_notifications:
+    image: mysql:8.0
+    container_name: db_notifications
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: db_notifications
+    ports:
+      - "3315:3306"
+    networks:
+      - tarrobuild-net
+    volumes:
+      - db_notifications_data:/var/lib/mysql
+
   # --- MICROSERVICIOS BASE ---
   auth-service:
-    build: ./services/auth-service
+    build:
+      context: .
+      dockerfile: ./services/auth-service/Dockerfile
     container_name: auth-service
     ports:
-      - "8080:8080"
+      - "8081:8081"
     environment:
+      SERVER_PORT: 8081
       SPRING_PROFILES_ACTIVE: prod
       SPRING_DATASOURCE_URL: jdbc:mysql://db_auth:3306/db_auth
+      USER_SERVICE_URL: http://user-service:8082
     depends_on:
       - db_auth
     networks:
       - tarrobuild-net
 
   user-service:
-    build: ./services/user-service
+    build:
+      context: .
+      dockerfile: ./services/user-service/Dockerfile
     container_name: user-service
     ports:
-      - "8081:8081"
+      - "8082:8082"
     environment:
+      SERVER_PORT: 8082
       SPRING_PROFILES_ACTIVE: prod
       SPRING_DATASOURCE_URL: jdbc:mysql://db_users:3306/db_users
     depends_on:
@@ -111,11 +183,14 @@ services:
       - tarrobuild-net
 
   category-service:
-    build: ./services/category-service
+    build:
+      context: .
+      dockerfile: ./services/category-service/Dockerfile
     container_name: category-service
     ports:
       - "8084:8084"
     environment:
+      SERVER_PORT: 8084
       SPRING_PROFILES_ACTIVE: prod
       SPRING_DATASOURCE_URL: jdbc:mysql://db_categories:3306/db_categories
     depends_on:
@@ -123,15 +198,51 @@ services:
     networks:
       - tarrobuild-net
 
+  provider-service:
+    build:
+      context: .
+      dockerfile: ./services/provider-service/Dockerfile
+    container_name: provider-service
+    ports:
+      - "8086:8086"
+    environment:
+      SERVER_PORT: 8086
+      SPRING_PROFILES_ACTIVE: prod
+      SPRING_DATASOURCE_URL: jdbc:mysql://db_providers:3306/db_providers
+    depends_on:
+      - db_providers
+    networks:
+      - tarrobuild-net
+
+  notification-service:
+    build:
+      context: .
+      dockerfile: ./services/notification-service/Dockerfile
+    container_name: notification-service
+    ports:
+      - "8090:8090"
+    environment:
+      SERVER_PORT: 8090
+      SPRING_PROFILES_ACTIVE: prod
+      SPRING_DATASOURCE_URL: jdbc:mysql://db_notifications:3306/db_notifications
+    depends_on:
+      - db_notifications
+    networks:
+      - tarrobuild-net
+
   # --- MICROSERVICIOS DEPENDIENTES ---
   product-service:
-    build: ./services/product-service
+    build:
+      context: .
+      dockerfile: ./services/product-service/Dockerfile
     container_name: product-service
     ports:
       - "8083:8083"
     environment:
+      SERVER_PORT: 8083
       SPRING_PROFILES_ACTIVE: prod
       SPRING_DATASOURCE_URL: jdbc:mysql://db_products:3306/db_products
+      CATEGORY_SERVICE_URL: http://category-service:8084
     depends_on:
       - db_products
       - category-service
@@ -139,32 +250,114 @@ services:
       - tarrobuild-net
 
   compatibility-service:
-    build: ./services/compatibility-service
+    build:
+      context: .
+      dockerfile: ./services/compatibility-service/Dockerfile
     container_name: compatibility-service
     ports:
       - "8085:8085"
     environment:
+      SERVER_PORT: 8085
       SPRING_PROFILES_ACTIVE: prod
       SPRING_DATASOURCE_URL: jdbc:mysql://db_compatibility:3306/db_compatibility
       PRODUCT_SERVICE_URL: http://product-service:8083
+      CATEGORY_SERVICE_URL: http://category-service:8084
     depends_on:
       - db_compatibility
       - product-service
     networks:
       - tarrobuild-net
 
+  build-service:
+    build:
+      context: .
+      dockerfile: ./services/build-service/Dockerfile
+    container_name: build-service
+    ports:
+      - "8087:8087"
+    environment:
+      SERVER_PORT: 8087
+      SPRING_PROFILES_ACTIVE: prod
+      SPRING_DATASOURCE_URL: jdbc:mysql://db_builds:3306/db_builds
+      PRODUCT_SERVICE_URL: http://product-service:8083
+      COMPATIBILITY_SERVICE_URL: http://compatibility-service:8085
+      PROVIDER_SERVICE_URL: http://provider-service:8086
+    depends_on:
+      - db_builds
+      - product-service
+      - compatibility-service
+      - provider-service
+    networks:
+      - tarrobuild-net
+
+  estimate-service:
+    build:
+      context: .
+      dockerfile: ./services/estimate-service/Dockerfile
+    container_name: estimate-service
+    ports:
+      - "8088:8088"
+    environment:
+      SERVER_PORT: 8088
+      SPRING_PROFILES_ACTIVE: prod
+      SPRING_DATASOURCE_URL: jdbc:mysql://db_estimates:3306/db_estimates
+      BUILD_SERVICE_URL: http://build-service:8087
+      PRODUCT_SERVICE_URL: http://product-service:8083
+      NOTIFICATION_SERVICE_URL: http://notification-service:8090
+    depends_on:
+      - db_estimates
+      - build-service
+      - product-service
+      - notification-service
+    networks:
+      - tarrobuild-net
+
+  hardware-advisor-service:
+    build:
+      context: .
+      dockerfile: ./services/hardware-advisor-service/Dockerfile
+    container_name: hardware-advisor-service
+    ports:
+      - "8089:8089"
+    environment:
+      SERVER_PORT: 8089
+      SPRING_PROFILES_ACTIVE: prod
+      SPRING_DATASOURCE_URL: jdbc:mysql://db_recommendations:3306/db_recommendations
+    depends_on:
+      - db_recommendations
+    networks:
+      - tarrobuild-net
+
   # --- PUERTA DE ENTRADA ---
   api-gateway:
-    build: ./services/api-gateway
+    build:
+      context: .
+      dockerfile: ./services/api-gateway/Dockerfile
     container_name: api-gateway
     ports:
-      - "8082:8082"
+      - "8082:8080"
     environment:
-      SPRING_PROFILES_ACTIVE: prod
+      SERVER_PORT: 8080
+      AUTH_SERVICE_URL: http://auth-service:8081
+      USER_SERVICE_URL: http://user-service:8082
+      PRODUCT_SERVICE_URL: http://product-service:8083
+      CATEGORY_SERVICE_URL: http://category-service:8084
+      COMPATIBILITY_SERVICE_URL: http://compatibility-service:8085
+      PROVIDER_SERVICE_URL: http://provider-service:8086
+      BUILD_SERVICE_URL: http://build-service:8087
+      ESTIMATE_SERVICE_URL: http://estimate-service:8088
+      HARDWARE_ADVISOR_SERVICE_URL: http://hardware-advisor-service:8089
+      NOTIFICATION_SERVICE_URL: http://notification-service:8090
     depends_on:
       - auth-service
       - user-service
       - product-service
+      - category-service
       - compatibility-service
+      - provider-service
+      - build-service
+      - estimate-service
+      - hardware-advisor-service
+      - notification-service
     networks:
       - tarrobuild-net

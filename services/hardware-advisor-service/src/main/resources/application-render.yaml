@@ -1,0 +1,36 @@
+spring:
+  datasource:
+    url: ${DATABASE_URL}
+    driver-class-name: org.postgresql.Driver
+  flyway:
+    enabled: true
+    locations: classpath:db/migration/postgresql
+    baseline-on-migrate: true
+    schemas: hardware_advisor
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        default_schema: hardware_advisor
+        format_sql: true
+  sql:
+    init:
+      mode: always
+      schema-locations: classpath:schema-render.sql
+
+
+app:
+  environment: production
+
+logging:
+  level:
+    cl.tarrobuild: INFO
+    org.hibernate.SQL: WARN
+  file:
+    name: logs/hardware-advisor-service.log
+  logback:
+    rollingpolicy:
+      max-file-size: 10MB
+      max-history: 10

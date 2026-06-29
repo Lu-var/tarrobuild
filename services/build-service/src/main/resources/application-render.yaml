@@ -1,0 +1,44 @@
+spring:
+  datasource:
+    url: ${DATABASE_URL}
+    driver-class-name: org.postgresql.Driver
+  flyway:
+    enabled: true
+    locations: classpath:db/migration/postgresql
+    baseline-on-migrate: true
+    schemas: build
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        default_schema: build
+        format_sql: true
+  sql:
+    init:
+      mode: always
+      schema-locations: classpath:schema-render.sql
+
+product-service:
+  url: ${PRODUCT_SERVICE_URL:http://localhost:8083}
+
+compatibility-service:
+  url: ${COMPATIBILITY_SERVICE_URL:http://localhost:8085}
+
+provider-service:
+  url: ${PROVIDER_SERVICE_URL:http://localhost:8086}
+
+app:
+  environment: production
+
+logging:
+  level:
+    cl.tarrobuild: INFO
+    org.hibernate.SQL: WARN
+  file:
+    name: logs/build-service.log
+  logback:
+    rollingpolicy:
+      max-file-size: 10MB
+      max-history: 10
