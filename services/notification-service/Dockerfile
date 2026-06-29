@@ -2,9 +2,8 @@ FROM maven:3.9-eclipse-temurin-21 AS build
 WORKDIR /app
 COPY pom.xml .
 COPY services/notification-service/pom.xml services/notification-service/
-RUN mvn dependency:go-offline -pl services/notification-service -am -q
 COPY services/notification-service/src services/notification-service/src
-RUN mvn package -pl services/notification-service -am -DskipTests -q
+RUN mvn package -pl services/notification-service -am -DskipTests -B
 
 FROM eclipse-temurin:21-jre
 WORKDIR /app

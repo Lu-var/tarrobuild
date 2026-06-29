@@ -2,9 +2,8 @@ FROM maven:3.9-eclipse-temurin-21 AS build
 WORKDIR /app
 COPY pom.xml .
 COPY services/api-gateway/pom.xml services/api-gateway/
-RUN mvn dependency:go-offline -pl services/api-gateway -am -q
 COPY services/api-gateway/src services/api-gateway/src
-RUN mvn package -pl services/api-gateway -am -DskipTests -q
+RUN mvn package -pl services/api-gateway -am -DskipTests -B
 
 FROM eclipse-temurin:21-jre
 WORKDIR /app

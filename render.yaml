@@ -89,7 +89,7 @@ services:
       - key: USER_SERVICE_URL
         value: https://user-service.onrender.com
       - key: JWT_SECRET
-        sync: false
+        value: EvXDpJvaLKZST142/tWw31XnTiwoQ/nX50n3/4NVD+wrDVz7xaYNQCca0fsz1vwunGTLGZmpYNTJPaqA6OMOog==
 
   - type: web
     name: product-service

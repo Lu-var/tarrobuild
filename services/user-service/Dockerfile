@@ -2,9 +2,8 @@ FROM maven:3.9-eclipse-temurin-21 AS build
 WORKDIR /app
 COPY pom.xml .
 COPY services/user-service/pom.xml services/user-service/
-RUN mvn dependency:go-offline -pl services/user-service -am -q
 COPY services/user-service/src services/user-service/src
-RUN mvn package -pl services/user-service -am -DskipTests -q
+RUN mvn package -pl services/user-service -am -DskipTests -B
 
 FROM eclipse-temurin:21-jre
 WORKDIR /app

@@ -2,9 +2,8 @@ FROM maven:3.9-eclipse-temurin-21 AS build
 WORKDIR /app
 COPY pom.xml .
 COPY services/hardware-advisor-service/pom.xml services/hardware-advisor-service/
-RUN mvn dependency:go-offline -pl services/hardware-advisor-service -am -q
 COPY services/hardware-advisor-service/src services/hardware-advisor-service/src
-RUN mvn package -pl services/hardware-advisor-service -am -DskipTests -q
+RUN mvn package -pl services/hardware-advisor-service -am -DskipTests -B
 
 FROM eclipse-temurin:21-jre
 WORKDIR /app

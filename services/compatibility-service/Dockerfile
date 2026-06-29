@@ -2,9 +2,8 @@ FROM maven:3.9-eclipse-temurin-21 AS build
 WORKDIR /app
 COPY pom.xml .
 COPY services/compatibility-service/pom.xml services/compatibility-service/
-RUN mvn dependency:go-offline -pl services/compatibility-service -am -q
 COPY services/compatibility-service/src services/compatibility-service/src
-RUN mvn package -pl services/compatibility-service -am -DskipTests -q
+RUN mvn package -pl services/compatibility-service -am -DskipTests -B
 
 FROM eclipse-temurin:21-jre
 WORKDIR /app

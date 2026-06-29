@@ -2,9 +2,8 @@ FROM maven:3.9-eclipse-temurin-21 AS build
 WORKDIR /app
 COPY pom.xml .
 COPY services/estimate-service/pom.xml services/estimate-service/
-RUN mvn dependency:go-offline -pl services/estimate-service -am -q
 COPY services/estimate-service/src services/estimate-service/src
-RUN mvn package -pl services/estimate-service -am -DskipTests -q
+RUN mvn package -pl services/estimate-service -am -DskipTests -B
 
 FROM eclipse-temurin:21-jre
 WORKDIR /app

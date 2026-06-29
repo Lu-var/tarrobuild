@@ -2,9 +2,8 @@ FROM maven:3.9-eclipse-temurin-21 AS build
 WORKDIR /app
 COPY pom.xml .
 COPY services/category-service/pom.xml services/category-service/
-RUN mvn dependency:go-offline -pl services/category-service -am -q
 COPY services/category-service/src services/category-service/src
-RUN mvn package -pl services/category-service -am -DskipTests -q
+RUN mvn package -pl services/category-service -am -DskipTests -B
 
 FROM eclipse-temurin:21-jre
 WORKDIR /app
