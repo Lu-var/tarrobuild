@@ -15,11 +15,6 @@ spring:
       hibernate:
         default_schema: auth
         format_sql: true
-  sql:
-    init:
-      mode: always
-      schema-locations: classpath:schema-render.sql
-
 user-service:
   url: ${USER_SERVICE_URL:http://localhost:8082}
 

@@ -15,11 +15,6 @@ spring:
       hibernate:
         default_schema: compatibility
         format_sql: true
-  sql:
-    init:
-      mode: always
-      schema-locations: classpath:schema-render.sql
-
 product-service:
   url: ${PRODUCT_SERVICE_URL:http://localhost:8083}
 

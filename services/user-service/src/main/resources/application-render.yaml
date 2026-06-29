@@ -15,11 +15,6 @@ spring:
       hibernate:
         default_schema: users
         format_sql: true
-  sql:
-    init:
-      mode: always
-      schema-locations: classpath:schema-render.sql
-
 
 app:
   environment: production

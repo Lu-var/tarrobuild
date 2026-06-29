@@ -15,11 +15,6 @@ spring:
       hibernate:
         default_schema: estimate
         format_sql: true
-  sql:
-    init:
-      mode: always
-      schema-locations: classpath:schema-render.sql
-
 build-service:
   url: ${BUILD_SERVICE_URL:http://localhost:8087}
 
