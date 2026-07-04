@@ -85,16 +85,7 @@ public class SecurityConfig {
     }
 
     private static RequestMatcher methodAndPath(HttpMethod method, String... paths) {
-        return request -> {
-            if (!request.getMethod().equalsIgnoreCase(method.name())) return false;
-            String path = request.getRequestURI();
-            for (String p : paths) {
-                String normalized = p.endsWith("/") ? p.substring(0, p.length() - 1) : p;
-                if (path.equals(normalized) || path.startsWith(normalized + "/")) {
-                    return true;
-                }
-            }
-            return false;
-        };
+        return request -> request.getMethod().equalsIgnoreCase(method.name())
+                && pathStartsWith(paths).matches(request);
     }
 }
