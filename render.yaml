@@ -87,7 +87,7 @@ services:
           name: tarrobuild-db
           property: connectionString
       - key: USER_SERVICE_URL
-        value: https://user-service.onrender.com
+        value: https://user-service-yuz5.onrender.com
       - key: JWT_SECRET
         value: EvXDpJvaLKZST142/tWw31XnTiwoQ/nX50n3/4NVD+wrDVz7xaYNQCca0fsz1vwunGTLGZmpYNTJPaqA6OMOog==
 
@@ -107,7 +107,7 @@ services:
           name: tarrobuild-db
           property: connectionString
       - key: CATEGORY_SERVICE_URL
-        value: https://category-service.onrender.com
+        value: https://category-service-4fmr.onrender.com
 
   # ─── Services that depend on (2) ────────────────────────────────
   - type: web
@@ -126,9 +126,9 @@ services:
           name: tarrobuild-db
           property: connectionString
       - key: PRODUCT_SERVICE_URL
-        value: https://product-service.onrender.com
+        value: https://product-service-e903.onrender.com
       - key: CATEGORY_SERVICE_URL
-        value: https://category-service.onrender.com
+        value: https://category-service-4fmr.onrender.com
 
   # ─── Services that depend on (2)+(3) ────────────────────────────
   - type: web
@@ -147,11 +147,11 @@ services:
           name: tarrobuild-db
           property: connectionString
       - key: PRODUCT_SERVICE_URL
-        value: https://product-service.onrender.com
+        value: https://product-service-e903.onrender.com
       - key: COMPATIBILITY_SERVICE_URL
         value: https://compatibility-service.onrender.com
       - key: PROVIDER_SERVICE_URL
-        value: https://provider-service.onrender.com
+        value: https://provider-service-9ip0.onrender.com
 
   # ─── Services that depend on (4) ────────────────────────────────
   - type: web
@@ -170,11 +170,11 @@ services:
           name: tarrobuild-db
           property: connectionString
       - key: BUILD_SERVICE_URL
-        value: https://build-service.onrender.com
+        value: https://build-service-lym5.onrender.com
       - key: PRODUCT_SERVICE_URL
-        value: https://product-service.onrender.com
+        value: https://product-service-e903.onrender.com
       - key: NOTIFICATION_SERVICE_URL
-        value: https://notification-service.onrender.com
+        value: https://notification-service-e4ij.onrender.com
 
   - type: web
     name: hardware-advisor-service
@@ -202,43 +202,25 @@ services:
     envVars:
       - key: SERVER_PORT
         value: 8080
+      - key: SPRING_PROFILES_ACTIVE
+        value: render
       - key: AUTH_SERVICE_URL
-        fromService:
-          name: auth-service
-          property: url
+        value: https://auth-service-oww8.onrender.com
       - key: USER_SERVICE_URL
-        fromService:
-          name: user-service
-          property: url
+        value: https://user-service-yuz5.onrender.com
       - key: PRODUCT_SERVICE_URL
-        fromService:
-          name: product-service
-          property: url
+        value: https://product-service-e903.onrender.com
       - key: CATEGORY_SERVICE_URL
-        fromService:
-          name: category-service
-          property: url
+        value: https://category-service-4fmr.onrender.com
       - key: COMPATIBILITY_SERVICE_URL
-        fromService:
-          name: compatibility-service
-          property: url
+        value: https://compatibility-service.onrender.com
       - key: PROVIDER_SERVICE_URL
-        fromService:
-          name: provider-service
-          property: url
+        value: https://provider-service-9ip0.onrender.com
       - key: BUILD_SERVICE_URL
-        fromService:
-          name: build-service
-          property: url
+        value: https://build-service-lym5.onrender.com
       - key: ESTIMATE_SERVICE_URL
-        fromService:
-          name: estimate-service
-          property: url
+        value: https://estimate-service-dkhv.onrender.com
       - key: HARDWARE_ADVISOR_SERVICE_URL
-        fromService:
-          name: hardware-advisor-service
-          property: url
+        value: https://hardware-advisor-service.onrender.com
       - key: NOTIFICATION_SERVICE_URL
-        fromService:
-          name: notification-service
-          property: url
+        value: https://notification-service-e4ij.onrender.com

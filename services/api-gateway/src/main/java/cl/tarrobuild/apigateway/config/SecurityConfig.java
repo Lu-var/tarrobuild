@@ -2,7 +2,6 @@ package cl.tarrobuild.apigateway.config;
 
 import cl.tarrobuild.apigateway.filter.CorrelationIdFilter;
 import cl.tarrobuild.apigateway.filter.JwtAuthFilter;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,8 +14,6 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.context.SecurityContextHolderFilter;
 import org.springframework.security.web.util.matcher.RequestMatcher;
-
-import java.time.LocalDateTime;
 
 import static cl.tarrobuild.apigateway.exception.ApiError.writeJson;
 
@@ -78,7 +75,8 @@ public class SecurityConfig {
         return request -> {
             String path = request.getRequestURI();
             for (String prefix : prefixes) {
-                if (path.equals(prefix) || path.startsWith(prefix)) {
+                String normalized = prefix.endsWith("/") ? prefix.substring(0, prefix.length() - 1) : prefix;
+                if (path.equals(normalized) || path.startsWith(normalized + "/")) {
                     return true;
                 }
             }
@@ -88,12 +86,11 @@ public class SecurityConfig {
 
     private static RequestMatcher methodAndPath(HttpMethod method, String... paths) {
         return request -> {
-            if (!request.getMethod().equalsIgnoreCase(method.name())) {
-                return false;
-            }
-            String uri = request.getRequestURI();
+            if (!request.getMethod().equalsIgnoreCase(method.name())) return false;
+            String path = request.getRequestURI();
             for (String p : paths) {
-                if (uri.equals(p) || uri.startsWith(p)) {
+                String normalized = p.endsWith("/") ? p.substring(0, p.length() - 1) : p;
+                if (path.equals(normalized) || path.startsWith(normalized + "/")) {
                     return true;
                 }
             }

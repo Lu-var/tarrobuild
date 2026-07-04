@@ -18,7 +18,8 @@ RUN mvn package -pl services/user-service -am -DskipTests -B
 FROM eclipse-temurin:21-jre
 WORKDIR /app
 COPY --from=build /app/services/user-service/target/*.jar app.jar
-RUN addgroup --system appgroup && adduser --system appuser --ingroup appgroup
+RUN addgroup --system appgroup && adduser --system appuser --ingroup appgroup && \
+    mkdir -p logs && chown -R appuser:appgroup logs
 COPY services/user-service/entrypoint.sh .
 RUN chmod +x entrypoint.sh
 USER appuser

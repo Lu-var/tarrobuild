@@ -76,11 +76,13 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                 log.warn("Token rejected by auth-service: {}", e.getMessage());
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                 writeJson(response, "Invalid or expired token");
+                return;
             }
             catch (ResourceAccessException e) {
                 log.error("Auth-service unreachable: {}", e.getMessage());
                 response.setStatus(HttpServletResponse.SC_SERVICE_UNAVAILABLE);
                 writeJson(response, "Authentication service unavailable");
+                return;
             }
         }
 
