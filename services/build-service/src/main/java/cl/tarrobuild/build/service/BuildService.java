@@ -29,13 +29,6 @@ public class BuildService {
         this.productFeignClient = productFeignClient;
     }
 
-    public List<BuildResponse> getBuilds() {
-        log.info("Getting all builds");
-        return buildRepository.findAll().stream()
-                .map(this::toResponse)
-                .toList();
-    }
-
     public BuildResponse getBuildById(Long id) {
         log.info("Getting build by id: {}", id);
         return buildRepository.findById(id)

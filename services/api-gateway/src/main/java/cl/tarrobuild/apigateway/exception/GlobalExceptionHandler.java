@@ -1,7 +1,5 @@
 package cl.tarrobuild.apigateway.exception;
 
-//import jakarta.persistence.EntityExistsException;
-//import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -53,24 +51,6 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(new ApiError(message, details, LocalDateTime.now().toString()));
     }
-
-//    @ExceptionHandler(EntityNotFoundException.class)
-//    public ResponseEntity<?> handleNotFound(EntityNotFoundException e) {
-//        log.warn("Element not found: {}", e.getMessage());
-//
-//        String details = isDevelopment() ? Arrays.toString(e.getStackTrace()) : null;
-//        return ResponseEntity.status(HttpStatus.NOT_FOUND)
-//                .body(new ApiError(e.getMessage(), details, LocalDateTime.now().toString()));
-//    }
-
-//    @ExceptionHandler(EntityExistsException.class)
-//    public ResponseEntity<?> handleConflict(EntityExistsException e) {
-//        log.warn("Conflict: {}", e.getMessage());
-//
-//        String details = isDevelopment() ? Arrays.toString(e.getStackTrace()) : null;
-//        return ResponseEntity.status(HttpStatus.CONFLICT)
-//                .body(new ApiError(e.getMessage(), details, LocalDateTime.now().toString()));
-//    }
 
     @ExceptionHandler(NoResourceFoundException.class)
     public ResponseEntity<?> handleNoResourceFound(NoResourceFoundException e) {

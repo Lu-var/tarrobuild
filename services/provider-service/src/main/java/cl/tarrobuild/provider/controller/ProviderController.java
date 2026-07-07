@@ -46,6 +46,13 @@ public class ProviderController {
         return ResponseEntity.ok(providerService.updateProvider(id, request));
     }
 
+    @PatchMapping("/{id}")
+    public ResponseEntity<ProviderResponse> patchProvider(
+            @PathVariable Long id,
+            @RequestBody ProviderRequest request) {
+        return ResponseEntity.ok(providerService.patchProvider(id, request));
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteProvider(@PathVariable Long id) {
         boolean deleted = providerService.deleteProvider(id);

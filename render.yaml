@@ -1,0 +1,226 @@
+databases:
+  - name: tarrobuild-db
+    databaseName: tarrobuild
+    user: tarrobuild
+    plan: free
+
+services:
+  # ─── No-dependency services ──────────────────────────────────────
+  - type: web
+    name: user-service
+    runtime: docker
+    dockerfilePath: ./services/user-service/Dockerfile
+    dockerContext: .
+    plan: free
+    envVars:
+      - key: SERVER_PORT
+        value: 8080
+      - key: SPRING_PROFILES_ACTIVE
+        value: render
+      - key: DATABASE_URL
+        fromDatabase:
+          name: tarrobuild-db
+          property: connectionString
+
+  - type: web
+    name: category-service
+    runtime: docker
+    dockerfilePath: ./services/category-service/Dockerfile
+    dockerContext: .
+    plan: free
+    envVars:
+      - key: SERVER_PORT
+        value: 8080
+      - key: SPRING_PROFILES_ACTIVE
+        value: render
+      - key: DATABASE_URL
+        fromDatabase:
+          name: tarrobuild-db
+          property: connectionString
+
+  - type: web
+    name: provider-service
+    runtime: docker
+    dockerfilePath: ./services/provider-service/Dockerfile
+    dockerContext: .
+    plan: free
+    envVars:
+      - key: SERVER_PORT
+        value: 8080
+      - key: SPRING_PROFILES_ACTIVE
+        value: render
+      - key: DATABASE_URL
+        fromDatabase:
+          name: tarrobuild-db
+          property: connectionString
+
+  - type: web
+    name: notification-service
+    runtime: docker
+    dockerfilePath: ./services/notification-service/Dockerfile
+    dockerContext: .
+    plan: free
+    envVars:
+      - key: SERVER_PORT
+        value: 8080
+      - key: SPRING_PROFILES_ACTIVE
+        value: render
+      - key: DATABASE_URL
+        fromDatabase:
+          name: tarrobuild-db
+          property: connectionString
+
+  # ─── Services that depend on (1) ────────────────────────────────
+  - type: web
+    name: auth-service
+    runtime: docker
+    dockerfilePath: ./services/auth-service/Dockerfile
+    dockerContext: .
+    plan: free
+    envVars:
+      - key: SERVER_PORT
+        value: 8080
+      - key: SPRING_PROFILES_ACTIVE
+        value: render
+      - key: DATABASE_URL
+        fromDatabase:
+          name: tarrobuild-db
+          property: connectionString
+      - key: USER_SERVICE_URL
+        value: https://user-service-yuz5.onrender.com
+      - key: JWT_SECRET
+        value: EvXDpJvaLKZST142/tWw31XnTiwoQ/nX50n3/4NVD+wrDVz7xaYNQCca0fsz1vwunGTLGZmpYNTJPaqA6OMOog==
+
+  - type: web
+    name: product-service
+    runtime: docker
+    dockerfilePath: ./services/product-service/Dockerfile
+    dockerContext: .
+    plan: free
+    envVars:
+      - key: SERVER_PORT
+        value: 8080
+      - key: SPRING_PROFILES_ACTIVE
+        value: render
+      - key: DATABASE_URL
+        fromDatabase:
+          name: tarrobuild-db
+          property: connectionString
+      - key: CATEGORY_SERVICE_URL
+        value: https://category-service-4fmr.onrender.com
+
+  # ─── Services that depend on (2) ────────────────────────────────
+  - type: web
+    name: compatibility-service
+    runtime: docker
+    dockerfilePath: ./services/compatibility-service/Dockerfile
+    dockerContext: .
+    plan: free
+    envVars:
+      - key: SERVER_PORT
+        value: 8080
+      - key: SPRING_PROFILES_ACTIVE
+        value: render
+      - key: DATABASE_URL
+        fromDatabase:
+          name: tarrobuild-db
+          property: connectionString
+      - key: PRODUCT_SERVICE_URL
+        value: https://product-service-e903.onrender.com
+      - key: CATEGORY_SERVICE_URL
+        value: https://category-service-4fmr.onrender.com
+
+  # ─── Services that depend on (2)+(3) ────────────────────────────
+  - type: web
+    name: build-service
+    runtime: docker
+    dockerfilePath: ./services/build-service/Dockerfile
+    dockerContext: .
+    plan: free
+    envVars:
+      - key: SERVER_PORT
+        value: 8080
+      - key: SPRING_PROFILES_ACTIVE
+        value: render
+      - key: DATABASE_URL
+        fromDatabase:
+          name: tarrobuild-db
+          property: connectionString
+      - key: PRODUCT_SERVICE_URL
+        value: https://product-service-e903.onrender.com
+      - key: COMPATIBILITY_SERVICE_URL
+        value: https://compatibility-service.onrender.com
+      - key: PROVIDER_SERVICE_URL
+        value: https://provider-service-9ip0.onrender.com
+
+  # ─── Services that depend on (4) ────────────────────────────────
+  - type: web
+    name: estimate-service
+    runtime: docker
+    dockerfilePath: ./services/estimate-service/Dockerfile
+    dockerContext: .
+    plan: free
+    envVars:
+      - key: SERVER_PORT
+        value: 8080
+      - key: SPRING_PROFILES_ACTIVE
+        value: render
+      - key: DATABASE_URL
+        fromDatabase:
+          name: tarrobuild-db
+          property: connectionString
+      - key: BUILD_SERVICE_URL
+        value: https://build-service-lym5.onrender.com
+      - key: PRODUCT_SERVICE_URL
+        value: https://product-service-e903.onrender.com
+      - key: NOTIFICATION_SERVICE_URL
+        value: https://notification-service-e4ij.onrender.com
+
+  - type: web
+    name: hardware-advisor-service
+    runtime: docker
+    dockerfilePath: ./services/hardware-advisor-service/Dockerfile
+    dockerContext: .
+    plan: free
+    envVars:
+      - key: SERVER_PORT
+        value: 8080
+      - key: SPRING_PROFILES_ACTIVE
+        value: render
+      - key: DATABASE_URL
+        fromDatabase:
+          name: tarrobuild-db
+          property: connectionString
+
+  # ─── Gateway (depends on all services) ──────────────────────────
+  - type: web
+    name: api-gateway
+    runtime: docker
+    dockerfilePath: ./services/api-gateway/Dockerfile
+    dockerContext: .
+    plan: free
+    envVars:
+      - key: SERVER_PORT
+        value: 8080
+      - key: SPRING_PROFILES_ACTIVE
+        value: render
+      - key: AUTH_SERVICE_URL
+        value: https://auth-service-oww8.onrender.com
+      - key: USER_SERVICE_URL
+        value: https://user-service-yuz5.onrender.com
+      - key: PRODUCT_SERVICE_URL
+        value: https://product-service-e903.onrender.com
+      - key: CATEGORY_SERVICE_URL
+        value: https://category-service-4fmr.onrender.com
+      - key: COMPATIBILITY_SERVICE_URL
+        value: https://compatibility-service.onrender.com
+      - key: PROVIDER_SERVICE_URL
+        value: https://provider-service-9ip0.onrender.com
+      - key: BUILD_SERVICE_URL
+        value: https://build-service-lym5.onrender.com
+      - key: ESTIMATE_SERVICE_URL
+        value: https://estimate-service-dkhv.onrender.com
+      - key: HARDWARE_ADVISOR_SERVICE_URL
+        value: https://hardware-advisor-service.onrender.com
+      - key: NOTIFICATION_SERVICE_URL
+        value: https://notification-service-e4ij.onrender.com

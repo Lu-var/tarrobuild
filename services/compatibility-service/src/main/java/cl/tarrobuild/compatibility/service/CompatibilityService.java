@@ -1,10 +1,15 @@
 package cl.tarrobuild.compatibility.service;
 
+import cl.tarrobuild.compatibility.client.CategoryRestClient;
 import cl.tarrobuild.compatibility.client.ProductRestClient;
+import cl.tarrobuild.compatibility.dto.AttributeDTO;
+import cl.tarrobuild.compatibility.dto.CategoryClientResponse;
 import cl.tarrobuild.compatibility.dto.CompatibilityCheckRequest;
 import cl.tarrobuild.compatibility.dto.CompatibilityCheckResponse;
 import cl.tarrobuild.compatibility.dto.CompatibilityRuleRequest;
 import cl.tarrobuild.compatibility.dto.CompatibilityRuleResponse;
+import cl.tarrobuild.compatibility.dto.ProductClientResponse;
+import cl.tarrobuild.compatibility.dto.ProductDTO;
 import cl.tarrobuild.compatibility.model.CompatibilityCheck;
 import cl.tarrobuild.compatibility.model.CompatibilityRule;
 import cl.tarrobuild.compatibility.repository.CompatibilityCheckRepository;
@@ -13,7 +18,10 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -23,13 +31,16 @@ public class CompatibilityService {
     private final CompatibilityRuleRepository ruleRepository;
     private final CompatibilityCheckRepository checkRepository;
     private final ProductRestClient productRestClient;
+    private final CategoryRestClient categoryRestClient;
 
     public CompatibilityService(CompatibilityRuleRepository ruleRepository,
                                 CompatibilityCheckRepository checkRepository,
-                                ProductRestClient productRestClient) {
+                                ProductRestClient productRestClient,
+                                CategoryRestClient categoryRestClient) {
         this.ruleRepository = ruleRepository;
         this.checkRepository = checkRepository;
         this.productRestClient = productRestClient;
+        this.categoryRestClient = categoryRestClient;
     }
 
     public CompatibilityCheckResponse check(CompatibilityCheckRequest request) {
@@ -50,6 +61,17 @@ public class CompatibilityService {
             return toResponse(saved);
         }
 
+        // Fetch all products once — shared across every rule evaluation
+        List<ProductClientResponse> rawProducts = fetchProducts(request.productIds());
+
+        // Resolve category names once per unique categoryId
+        Map<Long, String> categoryNameById = resolveCategoryNames(rawProducts);
+
+        // Map raw responses to ProductDTO (domain view with categoryName + generic attributes)
+        List<ProductDTO> products = rawProducts.stream()
+                .map(p -> toProductDTO(p, categoryNameById))
+                .toList();
+
         StringBuilder detailsBuilder = new StringBuilder();
         boolean allCompatible = true;
 
@@ -58,7 +80,7 @@ public class CompatibilityService {
                     rule.getSourceCategory(), rule.getSourceAttributeName(),
                     rule.getOperator(), rule.getTargetCategory(), rule.getTargetAttributeName());
 
-            boolean ruleResult = evaluateRule(rule, request.productIds());
+            boolean ruleResult = evaluateRule(rule, products);
             if (!ruleResult) {
                 allCompatible = false;
                 detailsBuilder.append("- ").append(rule.getIncompatibilityReason()).append("\n");
@@ -82,30 +104,158 @@ public class CompatibilityService {
         return toResponse(saved);
     }
 
-    private boolean evaluateRule(CompatibilityRule rule, List<Long> productIds) {
-        // Stub: rules are stored for reference but actual attribute comparison
-        // requires product data from product-service (to be wired later).
-        // For now, all rules pass by default.
-        log.debug("Rule evaluation stub — returning true for rule: {}",
-                rule.getIncompatibilityReason());
-        return true;
+    // -------------------------------------------------------------------------
+    // Private helpers
+    // -------------------------------------------------------------------------
+
+    /**
+     * Fetches each product from product-service via RestClient. Products that cannot be
+     * retrieved are silently skipped so a single unreachable product does not abort
+     * the entire check.
+     */
+    private List<ProductClientResponse> fetchProducts(List<Long> productIds) {
+        List<ProductClientResponse> result = new ArrayList<>();
+        for (Long id : productIds) {
+            try {
+                ProductClientResponse product = productRestClient.getProductById(id);
+                if (product != null) {
+                    result.add(product);
+                }
+            } catch (Exception e) {
+                log.error("Error fetching product ID {} from product-service: {}", id, e.getMessage());
+            }
+        }
+        return result;
     }
 
-    public CompatibilityCheckResponse getLatestCheckByBuildId(Long buildId) {
-        log.info("Getting latest compatibility check for buildId: {}", buildId);
-        return checkRepository.findTopByBuildIdOrderByCreatedAtDesc(buildId)
-                .map(this::toResponse)
-                .orElseThrow(() -> new EntityNotFoundException(
-                        "No compatibility check found for build ID " + buildId));
+    /**
+     * Calls category-service once per distinct categoryId found in the product list.
+     * Missing or unreachable categories fall back to an empty string so the rule matcher
+     * can still run (the rule will simply not find a matching product for that category).
+     */
+    private Map<Long, String> resolveCategoryNames(List<ProductClientResponse> products) {
+        Map<Long, String> categoryNameById = new HashMap<>();
+        for (ProductClientResponse p : products) {
+            if (p.categoryId() == null || categoryNameById.containsKey(p.categoryId())) {
+                continue;
+            }
+            CategoryClientResponse category = categoryRestClient.getCategoryById(p.categoryId());
+            String name = (category != null) ? category.name() : "";
+            categoryNameById.put(p.categoryId(), name);
+        }
+        return categoryNameById;
     }
 
-    public CompatibilityCheckResponse getCheckById(Long id) {
-        log.info("Getting compatibility check by id: {}", id);
-        return checkRepository.findById(id)
-                .map(this::toResponse)
-                .orElseThrow(() -> new EntityNotFoundException(
-                        "Compatibility check with ID " + id + " not found"));
+    /**
+     * Converts the raw RestClient response into the domain DTO used by the rule evaluator.
+     */
+    private ProductDTO toProductDTO(ProductClientResponse raw, Map<Long, String> categoryNameById) {
+        String categoryName = categoryNameById.getOrDefault(raw.categoryId(), "");
+        List<AttributeDTO> attributes = raw.attributes() == null
+                ? List.of()
+                : raw.attributes().stream()
+                        .map(a -> new AttributeDTO(a.attributeName(), a.attributeValue()))
+                        .toList();
+        return new ProductDTO(raw.id(), raw.name(), categoryName, attributes);
     }
+
+    /**
+     * Evaluates a single compatibility rule against the pre-fetched product list.
+     * Returns {@code true} (compatible) when the rule passes or when one of the
+     * required products is not present in the build (rule is not applicable).
+     */
+    private boolean evaluateRule(CompatibilityRule rule, List<ProductDTO> products) {
+        ProductDTO sourceProduct = products.stream()
+                .filter(p -> p.categoryName() != null
+                        && p.categoryName().equalsIgnoreCase(rule.getSourceCategory()))
+                .findFirst()
+                .orElse(null);
+
+        ProductDTO targetProduct = products.stream()
+                .filter(p -> p.categoryName() != null
+                        && p.categoryName().equalsIgnoreCase(rule.getTargetCategory()))
+                .findFirst()
+                .orElse(null);
+
+        if (sourceProduct == null || targetProduct == null) {
+            log.debug("Rule '{}' skipped — one or both product categories not present in build",
+                    rule.getIncompatibilityReason());
+            return true;
+        }
+
+        String sourceValue = sourceProduct.getAttributeValue(rule.getSourceAttributeName());
+        String targetValue = targetProduct.getAttributeValue(rule.getTargetAttributeName());
+
+        return switch (rule.getOperator().toUpperCase()) {
+            case "EQ", "EQUALS" -> evaluateEquals(rule, sourceValue, targetValue);
+            case "GTE"          -> evaluateGte(rule, sourceValue, targetValue);
+            case "CONTAINS"     -> evaluateContains(rule, sourceValue, targetValue);
+            default -> {
+                log.warn("Unknown operator '{}' in rule id={} — skipping (pass)",
+                        rule.getOperator(), rule.getId());
+                yield true;
+            }
+        };
+    }
+
+    /**
+     * EQ / EQUALS: source attribute value must equal target attribute value (case-insensitive).
+     * Returns false (incompatible) when either value is missing.
+     */
+    private boolean evaluateEquals(CompatibilityRule rule, String sourceValue, String targetValue) {
+        if (sourceValue == null || targetValue == null) {
+            log.warn("Rule '{}': EQ evaluation skipped — null attribute (source={}, target={})",
+                    rule.getIncompatibilityReason(), sourceValue, targetValue);
+            return false;
+        }
+        boolean result = sourceValue.equalsIgnoreCase(targetValue);
+        log.debug("EQ '{}' vs '{}' → {}", sourceValue, targetValue, result);
+        return result;
+    }
+
+    /**
+     * GTE: source numeric value must be less than or equal to target numeric value.
+     * E.g. GPU power draw (source) <= PSU wattage (target).
+     * Returns false (incompatible) when either value is missing or non-numeric.
+     */
+    private boolean evaluateGte(CompatibilityRule rule, String sourceValue, String targetValue) {
+        if (sourceValue == null || targetValue == null) {
+            log.warn("Rule '{}': GTE evaluation skipped — null attribute (source={}, target={})",
+                    rule.getIncompatibilityReason(), sourceValue, targetValue);
+            return false;
+        }
+        try {
+            double source = Double.parseDouble(sourceValue.trim());
+            double target = Double.parseDouble(targetValue.trim());
+            boolean result = source <= target;
+            log.debug("GTE {} <= {} → {}", source, target, result);
+            return result;
+        } catch (NumberFormatException e) {
+            log.warn("Rule '{}': GTE evaluation failed — non-numeric values (source='{}', target='{}')",
+                    rule.getIncompatibilityReason(), sourceValue, targetValue);
+            return false;
+        }
+    }
+
+    /**
+     * CONTAINS: target attribute value must contain the source attribute value (case-insensitive).
+     * E.g. Case Form Factor Support (target) contains Motherboard Form Factor (source).
+     * Returns false (incompatible) when either value is missing.
+     */
+    private boolean evaluateContains(CompatibilityRule rule, String sourceValue, String targetValue) {
+        if (sourceValue == null || targetValue == null) {
+            log.warn("Rule '{}': CONTAINS evaluation skipped — null attribute (source={}, target={})",
+                    rule.getIncompatibilityReason(), sourceValue, targetValue);
+            return false;
+        }
+        boolean result = targetValue.toLowerCase().contains(sourceValue.toLowerCase());
+        log.debug("CONTAINS '{}' in '{}' → {}", sourceValue, targetValue, result);
+        return result;
+    }
+
+    // -------------------------------------------------------------------------
+    // CRUD — rules
+    // -------------------------------------------------------------------------
 
     public CompatibilityRuleResponse createRule(CompatibilityRuleRequest request) {
         log.info("Creating compatibility rule: {} {} {} -> {} {}",
@@ -167,6 +317,30 @@ public class CompatibilityService {
         log.info("Compatibility rule with id: {} deleted", id);
         return true;
     }
+
+    // -------------------------------------------------------------------------
+    // CRUD — checks
+    // -------------------------------------------------------------------------
+
+    public CompatibilityCheckResponse getLatestCheckByBuildId(Long buildId) {
+        log.info("Getting latest compatibility check for buildId: {}", buildId);
+        return checkRepository.findTopByBuildIdOrderByCreatedAtDesc(buildId)
+                .map(this::toResponse)
+                .orElseThrow(() -> new EntityNotFoundException(
+                        "No compatibility check found for build ID " + buildId));
+    }
+
+    public CompatibilityCheckResponse getCheckById(Long id) {
+        log.info("Getting compatibility check by id: {}", id);
+        return checkRepository.findById(id)
+                .map(this::toResponse)
+                .orElseThrow(() -> new EntityNotFoundException(
+                        "Compatibility check with ID " + id + " not found"));
+    }
+
+    // -------------------------------------------------------------------------
+    // Mappers
+    // -------------------------------------------------------------------------
 
     private CompatibilityCheckResponse toResponse(CompatibilityCheck check) {
         return new CompatibilityCheckResponse(

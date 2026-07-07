@@ -7,6 +7,8 @@ import org.springframework.web.servlet.function.RouterFunction;
 import org.springframework.web.servlet.function.ServerResponse;
 
 import static org.springframework.cloud.gateway.server.mvc.filter.BeforeFilterFunctions.uri;
+import static org.springframework.cloud.gateway.server.mvc.filter.FilterFunctions.prefixPath;
+import static org.springframework.cloud.gateway.server.mvc.filter.FilterFunctions.stripPrefix;
 import static org.springframework.cloud.gateway.server.mvc.handler.GatewayRouterFunctions.route;
 import static org.springframework.cloud.gateway.server.mvc.handler.HandlerFunctions.http;
 import static org.springframework.cloud.gateway.server.mvc.predicate.GatewayRequestPredicates.path;
@@ -25,47 +27,66 @@ public class GatewayRoutesConfig {
     @Value("${HARDWARE_ADVISOR_SERVICE_URL:http://localhost:8089}") private String advisorUrl;
     @Value("${NOTIFICATION_SERVICE_URL:http://localhost:8090}") private String notificationUrl;
 
+    private RouterFunction<ServerResponse> v1Route(String id, String apiPath, String url) {
+        return route(id + "-v1")
+                .route(path("/api/v1/" + apiPath + "/**"), http())
+                .before(uri(url))
+                .filter(stripPrefix(2))
+                .filter(prefixPath("/api"))
+                .build();
+    }
+
     @Bean
     public RouterFunction<ServerResponse> gatewayRoutes() {
         return route("auth-service")
                 .route(path("/api/auth/**"), http())
                 .before(uri(authUrl))
                 .build()
+                .and(v1Route("auth-service", "auth", authUrl))
                 .and(route("user-service")
                         .route(path("/api/users/**"), http())
                         .before(uri(userUrl))
                         .build())
+                .and(v1Route("user-service", "users", userUrl))
                 .and(route("product-service")
                         .route(path("/api/products/**"), http())
                         .before(uri(productUrl))
                         .build())
+                .and(v1Route("product-service", "products", productUrl))
                 .and(route("category-service")
                         .route(path("/api/categories/**"), http())
                         .before(uri(categoryUrl))
                         .build())
+                .and(v1Route("category-service", "categories", categoryUrl))
                 .and(route("compatibility-service")
                         .route(path("/api/compatibility/**"), http())
                         .before(uri(compatibilityUrl))
                         .build())
+                .and(v1Route("compatibility-service", "compatibility", compatibilityUrl))
                 .and(route("provider-service")
                         .route(path("/api/providers/**"), http())
                         .before(uri(providerUrl))
                         .build())
+                .and(v1Route("provider-service", "providers", providerUrl))
                 .and(route("build-service")
                         .route(path("/api/builds/**"), http())
                         .before(uri(buildUrl))
                         .build())
+                .and(v1Route("build-service", "builds", buildUrl))
                 .and(route("estimate-service")
                         .route(path("/api/estimate/**"), http())
                         .before(uri(estimateUrl))
                         .build())
+                .and(v1Route("estimate-service", "estimate", estimateUrl))
                 .and(route("hardware-advisor")
                         .route(path("/api/recommendations/**"), http())
                         .before(uri(advisorUrl))
                         .build())
+                .and(v1Route("hardware-advisor", "recommendations", advisorUrl))
                 .and(route("notification-service")
                         .route(path("/api/notifications/**"), http())
                         .before(uri(notificationUrl))
-                        .build());
+                        .build())
+                .and(v1Route("notification-service", "notifications", notificationUrl));
     }
 }

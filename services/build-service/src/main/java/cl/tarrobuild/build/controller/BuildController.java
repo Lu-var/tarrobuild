@@ -20,8 +20,9 @@ public class BuildController {
     }
 
     @GetMapping
-    public ResponseEntity<List<BuildResponse>> getBuilds() {
-        return ResponseEntity.ok(buildService.getBuilds());
+    public ResponseEntity<List<BuildResponse>> getBuilds(
+            @RequestHeader("X-User-Id") Long userId) {
+        return ResponseEntity.ok(buildService.getBuildsByUserId(userId));
     }
 
     @GetMapping("/{id}")

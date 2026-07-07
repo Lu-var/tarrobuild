@@ -13,3 +13,24 @@ spring:
   flyway:
     locations: classpath:db/migration/mysql
     baseline-on-migrate: true
+
+product-service:
+  url: ${PRODUCT_SERVICE_URL:http://localhost:8083}
+
+category-service:
+  url: ${CATEGORY_SERVICE_URL:http://localhost:8084}
+
+app:
+  environment: production
+
+logging:
+  level:
+    cl.tarrobuild: INFO
+    org.hibernate.SQL: WARN
+  file:
+    name: logs/compatibility-service.log
+  logback:
+    rollingpolicy:
+      max-file-size: 10MB
+      max-history: 10
+
