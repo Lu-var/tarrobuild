@@ -10,6 +10,12 @@ server:
 app:
   environment: production
 
+user-service:
+  url: ${USER_SERVICE_URL:http://localhost:8082}
+
+user-service:
+  url: ${USER_SERVICE_URL:http://localhost:8082}
+
 logging:
   level:
     cl.tarrobuild: INFO

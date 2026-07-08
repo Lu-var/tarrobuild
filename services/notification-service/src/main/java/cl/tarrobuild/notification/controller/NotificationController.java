@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 @RestController
 @RequestMapping("/api/notifications")
@@ -21,10 +22,10 @@ public class NotificationController {
     }
 
     @PostMapping("/send")
-    public ResponseEntity<NotificationLogResponse> sendNotification(
+    public ResponseEntity<Void> sendNotification(
             @Valid @RequestBody SendNotificationRequest request) {
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(notificationService.send(request));
+        notificationService.send(request);
+        return ResponseEntity.status(HttpStatus.ACCEPTED).build();
     }
 
     @GetMapping("/logs")
