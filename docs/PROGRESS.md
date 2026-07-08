@@ -11,8 +11,8 @@
 - [x] **RF-05** — Filter by category/brand/price
 - [x] **RF-06** — Create build
 - [x] **RF-07** — Manage build items
-- [ ] **RF-08** — Compatibility check
-- [ ] **RF-09** — Power consumption estimate (cost: done via estimate-service, power validation: pending in compatibility-service)
+- [~] **RF-08** — Compatibility check (engine works standalone; build-service doesn't invoke it yet)
+- [~] **RF-09** — Power consumption estimate (cost: ✅ done via estimate-service — fetches `msrp` from product-service per item × quantity; power validation: engine/rules already seeded in compatibility-service — GPU Power Draw GTE PSU Wattage, CPU TDP GTE Cooling TDP — but trigger chain from build-service is missing)
 - [x] **RF-10** — Provider references (SKU / external links)
 - [ ] **RF-11** — Consolidated build analysis
 - [ ] **RF-12** — Save favorite builds
@@ -38,7 +38,7 @@
 - [x] **HU-02** — Authentication
 - [x] **HU-03** — Catalog exploration
 - [x] **HU-04** — Build creation
-- [ ] **HU-05** — Compatibility validation
+- [~] **HU-05** — Compatibility validation (same status as RF-08)
 - [x] **HU-06** — Cost estimation
 - [ ] **HU-07** — Component recommendations
 - [x] **HU-08** — Build history
@@ -83,9 +83,7 @@
 ### user-service :8082
 
 **Pending**
-- [ ] User with unique email (Module 3) — add `@Column(unique = true)` to `User.email`
 - [ ] Ensure email uniqueness validated across user-service and auth-service (duplicate check in register flow)
-- [ ] PATCH endpoint for partial user updates
 - [ ] Correlation ID propagation to downstream services
 - [ ] Endpoint tests script
 - [ ] Tests
@@ -95,7 +93,6 @@
 ### category-service :8084
 
 **Pending**
-- [ ] PATCH endpoint for partial category updates
 - [ ] Correlation ID propagation to downstream services
 - [ ] Endpoint tests script
 - [ ] Tests
@@ -173,8 +170,7 @@
 ### notification-service :8090
 
 **Pending**
-- [ ] Replace `NoSuchElementException` with `EntityNotFoundException` for 404 responses
-- [ ] Add `EntityNotFoundException` handler to `GlobalExceptionHandler`
+- [ ] Remove stale `NoSuchElementException` handler from `GlobalExceptionHandler` (service layer already uses `EntityNotFoundException`, but old handler remains)
 - [ ] Add UserRestClient → user-service to resolve email on send()
 - [ ] Correlation ID propagation to downstream services
 - [ ] Endpoint tests script (no script file found)

@@ -25,7 +25,7 @@ public class Estimate {
     private Integer totalCost;
 
     @Column(nullable = false)
-    private String currency = "CLP";
+    private String currency = "USD";
 
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
@@ -34,7 +34,7 @@ public class Estimate {
     protected void onCreate() {
         this.createdAt = LocalDateTime.now();
         if (this.currency == null) {
-            this.currency = "CLP";
+            this.currency = "USD";
         }
     }
 }

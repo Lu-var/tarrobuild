@@ -20,6 +20,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 import java.util.*;
 
+import static cl.tarrobuild.apigateway.config.PublicPaths.*;
 import static cl.tarrobuild.apigateway.exception.ApiError.writeJson;
 
 @Component
@@ -35,12 +36,15 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) {
         String path = request.getRequestURI();
-        return path.equals("/api/v1/auth/login") || path.equals("/api/auth/login")
-                || path.equals("/api/v1/auth/register") || path.equals("/api/auth/register")
-                || (request.getMethod().equals("GET") && (path.startsWith("/api/v1/products") || path.startsWith("/api/products")
-                    || path.startsWith("/api/v1/categories") || path.startsWith("/api/categories")))
-                || (request.getMethod().equals("POST") && (path.equals("/api/v1/compatibility/check") || path.equals("/api/compatibility/check")))
-                || path.equals("/api/v1/actuator/health") || path.equals("/actuator/health");
+        String method = request.getMethod();
+
+        boolean isAuth = AUTH_PREFIXES.stream().anyMatch(p -> path.equals(p + "/login") || path.equals(p + "/register"));
+        boolean isGetProduct = "GET".equals(method) && PRODUCT_PREFIXES.stream().anyMatch(path::startsWith);
+        boolean isGetCategory = "GET".equals(method) && CATEGORY_PREFIXES.stream().anyMatch(path::startsWith);
+        boolean isPostCompat = "POST".equals(method) && COMPAT_CHECK_ENDPOINTS.stream().anyMatch(path::equals);
+        boolean isHealth = HEALTH_ENDPOINTS.stream().anyMatch(path::equals);
+
+        return isAuth || isGetProduct || isGetCategory || isPostCompat || isHealth;
     }
 
     @Override

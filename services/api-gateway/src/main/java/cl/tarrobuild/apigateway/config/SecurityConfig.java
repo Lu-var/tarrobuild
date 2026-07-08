@@ -15,6 +15,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.security.web.context.SecurityContextHolderFilter;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 
+import static cl.tarrobuild.apigateway.config.PublicPaths.*;
 import static cl.tarrobuild.apigateway.exception.ApiError.writeJson;
 
 @Configuration
@@ -36,11 +37,11 @@ public class SecurityConfig {
             .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 
                 .authorizeHttpRequests(auth -> auth
-                .requestMatchers(pathStartsWith("/api/auth/", "/api/v1/auth/")).permitAll()
-                .requestMatchers(methodAndPath(HttpMethod.GET, "/api/products/", "/api/v1/products/")).permitAll()
-                .requestMatchers(methodAndPath(HttpMethod.GET, "/api/categories/", "/api/v1/categories/")).permitAll()
-                .requestMatchers(methodAndPath(HttpMethod.POST, "/api/compatibility/check", "/api/v1/compatibility/check")).permitAll()
-                .requestMatchers(pathStartsWith("/actuator/health")).permitAll()
+                .requestMatchers(pathStartsWith(AUTH_PREFIXES.stream().map(p -> p + "/").toArray(String[]::new))).permitAll()
+                .requestMatchers(methodAndPath(HttpMethod.GET, PRODUCT_PREFIXES.stream().map(p -> p + "/").toArray(String[]::new))).permitAll()
+                .requestMatchers(methodAndPath(HttpMethod.GET, CATEGORY_PREFIXES.stream().map(p -> p + "/").toArray(String[]::new))).permitAll()
+                .requestMatchers(pathStartsWith(COMPAT_CHECK_ENDPOINTS.toArray(String[]::new))).permitAll()
+                .requestMatchers(pathStartsWith(HEALTH_ENDPOINTS.toArray(String[]::new))).permitAll()
                 .requestMatchers(pathStartsWith("/api/builds/", "/api/v1/builds/")).hasAnyRole("USER", "ADMIN")
                 .requestMatchers(pathStartsWith("/api/estimate/", "/api/v1/estimate/")).hasAnyRole("USER", "ADMIN")
                 .requestMatchers(pathStartsWith("/api/recommendations/", "/api/v1/recommendations/")).hasAnyRole("USER", "ADMIN")

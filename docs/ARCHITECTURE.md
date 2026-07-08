@@ -58,7 +58,7 @@ AUTH   USER   PRODUCT CATEGORY COMPAT PROVIDER  BUILD
 
 Each service has its own independent database — strictly no shared tables.
 
-Flyway manages schema changes for MySQL (production). H2 (development) uses JPA `ddl-auto: create-drop` + `data.sql` for seed data. Hibernate uses `ddl-auto: validate` in production and `ddl-auto: create-drop` in development.
+Flyway manages schema changes for MySQL (production) and PostgreSQL (Render). H2 (development) uses JPA `ddl-auto: create-drop` + `data.sql` for seed data. Hibernate uses `ddl-auto: validate` in production and `ddl-auto: create-drop` in development.
 
 ### Migration structure
 
@@ -67,9 +67,13 @@ services/<service>/src/main/resources/
   db/migration/mysql/
     V1__init.sql       — CREATE TABLE with MySQL syntax
     V2__seed_data.sql  — INSERT reference data
+  db/migration/postgresql/
+    V1__init.sql       — CREATE TABLE with PostgreSQL syntax
+    V2__seed_data.sql  — INSERT reference data
   application.yaml            — default profile (h2)
   application-h2.yaml         — H2 (JPA auto-DDL + data.sql)
   application-mysql.yaml      — MySQL + Flyway
+  application-render.yaml     — PostgreSQL + Flyway (Render)
 ```
 
 ### Production — MySQL
@@ -78,6 +82,17 @@ services/<service>/src/main/resources/
 spring:
   flyway:
     locations: classpath:db/migration/mysql
+  jpa:
+    hibernate:
+      ddl-auto: validate
+```
+
+### Render — PostgreSQL
+
+```yaml
+spring:
+  flyway:
+    locations: classpath:db/migration/postgresql
   jpa:
     hibernate:
       ddl-auto: validate
@@ -95,7 +110,7 @@ spring:
       enabled: true
 ```
 
-Switch profiles via `SPRING_PROFILES_ACTIVE=mysql` (defaults to `h2`). Development uses `data.sql` for seed data. Production uses Flyway `V2__seed_data.sql`.
+Switch profiles via `SPRING_PROFILES_ACTIVE=mysql` or `SPRING_PROFILES_ACTIVE=render` (defaults to `h2`). Development uses `data.sql` for seed data. Production/Render use Flyway `V2__seed_data.sql`.
 
 ## Entity definitions
 
@@ -135,7 +150,7 @@ Build { Long id, Long userId, String name, BuildStatus status, LocalDateTime cre
 BuildItem { Long id, Long productId, Integer quantity, @ManyToOne Build build }
 
 // estimate-service
-Estimate { Long id, Long buildId, Integer totalPrice, String currency, LocalDateTime createdAt }
+Estimate { Long id, Long buildId, Integer totalCost, String currency, LocalDateTime createdAt }
 
 // hardware-advisor
 Recommendation { Long id, Long buildId, String ruleApplied, Long suggestedProductId,

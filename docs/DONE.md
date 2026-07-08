@@ -18,6 +18,20 @@
 - [x] `ApiError` record + `GlobalExceptionHandler` (Module 9)
 - [x] Endpoint tests scripts
 
+### user-service :8082
+
+- [x] `@Column(unique = true)` on `User.email` (Module 3)
+- [x] PATCH `/api/users/{id}` for partial updates (Module 3)
+
+### category-service :8084
+
+- [x] PATCH `/api/categories/{id}` for partial updates (Module 3)
+
+### notification-service :8090
+
+- [x] Replace `NoSuchElementException` with `EntityNotFoundException` in service layer (Module 9)
+- [x] Add `EntityNotFoundException` handler to `GlobalExceptionHandler` (Module 9)
+
 ### auth-service :8081
 
 - [x] Model / Entity (Credential) (Module 2)
@@ -78,7 +92,7 @@
 - [x] Flyway migrations (Module 6)
 - [x] RestClient → product-service (Module 5)
 - [x] RestClientConfig, ProductRestClient, DTOs
-- [x] `evaluateRule()` business logic (stub — always passes, pending attribute comparison logic)
+- [x] `evaluateRule()` business logic (3 operators: EQUALS, GTE, CONTAINS)
 - [x] Align CompatibilityCheck entity in README.md: added `buildId` and `createdAt`
 
 ### provider-service :8086
@@ -170,7 +184,7 @@
 - [x] Product entity `price` → `msrp` (entity, DTOs, repository, client DTOs, SQL)
 - [x] Estimate entity `totalPrice` → `totalCost` (model, DTO, SQL)
 - [x] Test scripts + Postman request bodies updated to `msrp`
-- [x] Docs: ARCHITECTURE.md, PROGRESS.md, shared-context.md, INTER-SERVICE-WIRING.md updated
+- [x] Docs: ARCHITECTURE.md, PROGRESS.md, shared-context.md, guides/INTER-SERVICE-WIRING.md updated
 
 ### Bugs fixed
 
