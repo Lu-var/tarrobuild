@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -23,6 +24,7 @@ public class AuthController {
     }
 
     @GetMapping("/validate")
+    @PreAuthorize("isAuthenticated()")
     @Operation(summary = "Validar token JWT", description = "Extrae y valida el token enviado en el header Authorization, retornando la información del usuario autenticado")
     public ResponseEntity<AuthResponse> validate(@RequestHeader("Authorization") String authHeader) {
         String token = authHeader.replace("Bearer ", "");
@@ -47,6 +49,7 @@ public class AuthController {
     }
 
     @PostMapping("/logout")
+    @PreAuthorize("isAuthenticated()")
     @Operation(summary = "Cerrar sesión", description = "Invalida el token JWT del usuario enviado en el header Authorization para revocar el acceso")
     public ResponseEntity<Void> logout(@RequestHeader("Authorization") String authHeader) {
         String token = authHeader.replace("Bearer ", "");

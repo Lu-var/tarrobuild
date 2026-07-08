@@ -1,5 +1,6 @@
 package cl.tarrobuild.build.service;
 
+import cl.tarrobuild.build.client.CompatibilityFeignClient;
 import cl.tarrobuild.build.client.ProductFeignClient;
 import cl.tarrobuild.build.dto.*;
 import cl.tarrobuild.build.model.Build;
@@ -22,11 +23,15 @@ public class BuildService {
     private final BuildRepository buildRepository;
     private final BuildItemRepository buildItemRepository;
     private final ProductFeignClient productFeignClient;
+    private final CompatibilityFeignClient compatibilityFeignClient;
 
-    public BuildService(BuildRepository buildRepository, BuildItemRepository buildItemRepository, ProductFeignClient productFeignClient) {
+    public BuildService(BuildRepository buildRepository, BuildItemRepository buildItemRepository,
+                        ProductFeignClient productFeignClient,
+                        CompatibilityFeignClient compatibilityFeignClient) {
         this.buildRepository = buildRepository;
         this.buildItemRepository = buildItemRepository;
         this.productFeignClient = productFeignClient;
+        this.compatibilityFeignClient = compatibilityFeignClient;
     }
 
     public BuildResponse getBuildById(Long id) {
@@ -133,6 +138,9 @@ public class BuildService {
         newItem.setBuild(targetBuild);
 
         BuildItem saved = buildItemRepository.save(newItem);
+
+        triggerCompatibilityCheck(buildId);
+
         return toItemResponse(saved);
     }
 
@@ -142,9 +150,13 @@ public class BuildService {
                 .orElseThrow(() -> new EntityNotFoundException("Build with ID " + buildId + " not found"));
         BuildItem targetItem = buildItemRepository.findByIdAndBuild_Id(itemId, buildId)
                 .orElseThrow(() -> new EntityNotFoundException("Item with ID " + itemId + " not found"));
+
         targetItem.setProductId(request.productId());
         targetItem.setQuantity(request.quantity());
         BuildItem saved = buildItemRepository.save(targetItem);
+
+        triggerCompatibilityCheck(buildId);
+
         return toItemResponse(saved);
     }
 
@@ -153,6 +165,30 @@ public class BuildService {
         BuildItem item = buildItemRepository.findByIdAndBuild_Id(itemId, buildId)
                 .orElseThrow(() -> new EntityNotFoundException("Item with ID " + itemId + " not found for build " + buildId));
         buildItemRepository.delete(item);
+
+        triggerCompatibilityCheck(buildId);
+    }
+
+    private void triggerCompatibilityCheck(Long buildId) {
+        try {
+            List<BuildItem> items = buildItemRepository.findByBuild_Id(buildId);
+            if (items.size() < 2) {
+                log.info("Build {} has fewer than 2 items, skipping compatibility check", buildId);
+                return;
+            }
+            List<Long> productIds = items.stream().map(BuildItem::getProductId).toList();
+            CompatibilityClientRequest request = new CompatibilityClientRequest(buildId, productIds);
+            CompatibilityClientResponse result = compatibilityFeignClient.checkCompatibility(request);
+            if (result != null) {
+                if (Boolean.TRUE.equals(result.result())) {
+                    log.info("Compatibility check PASSED for build {}", buildId);
+                } else {
+                    log.warn("Compatibility check FAILED for build {}: {}", buildId, result.details());
+                }
+            }
+        } catch (Exception e) {
+            log.warn("Could not run compatibility check for build {}: {}", buildId, e.getMessage());
+        }
     }
 
     private BuildResponse toResponse(Build build) {
