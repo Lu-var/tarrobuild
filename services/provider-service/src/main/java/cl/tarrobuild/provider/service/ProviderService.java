@@ -114,19 +114,19 @@ public class ProviderService {
                 .orElseThrow(() -> new EntityNotFoundException(
                         "Provider with ID " + providerId + " not found"));
 
-        return providerProductRepository.findByProviderId(providerId).stream()
+        return providerProductRepository.findByProvider_Id(providerId).stream()
                 .map(this::toProductResponse)
                 .toList();
     }
 
     public ProviderProductResponse createProduct(Long providerId, ProviderProductRequest request) {
         log.info("Creating product reference for provider id: {}", providerId);
-        providerRepository.findById(providerId)
+        Provider providerEntity = providerRepository.findById(providerId)
                 .orElseThrow(() -> new EntityNotFoundException(
                         "Provider with ID " + providerId + " not found"));
 
         ProviderProduct product = new ProviderProduct();
-        product.setProviderId(providerId);
+        product.setProvider(providerEntity);
         product.setProductId(request.productId());
         product.setExternalReference(request.externalReference());
 
@@ -137,7 +137,7 @@ public class ProviderService {
 
     public boolean deleteProduct(Long providerId, Long productId) {
         log.info("Deleting product reference id: {} for provider id: {}", productId, providerId);
-        ProviderProduct product = providerProductRepository.findByIdAndProviderId(productId, providerId)
+        ProviderProduct product = providerProductRepository.findByIdAndProvider_Id(productId, providerId)
                 .orElse(null);
         if (product == null) {
             log.info("Product reference with id: {} not found for provider id: {}", productId, providerId);
@@ -161,7 +161,7 @@ public class ProviderService {
     private ProviderProductResponse toProductResponse(ProviderProduct product) {
         return new ProviderProductResponse(
                 product.getId(),
-                product.getProviderId(),
+                product.getProvider().getId(),
                 product.getProductId(),
                 product.getExternalReference()
         );
