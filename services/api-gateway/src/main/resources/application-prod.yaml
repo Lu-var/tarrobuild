@@ -1,0 +1,16 @@
+app:
+  environment: production
+
+logging:
+  level:
+    root: WARN
+    cl.tarrobuild: INFO
+  file:
+    name: /var/log/api-gateway/api-gateway.log
+  logback:
+    rollingpolicy:
+      max-file-size: 100MB
+      max-history: 30
+
+auth-service:
+  url: ${AUTH_SERVICE_URL:http://auth-service:8081}

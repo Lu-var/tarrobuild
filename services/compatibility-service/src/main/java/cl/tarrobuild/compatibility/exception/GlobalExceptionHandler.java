@@ -21,7 +21,10 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.client.ResourceAccessException;
 
+import io.swagger.v3.oas.annotations.Hidden;
+
 @ControllerAdvice
+@Hidden
 @Slf4j
 public class GlobalExceptionHandler {
 
