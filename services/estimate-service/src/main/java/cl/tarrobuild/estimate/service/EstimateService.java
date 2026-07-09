@@ -57,12 +57,16 @@ public class EstimateService {
         Estimate saved = estimateRepository.save(estimate);
         log.info("Estimate created with id: {} for buildId: {}", saved.getId(), saved.getBuildId());
 
-        notificationRestClient.sendNotification(new NotificationClientRequest(
-                build.userId(),
-                "ESTIMATE",
-                "Your build \"" + build.name() + "\" estimate is $" + totalCost,
-                "INFO"
-        ));
+        try {
+            notificationRestClient.sendNotification(new NotificationClientRequest(
+                    build.userId(),
+                    "ESTIMATE",
+                    "Your build \"" + build.name() + "\" estimate is $" + totalCost,
+                    "INFO"
+            ));
+        } catch (Exception e) {
+            log.warn("Failed to send notification for estimate: {}", e.getMessage());
+        }
 
         return toResponse(saved);
     }
