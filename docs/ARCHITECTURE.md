@@ -170,7 +170,6 @@ NotificationLog { Long id, Long userId, String type, String content, Notificatio
 | compatibility-service | → | product-service | Get product specs | RestClient |
 | build-service | → | product-service | Get product info | Feign |
 | build-service | → | compatibility-service | Check compatibility | Feign |
-| build-service | → | provider-service | Get provider references | Feign |
 | estimate-service | → | build-service | Get build | RestClient |
 | estimate-service | → | product-service | Get msrp | RestClient |
 | estimate-service | → | notification-service | Send notification | RestClient |

@@ -118,7 +118,6 @@
 - [x] PATCH /api/builds/{id}/status (Module 3)
 - [x] FeignClient → product-service (Module 5)
 - [x] FeignClient → compatibility-service (Module 5)
-- [x] FeignClient → provider-service (Module 5)
 - [x] Flyway migrations (Module 6)
 - [x] application-mysql.yaml + application.yaml with service URLs
 - [x] .env.example with URL vars

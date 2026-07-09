@@ -11,8 +11,8 @@
 - [x] **RF-05** — Filter by category/brand/price
 - [x] **RF-06** — Create build
 - [x] **RF-07** — Manage build items
-- [~] **RF-08** — Compatibility check (engine works standalone; build-service doesn't invoke it yet)
-- [~] **RF-09** — Power consumption estimate (cost: ✅ done via estimate-service — fetches `msrp` from product-service per item × quantity; power validation: engine/rules already seeded in compatibility-service — GPU Power Draw GTE PSU Wattage, CPU TDP GTE Cooling TDP — but trigger chain from build-service is missing)
+- [x] **RF-08** — Compatibility check (invoked by build-service on item create/update/delete)
+- [x] **RF-09** — Power consumption estimate (cost via estimate-service + power validation via compatibility rules, triggered on item change)
 - [x] **RF-10** — Provider references (SKU / external links)
 - [ ] **RF-11** — Consolidated build analysis
 - [ ] **RF-12** — Save favorite builds
@@ -38,7 +38,7 @@
 - [x] **HU-02** — Authentication
 - [x] **HU-03** — Catalog exploration
 - [x] **HU-04** — Build creation
-- [~] **HU-05** — Compatibility validation (same status as RF-08)
+- [x] **HU-05** — Compatibility validation
 - [x] **HU-06** — Cost estimation
 - [ ] **HU-07** — Component recommendations
 - [x] **HU-08** — Build history
@@ -56,8 +56,6 @@
 ### Cross-cutting
 
 **Pending**
-- [ ] Ensure correlation ID propagation is consistently planned across all services (RNF-03)
-- [ ] Add user identity propagation — gateway forwards userId/email/role as headers, downstream services consume them (Gap #17)
 - [ ] (optional) Split profiles into `dev`/`prod` (environment) + `h2`/`mysql` (database)
 - [ ] Fix dependency chain in `.opencode/agents/shared-context.md` — add `user-service` before `category-service` (currently omitted, but `auth-service` depends on it)
 - [ ] Fix dependency chain in `.opencode/agents/planner.md` — same missing `user-service` fix
@@ -67,24 +65,20 @@
 ### api-gateway :8080
 
 **Pending**
-- [ ] Propagate user identity (userId/email/role) as headers to downstream services
 - [ ] Tests
 
 ---
 
 ### auth-service :8081
-
 **Pending**
-- [ ] Correlation ID propagation to downstream services
 - [ ] Endpoint tests script
 - [ ] Tests
 
 ---
+
 ### user-service :8082
 
 **Pending**
-- [ ] Ensure email uniqueness validated across user-service and auth-service (duplicate check in register flow)
-- [ ] Correlation ID propagation to downstream services
 - [ ] Endpoint tests script
 - [ ] Tests
 
@@ -93,7 +87,6 @@
 ### category-service :8084
 
 **Pending**
-- [ ] Correlation ID propagation to downstream services
 - [ ] Endpoint tests script
 - [ ] Tests
 
@@ -103,7 +96,6 @@
 
 **Pending**
 - [ ] FeignClient fallbacks and configurable timeouts (Module 5)
-- [ ] Correlation ID propagation to downstream services
 - [ ] Endpoint tests script
 - [ ] Tests
 
@@ -112,17 +104,15 @@
 ### compatibility-service :8085
 
 **Pending**
-- [ ] Correlation ID propagation to downstream services
 - [ ] Endpoint tests script
 - [ ] Tests
 
 ---
+
 ### provider-service :8086
 
 **Pending**
-- [ ] Add `@ManyToOne`/`@OneToMany` JPA relations on `Provider` and `ProviderProduct` instead of scalar `Long` fields (Module 3)
-- [ ] PATCH endpoint for partial provider updates
-- [ ] Correlation ID propagation to downstream services
+- [ ] Cross-service integration — currently isolated, no upstream service queries provider data
 - [ ] Endpoint tests script
 - [ ] Tests
 
@@ -130,14 +120,8 @@
 
 ### build-service :8087
 
-**In Progress**
-- [🔥] Fix `GET /api/builds` — filter by authenticated user instead of returning all builds (no ownership check, leaks all users' builds)
-
 **Pending**
 - [ ] (optional) Log who performed each action (Module 8 — extra challenge)
-- [ ] FeignClient fallbacks and configurable timeouts (Module 5)
-- [ ] Propagate user identity (userId/email/role) from incoming request for build ownership checks
-- [ ] Correlation ID propagation to downstream services
 - [ ] Tests
 
 ---
@@ -146,7 +130,6 @@
 
 **Pending**
 - [ ] Deduplicate keys in `application.yaml` (build/product/notification service URLs + server.port are duplicated)
-- [ ] Correlation ID propagation to downstream services
 - [ ] Endpoint tests script (notification as template)
 - [ ] Tests
 
@@ -155,13 +138,6 @@
 ### hardware-advisor-service :8089
 
 **Pending**
-- [ ] FeignClient → build-service (Module 5)
-- [ ] FeignClient → product-service (Module 5)
-- [ ] FeignClient → compatibility-service (Module 5)
-- [ ] FeignClient → notification-service (Module 5)
-- [ ] FeignClient fallbacks and configurable timeouts (Module 5)
-- [ ] Correlation ID propagation to downstream services
-- [ ] Implement generate() recommendation logic (fetch build → compare catalog → apply rules → persist)
 - [ ] Endpoint tests script (notification as template)
 - [ ] Tests
 
@@ -170,12 +146,8 @@
 ### notification-service :8090
 
 **Pending**
-- [ ] Remove stale `NoSuchElementException` handler from `GlobalExceptionHandler` (service layer already uses `EntityNotFoundException`, but old handler remains)
-- [ ] Add UserRestClient → user-service to resolve email on send()
-- [ ] Correlation ID propagation to downstream services
 - [ ] Endpoint tests script (no script file found)
 - [ ] Tests
-
 ---
 
 ---

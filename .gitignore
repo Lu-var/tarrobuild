@@ -26,3 +26,4 @@ logs/
 #OpenCode
 .opencode/
 !.opencode/agents/
+/.cortexkit/
