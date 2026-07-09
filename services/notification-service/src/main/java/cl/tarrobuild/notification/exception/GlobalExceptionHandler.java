@@ -21,6 +21,9 @@ import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.bind.MissingRequestHeaderException;
 
+import io.swagger.v3.oas.annotations.Hidden;
+
+@Hidden
 @ControllerAdvice
 @Slf4j
 public class GlobalExceptionHandler {
