@@ -1,8 +1,11 @@
 package cl.tarrobuild.hardwareadvisor.client;
 
+import cl.tarrobuild.hardwareadvisor.dto.ProductClientResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.openfeign.FallbackFactory;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Slf4j
 @Component
