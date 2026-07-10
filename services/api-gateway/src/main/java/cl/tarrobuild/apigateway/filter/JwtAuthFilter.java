@@ -53,41 +53,45 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                                     @NonNull FilterChain filterChain) throws ServletException, IOException {
         String authHeader = request.getHeader("Authorization");
 
-        if (authHeader != null && authHeader.startsWith("Bearer ")) {
-            String token = authHeader.substring(7);
-            if (token.isBlank()) {
-                filterChain.doFilter(request, response);
-                return;
-            }
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            writeJson(response, "Authentication required");
+            return;
+        }
 
-            try {
-                AuthClientResponse authResponse = authRestClient.validateToken(token);
-                List<SimpleGrantedAuthority> authorities = List.of(
-                    new SimpleGrantedAuthority("ROLE_" + authResponse.role())
+        String token = authHeader.substring(7);
+        if (token.isBlank()) {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            writeJson(response, "Authentication required");
+            return;
+        }
+
+        try {
+            AuthClientResponse authResponse = authRestClient.validateToken(token);
+            List<SimpleGrantedAuthority> authorities = List.of(
+                new SimpleGrantedAuthority("ROLE_" + authResponse.role())
+            );
+            UsernamePasswordAuthenticationToken authentication =
+                new UsernamePasswordAuthenticationToken(
+                    authResponse.email(),
+                    null,
+                    authorities
                 );
-                UsernamePasswordAuthenticationToken authentication =
-                    new UsernamePasswordAuthenticationToken(
-                        authResponse.email(),
-                        null,
-                        authorities
-                    );
-                SecurityContextHolder.getContext().setAuthentication(authentication);
-                log.info("Token validated for user: {}", authResponse.email());
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+            log.info("Token validated for user: {}", authResponse.email());
 
-                request = new IdentityHeaderWrapper(request, authResponse);
+            request = new IdentityHeaderWrapper(request, authResponse);
 
-            } catch (HttpClientErrorException e) {
-                log.warn("Token rejected by auth-service: {}", e.getMessage());
-                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                writeJson(response, "Invalid or expired token");
-                return;
-            }
-            catch (ResourceAccessException e) {
-                log.error("Auth-service unreachable: {}", e.getMessage());
-                response.setStatus(HttpServletResponse.SC_SERVICE_UNAVAILABLE);
-                writeJson(response, "Authentication service unavailable");
-                return;
-            }
+        } catch (HttpClientErrorException e) {
+            log.warn("Token rejected by auth-service: {}", e.getMessage());
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            writeJson(response, "Invalid or expired token");
+            return;
+        } catch (ResourceAccessException e) {
+            log.error("Auth-service unreachable: {}", e.getMessage());
+            response.setStatus(HttpServletResponse.SC_SERVICE_UNAVAILABLE);
+            writeJson(response, "Authentication service unavailable");
+            return;
         }
 
         filterChain.doFilter(request, response);

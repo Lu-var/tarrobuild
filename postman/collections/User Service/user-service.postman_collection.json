@@ -1,7 +1,7 @@
 {
     "info":  {
                  "name":  "User Service",
-                 "description":  "# User Service\n\nBase URL: `http://localhost:8082`\n\nManages application users. Supports CRUD operations plus search by name, email, and phone, including error/edge-case scenarios.",
+                 "description":  "# User Service\n\nBase URL: `{{user_service}}{{api_prefix}}`\n\nManages application users. Supports CRUD operations plus search by name, email, and phone, including error/edge-case scenarios.",
                  "schema":  "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
              },
     "item":  [

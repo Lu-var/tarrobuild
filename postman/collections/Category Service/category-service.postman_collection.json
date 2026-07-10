@@ -1,7 +1,7 @@
 {
     "info":  {
                  "name":  "Category Service",
-                 "description":  "# Category Service\n\nBase URL: `http://localhost:8084`\n\nManages product categories and their attribute definitions.",
+                 "description":  "# Category Service\n\nBase URL: `{{category_service}}{{api_prefix}}`\n\nManages product categories and their attribute definitions.",
                  "schema":  "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
              },
     "item":  [
