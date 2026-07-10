@@ -1,7 +1,7 @@
 {
   "info": {
     "name": "Provider Service",
-    "description": "# Provider Service\n\nBase URL: `http://localhost:8086`\n\nManages hardware providers and their product catalogs.",
+    "description": "# Provider Service\n\nBase URL: `{{provider_service}}{{api_prefix}}`\n\nManages hardware providers and their product catalogs.",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "item": [

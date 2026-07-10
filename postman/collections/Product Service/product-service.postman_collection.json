@@ -1,7 +1,7 @@
 {
     "info":  {
                  "name":  "Product Service",
-                 "description":  "# Product Service\n\nBase URL: `http://localhost:8083`\n\nManages the product catalog (components, pricing, stock). Supports full CRUD for products and their attributes, including error/edge-case scenarios.",
+                 "description":  "# Product Service\n\nBase URL: `{{product_service}}{{api_prefix}}`\n\nManages the product catalog (components, pricing, stock). Supports full CRUD for products and their attributes, including error/edge-case scenarios.",
                  "schema":  "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
              },
     "item":  [

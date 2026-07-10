@@ -1,7 +1,7 @@
 {
   "info": {
     "name": "Estimate Service",
-    "description": "# Estimate Service\n\nBase URL: `http://localhost:8088`\n\nCalculates build cost estimates using component prices.",
+    "description": "# Estimate Service\n\nBase URL: `{{estimate_service}}{{api_prefix}}`\n\nCalculates build cost estimates using component prices.",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "item": [

@@ -1,7 +1,7 @@
 {
   "info": {
     "name": "Hardware Advisor Service",
-    "description": "# Hardware Advisor Service\n\nBase URL: `http://localhost:8089`\n\nGenerates hardware recommendations based on user needs and build analysis.",
+    "description": "# Hardware Advisor Service\n\nBase URL: `{{hardware_advisor_service}}{{api_prefix}}`\n\nGenerates hardware recommendations based on user needs and build analysis.",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "item": [
