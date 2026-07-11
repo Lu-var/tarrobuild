@@ -41,6 +41,13 @@ public class BuildService {
                 .orElseThrow(() -> new EntityNotFoundException("Build with ID " + id + " not found"));
     }
 
+    public List<BuildResponse> getAllBuilds() {
+        log.info("Getting all builds");
+        return buildRepository.findAll().stream()
+                .map(this::toResponse)
+                .toList();
+    }
+
     public List<BuildResponse> getBuildsByUserId(Long userId) {
         log.info("Getting builds for userId: {}", userId);
         return buildRepository.findByUserId(userId).stream()
@@ -146,7 +153,7 @@ public class BuildService {
 
     public BuildItemResponse updateItem(Long buildId, Long itemId, BuildItemRequest request) {
         log.info("Updating item for buildId: {}", buildId);
-        Build targetBuild = buildRepository.findById(buildId)
+        buildRepository.findById(buildId)
                 .orElseThrow(() -> new EntityNotFoundException("Build with ID " + buildId + " not found"));
         BuildItem targetItem = buildItemRepository.findByIdAndBuild_Id(itemId, buildId)
                 .orElseThrow(() -> new EntityNotFoundException("Item with ID " + itemId + " not found"));

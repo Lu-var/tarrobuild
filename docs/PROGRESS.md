@@ -120,8 +120,10 @@
 
 ### build-service :8087
 
+**Done**
+- [x] Lógica de roles (ADMIN/USER) en endpoints GET — ADMIN ve todas, USER solo las propias; /user/{userId} protegido
+
 **Pending**
-- [ ] (optional) Log who performed each action (Module 8 — extra challenge)
 - [ ] Tests
 
 ---

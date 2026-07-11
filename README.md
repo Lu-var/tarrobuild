@@ -235,7 +235,7 @@ Como usuario, quiero recibir recomendaciones de mejoras para mi build, para opti
 Como usuario, quiero ver mis builds guardadas, para gestionar mis configuraciones anteriores.
 
 **Criterios de aceptación:**
-- GET /api/builds retorna lista de builds del usuario autenticado.
+- GET /api/builds retorna lista de builds (ADMIN: todas, USER: solo las del usuario autenticado).
 - Cada build incluye sus componentes y estado.
 - Si no existen builds, retorna arreglo vacío.
 
