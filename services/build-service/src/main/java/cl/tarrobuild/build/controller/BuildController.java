@@ -24,9 +24,13 @@ public class BuildController {
     }
 
     @GetMapping
-    @Operation(summary = "Obtener todas las builds del usuario autenticado")
+    @Operation(summary = "Obtener builds (ADMIN: todas, USER: solo las propias)")
     public ResponseEntity<List<BuildResponse>> getBuilds(
-            @RequestHeader("X-User-Id") Long userId) {
+            @RequestHeader("X-User-Id") Long userId,
+            @RequestHeader("X-User-Role") String role) {
+        if ("ADMIN".equals(role)) {
+            return ResponseEntity.ok(buildService.getAllBuilds());
+        }
         return ResponseEntity.ok(buildService.getBuildsByUserId(userId));
     }
 
@@ -39,15 +43,30 @@ public class BuildController {
 
     @GetMapping("/user/{userId}")
     @Operation(summary = "Obtener todas las builds de un usuario específico")
+    @ApiResponse(responseCode = "403", description = "No autorizado para ver builds de otro usuario")
     @ApiResponse(responseCode = "404", description = "Usuario no encontrado")
-    public ResponseEntity<List<BuildResponse>> getBuildsByUserId(@PathVariable Long userId) {
+    public ResponseEntity<List<BuildResponse>> getBuildsByUserId(
+            @PathVariable Long userId,
+            @RequestHeader("X-User-Id") Long requesterId,
+            @RequestHeader("X-User-Role") String role) {
+        if (!"ADMIN".equals(role) && !requesterId.equals(userId)) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
         return ResponseEntity.ok(buildService.getBuildsByUserId(userId));
     }
 
     @GetMapping("/user/{userId}/{id}")
     @Operation(summary = "Obtener una build específica de un usuario")
+    @ApiResponse(responseCode = "403", description = "No autorizado para ver builds de otro usuario")
     @ApiResponse(responseCode = "404", description = "Build o usuario no encontrado")
-    public ResponseEntity<BuildResponse> getBuildByIdAndUserId(@PathVariable Long id, @PathVariable Long userId) {
+    public ResponseEntity<BuildResponse> getBuildByIdAndUserId(
+            @PathVariable Long id,
+            @PathVariable Long userId,
+            @RequestHeader("X-User-Id") Long requesterId,
+            @RequestHeader("X-User-Role") String role) {
+        if (!"ADMIN".equals(role) && !requesterId.equals(userId)) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
         return ResponseEntity.ok(buildService.getBuildByIdAndUserId(id, userId));
     }
 
