@@ -33,7 +33,3 @@ server:
 restclient:
   connect-timeout: 5000
   read-timeout: 10000
-
-restclient:
-  connect-timeout: 5000
-  read-timeout: 10000

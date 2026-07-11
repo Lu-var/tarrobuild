@@ -25,6 +25,18 @@
                         },
                         "description": "Logs in as admin. The admin role is required for product/category/provider/user management endpoints.\n\n**Expected:** 200 OK (returns JWT token)"
                     },
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "exec": [
+                                    "var jsonData = pm.response.json();",
+                                    "pm.environment.set(\"admin_token\", jsonData.token);"
+                                ],
+                                "type": "text/javascript"
+                            }
+                        }
+                    ],
                     "response": []
                 },
                 {
@@ -44,6 +56,18 @@
                         },
                         "description": "Logs in as a regular USER role. User role can access builds, estimates, recommendations, and notifications.\n\n**Expected:** 200 OK (returns JWT token)"
                     },
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "exec": [
+                                    "var jsonData = pm.response.json();",
+                                    "pm.environment.set(\"user_token\", jsonData.token);"
+                                ],
+                                "type": "text/javascript"
+                            }
+                        }
+                    ],
                     "response": []
                 },
                 {
@@ -308,6 +332,18 @@
                         },
                         "description": "Through gateway: Logs in as admin. The gateway permits POST /api/auth/login without authentication.\n\n**Expected:** 200 OK"
                     },
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "exec": [
+                                    "var jsonData = pm.response.json();",
+                                    "pm.environment.set(\"admin_token\", jsonData.token);"
+                                ],
+                                "type": "text/javascript"
+                            }
+                        }
+                    ],
                     "response": []
                 },
                 {
@@ -328,6 +364,18 @@
                         },
                         "description": "Through gateway: Logs in as a regular user (USER role).\n\n**Expected:** 200 OK"
                     },
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "exec": [
+                                    "var jsonData = pm.response.json();",
+                                    "pm.environment.set(\"user_token\", jsonData.token);"
+                                ],
+                                "type": "text/javascript"
+                            }
+                        }
+                    ],
                     "response": []
                 },
                 {
