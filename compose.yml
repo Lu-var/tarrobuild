@@ -1,5 +1,3 @@
-version: '3.8'
-
 networks:
   tarrobuild-net:
     driver: bridge
@@ -18,133 +16,131 @@ volumes:
 
 services:
   # --- BASES DE DATOS ---
-  db_auth:
+  db_auth: &db
     image: mysql:8.0
     container_name: db_auth
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: db_auth
+      MYSQL_TCP_PORT: 3306
     ports:
       - "3306:3306"
     networks:
       - tarrobuild-net
     volumes:
       - db_auth_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
 
   db_users:
-    image: mysql:8.0
+    <<: *db
     container_name: db_users
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: db_users
+      MYSQL_TCP_PORT: 3306
     ports:
       - "3307:3306"
-    networks:
-      - tarrobuild-net
     volumes:
       - db_users_data:/var/lib/mysql
 
   db_products:
-    image: mysql:8.0
+    <<: *db
     container_name: db_products
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: db_products
+      MYSQL_TCP_PORT: 3306
     ports:
       - "3308:3306"
-    networks:
-      - tarrobuild-net
     volumes:
       - db_products_data:/var/lib/mysql
 
   db_categories:
-    image: mysql:8.0
+    <<: *db
     container_name: db_categories
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: db_categories
+      MYSQL_TCP_PORT: 3306
     ports:
       - "3309:3306"
-    networks:
-      - tarrobuild-net
     volumes:
       - db_categories_data:/var/lib/mysql
 
   db_compatibility:
-    image: mysql:8.0
+    <<: *db
     container_name: db_compatibility
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: db_compatibility
+      MYSQL_TCP_PORT: 3306
     ports:
       - "3310:3306"
-    networks:
-      - tarrobuild-net
     volumes:
       - db_compatibility_data:/var/lib/mysql
 
   db_providers:
-    image: mysql:8.0
+    <<: *db
     container_name: db_providers
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: db_providers
+      MYSQL_TCP_PORT: 3306
     ports:
       - "3311:3306"
-    networks:
-      - tarrobuild-net
     volumes:
       - db_providers_data:/var/lib/mysql
 
   db_builds:
-    image: mysql:8.0
+    <<: *db
     container_name: db_builds
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: db_builds
+      MYSQL_TCP_PORT: 3306
     ports:
       - "3312:3306"
-    networks:
-      - tarrobuild-net
     volumes:
       - db_builds_data:/var/lib/mysql
 
   db_estimates:
-    image: mysql:8.0
+    <<: *db
     container_name: db_estimates
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: db_estimates
+      MYSQL_TCP_PORT: 3306
     ports:
       - "3313:3306"
-    networks:
-      - tarrobuild-net
     volumes:
       - db_estimates_data:/var/lib/mysql
 
   db_recommendations:
-    image: mysql:8.0
+    <<: *db
     container_name: db_recommendations
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: db_recommendations
+      MYSQL_TCP_PORT: 3306
     ports:
       - "3314:3306"
-    networks:
-      - tarrobuild-net
     volumes:
       - db_recommendations_data:/var/lib/mysql
 
   db_notifications:
-    image: mysql:8.0
+    <<: *db
     container_name: db_notifications
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: db_notifications
+      MYSQL_TCP_PORT: 3306
     ports:
       - "3315:3306"
-    networks:
-      - tarrobuild-net
     volumes:
       - db_notifications_data:/var/lib/mysql
 
@@ -162,7 +158,8 @@ services:
       SPRING_DATASOURCE_URL: jdbc:mysql://db_auth:3306/db_auth
       USER_SERVICE_URL: http://user-service:8082
     depends_on:
-      - db_auth
+      db_auth:
+        condition: service_healthy
     networks:
       - tarrobuild-net
 
@@ -178,7 +175,8 @@ services:
       SPRING_PROFILES_ACTIVE: prod
       SPRING_DATASOURCE_URL: jdbc:mysql://db_users:3306/db_users
     depends_on:
-      - db_users
+      db_users:
+        condition: service_healthy
     networks:
       - tarrobuild-net
 
@@ -194,7 +192,8 @@ services:
       SPRING_PROFILES_ACTIVE: prod
       SPRING_DATASOURCE_URL: jdbc:mysql://db_categories:3306/db_categories
     depends_on:
-      - db_categories
+      db_categories:
+        condition: service_healthy
     networks:
       - tarrobuild-net
 
@@ -210,7 +209,8 @@ services:
       SPRING_PROFILES_ACTIVE: prod
       SPRING_DATASOURCE_URL: jdbc:mysql://db_providers:3306/db_providers
     depends_on:
-      - db_providers
+      db_providers:
+        condition: service_healthy
     networks:
       - tarrobuild-net
 
@@ -226,7 +226,8 @@ services:
       SPRING_PROFILES_ACTIVE: prod
       SPRING_DATASOURCE_URL: jdbc:mysql://db_notifications:3306/db_notifications
     depends_on:
-      - db_notifications
+      db_notifications:
+        condition: service_healthy
     networks:
       - tarrobuild-net
 
@@ -244,8 +245,10 @@ services:
       SPRING_DATASOURCE_URL: jdbc:mysql://db_products:3306/db_products
       CATEGORY_SERVICE_URL: http://category-service:8084
     depends_on:
-      - db_products
-      - category-service
+      db_products:
+        condition: service_healthy
+      category-service:
+        condition: service_started
     networks:
       - tarrobuild-net
 
@@ -263,8 +266,10 @@ services:
       PRODUCT_SERVICE_URL: http://product-service:8083
       CATEGORY_SERVICE_URL: http://category-service:8084
     depends_on:
-      - db_compatibility
-      - product-service
+      db_compatibility:
+        condition: service_healthy
+      product-service:
+        condition: service_started
     networks:
       - tarrobuild-net
 
@@ -283,10 +288,14 @@ services:
       COMPATIBILITY_SERVICE_URL: http://compatibility-service:8085
       PROVIDER_SERVICE_URL: http://provider-service:8086
     depends_on:
-      - db_builds
-      - product-service
-      - compatibility-service
-      - provider-service
+      db_builds:
+        condition: service_healthy
+      product-service:
+        condition: service_started
+      compatibility-service:
+        condition: service_started
+      provider-service:
+        condition: service_started
     networks:
       - tarrobuild-net
 
@@ -305,10 +314,14 @@ services:
       PRODUCT_SERVICE_URL: http://product-service:8083
       NOTIFICATION_SERVICE_URL: http://notification-service:8090
     depends_on:
-      - db_estimates
-      - build-service
-      - product-service
-      - notification-service
+      db_estimates:
+        condition: service_healthy
+      build-service:
+        condition: service_started
+      product-service:
+        condition: service_started
+      notification-service:
+        condition: service_started
     networks:
       - tarrobuild-net
 
@@ -323,8 +336,21 @@ services:
       SERVER_PORT: 8089
       SPRING_PROFILES_ACTIVE: prod
       SPRING_DATASOURCE_URL: jdbc:mysql://db_recommendations:3306/db_recommendations
+      BUILD_SERVICE_URL: http://build-service:8087
+      PRODUCT_SERVICE_URL: http://product-service:8083
+      COMPATIBILITY_SERVICE_URL: http://compatibility-service:8085
+      NOTIFICATION_SERVICE_URL: http://notification-service:8090
     depends_on:
-      - db_recommendations
+      db_recommendations:
+        condition: service_healthy
+      build-service:
+        condition: service_started
+      product-service:
+        condition: service_started
+      compatibility-service:
+        condition: service_started
+      notification-service:
+        condition: service_started
     networks:
       - tarrobuild-net
 
@@ -335,7 +361,7 @@ services:
       dockerfile: ./services/api-gateway/Dockerfile
     container_name: api-gateway
     ports:
-      - "8082:8080"
+      - "8080:8080"
     environment:
       SERVER_PORT: 8080
       AUTH_SERVICE_URL: http://auth-service:8081
@@ -349,15 +375,25 @@ services:
       HARDWARE_ADVISOR_SERVICE_URL: http://hardware-advisor-service:8089
       NOTIFICATION_SERVICE_URL: http://notification-service:8090
     depends_on:
-      - auth-service
-      - user-service
-      - product-service
-      - category-service
-      - compatibility-service
-      - provider-service
-      - build-service
-      - estimate-service
-      - hardware-advisor-service
-      - notification-service
+      auth-service:
+        condition: service_started
+      user-service:
+        condition: service_started
+      product-service:
+        condition: service_started
+      category-service:
+        condition: service_started
+      compatibility-service:
+        condition: service_started
+      provider-service:
+        condition: service_started
+      build-service:
+        condition: service_started
+      estimate-service:
+        condition: service_started
+      hardware-advisor-service:
+        condition: service_started
+      notification-service:
+        condition: service_started
     networks:
       - tarrobuild-net
