@@ -87,6 +87,10 @@ spring:
       ddl-auto: validate
 ```
 
+### Docker compose (prod)
+
+Local deployment via `docker compose up` uses the `prod` Spring profile (`SPRING_PROFILES_ACTIVE=prod`). Each service has an `application-prod.yaml` with MySQL datasource + Flyway pointing to `classpath:db/migration/mysql`. See `compose.yml` at project root for full configuration (11 services, 10 MySQL databases, healthchecks, port mappings).
+
 ### Render — PostgreSQL
 
 ```yaml

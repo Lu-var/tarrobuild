@@ -190,3 +190,39 @@
 - [x] Bug #1: `MissingRequestHeaderException` → 401 in auth-service
 - [x] Bugs #2–8: `MethodArgumentTypeMismatchException` → 400 in all services
 - [x] Bug #15: Admin BCrypt hash corrected in auth-service seed data
+
+### Documentation alignment
+
+- [x] README.md aligned with current codebase
+
+### Services — general
+
+- [x] Swagger/OpenAPI (springdoc-openapi-starter-webmvc-ui 2.8.6) en los 11 servicios
+- [x] Tests unitarios en 10 servicios (auth 12, user 18, product 20, category 12, compatibility 12, provider 16, build 27, estimate 11, hardware-advisor 8, notification 8)
+- [x] ContextLoads tests en los 11 servicios
+- [x] `@Hidden` en GlobalExceptionHandlers para excluir de OpenAPI spec
+- [x] Filtro de correlación (X-Correlation-Id) en api-gateway + 10 servicios downstream
+
+### api-gateway
+
+- [x] Variables de entorno `*_SERVICE_URL` configuradas en Render dashboard
+- [x] Gateway proxy funcional con todas las rutas verificadas
+
+### build-service
+
+- [x] Lógica de roles ADMIN/USER en endpoints GET — ADMIN ve todas, USER solo las propias
+- [x] Endpoints `/user/{userId}` y `/user/{userId}/{id}` protegidos por role
+
+### Postman
+
+- [x] 4 colecciones vacías completadas (compatibility, estimate, hardware-advisor, provider)
+- [x] Variables `admin_token` y `user_token` en ambos environments (local + render)
+- [x] Token JWT pre-poblados en environments
+- [x] Headers Authorization y X-User-Id agregados a colección build-service
+
+### Docker
+
+- [x] `compose.yml` con healthchecks en MySQL, port 8080 para gateway, env vars para hardware-advisor
+- [x] `application-prod.yaml` creado en los 11 servicios
+- [x] `entrypoint.sh` CRLF→LF en todos los servicios + `.gitattributes`
+- [x] `Dockerfile.render` multi-stage en raíz del proyecto

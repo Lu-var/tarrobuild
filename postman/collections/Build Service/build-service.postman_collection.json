@@ -1,7 +1,7 @@
 {
     "info": {
         "name": "Build Service",
-        "description": "# Build Service\n\nBase URL: `{{build_service}}{{api_prefix}}`\n\nManages PC builds and their items. Supports full CRUD for both builds and build items, including error/edge-case scenarios.\n\n## Usage\n\n### Direct Requests\nHit the build-service directly at `{{build_service}}`. All requests require the `X-User-Id` header identifying the authenticated user.\n\n### Proxy Requests (via gateway)\nGo through the API gateway at `{{api_gateway}}`. Requires `Authorization: Bearer <token>`. The gateway injects `X-User-Id` automatically from the JWT.",
+        "description": "# Build Service\n\nBase URL: `{{build_service}}{{api_prefix}}`\n\nManages PC builds and their items. Supports full CRUD for both builds and build items, including error/edge-case scenarios.\n\n## Usage\n\n### Direct Requests\nHit the build-service directly at `{{build_service}}`. All requests require `X-User-Id` (user ID) and `X-User-Role` (`ADMIN` or `USER`).\n\n#### Role behavior per endpoint\n- **GET /builds**: ADMIN retorna todas las builds. USER retorna solo las propias.\n- **GET /builds/user/{userId}**: ADMIN puede ver cualquier usuario. USER solo puede verse a sí mismo (403 si otro).\n- **GET /builds/user/{userId}/{id}**: ADMIN puede ver cualquier build. USER solo las suyas (403 si otro).\n\n### Proxy Requests (via gateway)\nGo through the API gateway at `{{api_gateway}}`. Requires `Authorization: Bearer <token>`. The gateway reads the role from the JWT and injects `X-User-Id` and `X-User-Role` automatically.\n\n- **admin_token** → ADMIN, ve todas las builds\n- **user_token** → USER, ve solo sus builds\n\nGet tokens by executing a login request in the Auth Service collection.",
         "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
     },
     "variable": [
@@ -29,6 +29,11 @@
                                 "key": "X-User-Id",
                                 "value": "1",
                                 "type": "text"
+                            },
+                            {
+                                "key": "X-User-Role",
+                                "value": "ADMIN",
+                                "type": "text"
                             }
                         ],
                         "url": {
@@ -40,7 +45,7 @@
                                 "builds"
                             ]
                         },
-                        "description": "Retrieves all builds in the system. No filters or pagination applied.\n\nRequires `X-User-Id` header identifying the authenticated user."
+                        "description": "Retrieves all builds. ADMIN → todas las builds. USER → solo las propias (filtradas por X-User-Id).\n\nRequires `X-User-Id` and `X-User-Role` headers."
                     }
                 },
                 {
@@ -51,6 +56,11 @@
                             {
                                 "key": "X-User-Id",
                                 "value": "1",
+                                "type": "text"
+                            },
+                            {
+                                "key": "X-User-Role",
+                                "value": "ADMIN",
                                 "type": "text"
                             }
                         ],
@@ -64,7 +74,7 @@
                                 "1"
                             ]
                         },
-                        "description": "Retrieves a single build by its ID. Returns 404 if not found.\n\nRequires `X-User-Id` header identifying the authenticated user."
+                        "description": "Retrieves a single build by its ID. Returns 404 if not found.\n\nRequires `X-User-Id` and `X-User-Role` headers."
                     }
                 },
                 {
@@ -75,6 +85,11 @@
                             {
                                 "key": "X-User-Id",
                                 "value": "1",
+                                "type": "text"
+                            },
+                            {
+                                "key": "X-User-Role",
+                                "value": "ADMIN",
                                 "type": "text"
                             }
                         ],
@@ -89,7 +104,7 @@
                                 "1"
                             ]
                         },
-                        "description": "Retrieves all builds belonging to a specific user by user ID.\n\nRequires `X-User-Id` header identifying the authenticated user."
+                        "description": "Retrieves all builds for a specific userId. ADMIN → retorna cualquier usuario. USER → solo si coincide con X-User-Id (403 si otro).\n\nRequires `X-User-Id` and `X-User-Role` headers."
                     }
                 },
                 {
@@ -100,6 +115,11 @@
                             {
                                 "key": "X-User-Id",
                                 "value": "1",
+                                "type": "text"
+                            },
+                            {
+                                "key": "X-User-Role",
+                                "value": "ADMIN",
                                 "type": "text"
                             }
                         ],
@@ -115,7 +135,7 @@
                                 "1"
                             ]
                         },
-                        "description": "Retrieves a specific build by both build ID and user ID.\n\nRequires `X-User-Id` header identifying the authenticated user."
+                        "description": "Retrieves a specific build by userId and buildId. ADMIN → cualquier build. USER → solo si userId coincide con X-User-Id (403 si otro).\n\nRequires `X-User-Id` and `X-User-Role` headers."
                     }
                 },
                 {
@@ -126,6 +146,11 @@
                             {
                                 "key": "X-User-Id",
                                 "value": "1",
+                                "type": "text"
+                            },
+                            {
+                                "key": "X-User-Role",
+                                "value": "ADMIN",
                                 "type": "text"
                             }
                         ],
@@ -159,6 +184,11 @@
                                 "key": "X-User-Id",
                                 "value": "1",
                                 "type": "text"
+                            },
+                            {
+                                "key": "X-User-Role",
+                                "value": "ADMIN",
+                                "type": "text"
                             }
                         ],
                         "url": {
@@ -170,7 +200,7 @@
                                 "builds"
                             ]
                         },
-                        "description": "Negative test -- sends null `userId` and empty `name`.\n\n**Expected:** 400 Bad Request (validation error)\n\nRequires `X-User-Id` header identifying the authenticated user.",
+                        "description": "Negative test -- sends null `userId` and empty `name`.\n\n**Expected:** 400 Bad Request (validation error)\n\nRequires `X-User-Id` and `X-User-Role` headers.",
                         "body": {
                             "mode": "raw",
                             "raw": "{\n  \"userId\": null,\n  \"name\": \"\"\n}",
@@ -190,6 +220,11 @@
                             {
                                 "key": "X-User-Id",
                                 "value": "1",
+                                "type": "text"
+                            },
+                            {
+                                "key": "X-User-Role",
+                                "value": "ADMIN",
                                 "type": "text"
                             }
                         ],
@@ -224,6 +259,11 @@
                                 "key": "X-User-Id",
                                 "value": "1",
                                 "type": "text"
+                            },
+                            {
+                                "key": "X-User-Role",
+                                "value": "ADMIN",
+                                "type": "text"
                             }
                         ],
                         "url": {
@@ -236,7 +276,7 @@
                                 "1"
                             ]
                         },
-                        "description": "Deletes a build by ID.\n\n**Expected:** 204 No Content\n\nRequires `X-User-Id` header identifying the authenticated user."
+                        "description": "Deletes a build by ID.\n\n**Expected:** 204 No Content\n\nRequires `X-User-Id` and `X-User-Role` headers."
                     }
                 },
                 {
@@ -247,6 +287,11 @@
                             {
                                 "key": "X-User-Id",
                                 "value": "1",
+                                "type": "text"
+                            },
+                            {
+                                "key": "X-User-Role",
+                                "value": "ADMIN",
                                 "type": "text"
                             }
                         ],
@@ -260,7 +305,7 @@
                                 "9999"
                             ]
                         },
-                        "description": "Negative test -- tries to delete a non-existent build.\n\n**Expected:** 404 Not Found\n\nRequires `X-User-Id` header identifying the authenticated user."
+                        "description": "Negative test -- tries to delete a non-existent build.\n\n**Expected:** 404 Not Found\n\nRequires `X-User-Id` and `X-User-Role` headers."
                     }
                 },
                 {
@@ -271,6 +316,11 @@
                             {
                                 "key": "X-User-Id",
                                 "value": "1",
+                                "type": "text"
+                            },
+                            {
+                                "key": "X-User-Role",
+                                "value": "ADMIN",
                                 "type": "text"
                             }
                         ],
@@ -285,7 +335,7 @@
                                 "items"
                             ]
                         },
-                        "description": "Retrieves all items associated with a specific build.\n\nRequires `X-User-Id` header identifying the authenticated user."
+                        "description": "Retrieves all items associated with a specific build.\n\nRequires `X-User-Id` and `X-User-Role` headers."
                     }
                 },
                 {
@@ -296,6 +346,11 @@
                             {
                                 "key": "X-User-Id",
                                 "value": "1",
+                                "type": "text"
+                            },
+                            {
+                                "key": "X-User-Role",
+                                "value": "ADMIN",
                                 "type": "text"
                             }
                         ],
@@ -311,7 +366,7 @@
                                 "1"
                             ]
                         },
-                        "description": "Retrieves a single item from a build by item ID. Returns 404 if not found.\n\nRequires `X-User-Id` header identifying the authenticated user."
+                        "description": "Retrieves a single item from a build by item ID. Returns 404 if not found.\n\nRequires `X-User-Id` and `X-User-Role` headers."
                     }
                 },
                 {
@@ -322,6 +377,11 @@
                             {
                                 "key": "X-User-Id",
                                 "value": "1",
+                                "type": "text"
+                            },
+                            {
+                                "key": "X-User-Role",
+                                "value": "ADMIN",
                                 "type": "text"
                             }
                         ],
@@ -336,7 +396,7 @@
                                 "items"
                             ]
                         },
-                        "description": "Adds a product item to a build. Requires `productId` and `quantity` (> 0).\n\n**Expected:** 201 Created\n\nRequires `X-User-Id` header identifying the authenticated user.",
+                        "description": "Adds a product item to a build. Requires `productId` and `quantity` (> 0).\n\n**Expected:** 201 Created\n\nRequires `X-User-Id` and `X-User-Role` headers.",
                         "body": {
                             "mode": "raw",
                             "raw": "{\n  \"productId\": 101,\n  \"quantity\": 1\n}",
@@ -357,6 +417,11 @@
                                 "key": "X-User-Id",
                                 "value": "1",
                                 "type": "text"
+                            },
+                            {
+                                "key": "X-User-Role",
+                                "value": "ADMIN",
+                                "type": "text"
                             }
                         ],
                         "url": {
@@ -370,7 +435,7 @@
                                 "items"
                             ]
                         },
-                        "description": "Negative test -- sends quantity = 0 (must be > 0).\n\n**Expected:** 400 Bad Request (validation error)\n\nRequires `X-User-Id` header identifying the authenticated user.",
+                        "description": "Negative test -- sends quantity = 0 (must be > 0).\n\n**Expected:** 400 Bad Request (validation error)\n\nRequires `X-User-Id` and `X-User-Role` headers.",
                         "body": {
                             "mode": "raw",
                             "raw": "{\n  \"productId\": 101,\n  \"quantity\": 0\n}",
@@ -391,6 +456,11 @@
                                 "key": "X-User-Id",
                                 "value": "1",
                                 "type": "text"
+                            },
+                            {
+                                "key": "X-User-Role",
+                                "value": "ADMIN",
+                                "type": "text"
                             }
                         ],
                         "url": {
@@ -404,7 +474,7 @@
                                 "items"
                             ]
                         },
-                        "description": "Negative test -- tries to add an item to a non-existent build.\n\n**Expected:** 404 Not Found\n\nRequires `X-User-Id` header identifying the authenticated user.",
+                        "description": "Negative test -- tries to add an item to a non-existent build.\n\n**Expected:** 404 Not Found\n\nRequires `X-User-Id` and `X-User-Role` headers.",
                         "body": {
                             "mode": "raw",
                             "raw": "{\n  \"productId\": 101,\n  \"quantity\": 1\n}",
@@ -425,6 +495,11 @@
                                 "key": "X-User-Id",
                                 "value": "1",
                                 "type": "text"
+                            },
+                            {
+                                "key": "X-User-Role",
+                                "value": "ADMIN",
+                                "type": "text"
                             }
                         ],
                         "url": {
@@ -439,7 +514,7 @@
                                 "1"
                             ]
                         },
-                        "description": "Deletes a specific item from a build.\n\n**Expected:** 204 No Content\n\nRequires `X-User-Id` header identifying the authenticated user."
+                        "description": "Deletes a specific item from a build.\n\n**Expected:** 204 No Content\n\nRequires `X-User-Id` and `X-User-Role` headers."
                     }
                 },
                 {
@@ -450,6 +525,11 @@
                             {
                                 "key": "X-User-Id",
                                 "value": "1",
+                                "type": "text"
+                            },
+                            {
+                                "key": "X-User-Role",
+                                "value": "ADMIN",
                                 "type": "text"
                             }
                         ],
@@ -465,7 +545,7 @@
                                 "9999"
                             ]
                         },
-                        "description": "Negative test -- tries to delete a non-existent item.\n\n**Expected:** 404 Not Found\n\nRequires `X-User-Id` header identifying the authenticated user."
+                        "description": "Negative test -- tries to delete a non-existent item.\n\n**Expected:** 404 Not Found\n\nRequires `X-User-Id` and `X-User-Role` headers."
                     }
                 }
             ]
@@ -493,7 +573,7 @@
                                 "builds"
                             ]
                         },
-                        "description": "Through gateway: Retrieves all builds in the system. No filters or pagination applied.\n\nRequires `Authorization: Bearer <token>`."
+                        "description": "Through gateway: Retrieves all builds. ADMIN → todas las builds. USER → solo las propias (filtradas por X-User-Id del JWT).\n\nRequires `Authorization: Bearer <token>`."
                     }
                 },
                 {
@@ -517,7 +597,7 @@
                                 "1"
                             ]
                         },
-                        "description": "Through gateway: Retrieves a single build by its ID. Returns 404 if not found.\n\nRequires `Authorization: Bearer <token>`."
+                        "description": "Through gateway: Retrieves a single build by its ID. ADMIN → cualquier build. USER → solo si userId coincide con su JWT (403 si otro).\n\nRequires `Authorization: Bearer <token>`."
                     }
                 },
                 {
@@ -542,7 +622,7 @@
                                 "1"
                             ]
                         },
-                        "description": "Through gateway: Retrieves all builds belonging to a specific user by user ID.\n\nRequires `Authorization: Bearer <token>`."
+                        "description": "Through gateway: Retrieves all builds for a specific userId. ADMIN → retorna cualquier usuario. USER → solo si coincide con su JWT (403 si otro).\n\nRequires `Authorization: Bearer <token>`."
                     }
                 },
                 {
@@ -568,7 +648,7 @@
                                 "1"
                             ]
                         },
-                        "description": "Through gateway: Retrieves a specific build by both build ID and user ID.\n\nRequires `Authorization: Bearer <token>`."
+                        "description": "Through gateway: Retrieves a specific build by userId and buildId. ADMIN → cualquier build. USER → solo si userId coincide con su JWT (403 si otro).\n\nRequires `Authorization: Bearer <token>`."
                     }
                 },
                 {
@@ -919,6 +999,209 @@
                             ]
                         },
                         "description": "Through gateway: Negative test -- tries to delete a non-existent item.\n\n**Expected:** 404 Not Found\n\nRequires `Authorization: Bearer <token>`."
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Direct Requests (as USER)",
+            "item": [
+                {
+                    "name": "Get All Builds (as USER)",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "X-User-Id",
+                                "value": "2",
+                                "type": "text"
+                            },
+                            {
+                                "key": "X-User-Role",
+                                "value": "USER",
+                                "type": "text"
+                            }
+                        ],
+                        "url": {
+                            "host": [
+                                "{{build_service}}{{api_prefix}}"
+                            ],
+                            "raw": "{{build_service}}{{api_prefix}}/builds",
+                            "path": [
+                                "builds"
+                            ]
+                        },
+                        "description": "USER → retorna solo las builds donde X-User-Id es el dueño. No ve builds de otros usuarios.\n\nRequires `X-User-Id` and `X-User-Role` headers."
+                    }
+                },
+                {
+                    "name": "Get Builds By User Id (as USER, own)",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "X-User-Id",
+                                "value": "2",
+                                "type": "text"
+                            },
+                            {
+                                "key": "X-User-Role",
+                                "value": "USER",
+                                "type": "text"
+                            }
+                        ],
+                        "url": {
+                            "host": [
+                                "{{build_service}}{{api_prefix}}"
+                            ],
+                            "raw": "{{build_service}}{{api_prefix}}/builds/user/2",
+                            "path": [
+                                "builds",
+                                "user",
+                                "2"
+                            ]
+                        },
+                        "description": "USER viendo sus propias builds → retorna builds del userId 2 (coincide con X-User-Id).\n\nRequires `X-User-Id` and `X-User-Role` headers."
+                    }
+                },
+                {
+                    "name": "Get Builds By User Id (as USER, other)",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "X-User-Id",
+                                "value": "2",
+                                "type": "text"
+                            },
+                            {
+                                "key": "X-User-Role",
+                                "value": "USER",
+                                "type": "text"
+                            }
+                        ],
+                        "url": {
+                            "host": [
+                                "{{build_service}}{{api_prefix}}"
+                            ],
+                            "raw": "{{build_service}}{{api_prefix}}/builds/user/1",
+                            "path": [
+                                "builds",
+                                "user",
+                                "1"
+                            ]
+                        },
+                        "description": "USER viendo builds de otro usuario → **Expected: 403 Forbidden** (userId 1 != X-User-Id 2).\n\nRequires `X-User-Id` and `X-User-Role` headers."
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Proxy Requests (as USER)",
+            "item": [
+                {
+                    "name": "Get All Builds (via gateway, as USER)",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{user_token}}",
+                                "type": "text"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{api_gateway}}{{api_prefix}}/builds",
+                            "host": [
+                                "{{api_gateway}}{{api_prefix}}"
+                            ],
+                            "path": [
+                                "builds"
+                            ]
+                        },
+                        "description": "Through gateway, as USER: retorna solo las builds del usuario autenticado.\n\nRequires `Authorization: Bearer <user_token>`."
+                    }
+                },
+                {
+                    "name": "Get Builds By User Id (via gateway, as USER, own)",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{user_token}}",
+                                "type": "text"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{api_gateway}}{{api_prefix}}/builds/user/2",
+                            "host": [
+                                "{{api_gateway}}{{api_prefix}}"
+                            ],
+                            "path": [
+                                "builds",
+                                "user",
+                                "2"
+                            ]
+                        },
+                        "description": "Through gateway, as USER viendo sus propias builds.\n\nRequires `Authorization: Bearer <user_token>`."
+                    }
+                },
+                {
+                    "name": "Get Builds By User Id (via gateway, as USER, other)",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{user_token}}",
+                                "type": "text"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{api_gateway}}{{api_prefix}}/builds/user/1",
+                            "host": [
+                                "{{api_gateway}}{{api_prefix}}"
+                            ],
+                            "path": [
+                                "builds",
+                                "user",
+                                "1"
+                            ]
+                        },
+                        "description": "Through gateway, as USER viendo builds de otro usuario → **Expected: 403 Forbidden**.\n\nRequires `Authorization: Bearer <user_token>`."
+                    }
+                },
+                {
+                    "name": "Create Build (via gateway, as USER)",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{user_token}}",
+                                "type": "text"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{api_gateway}}{{api_prefix}}/builds",
+                            "host": [
+                                "{{api_gateway}}{{api_prefix}}"
+                            ],
+                            "path": [
+                                "builds"
+                            ]
+                        },
+                        "description": "Through gateway, as USER: crea una nueva build.\n\n**Expected:** 201 Created\n\nRequires `Authorization: Bearer <user_token>`.",
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"userId\": 2,\n  \"name\": \"My User Build\"\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        }
                     }
                 }
             ]

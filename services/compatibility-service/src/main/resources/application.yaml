@@ -12,3 +12,15 @@ product-service:
 
 category-service:
   url: ${CATEGORY_SERVICE_URL:http://localhost:8084}
+
+restclient:
+  connect-timeout: 5000
+  read-timeout: 10000
+
+app:
+  environment: ${APP_ENVIRONMENT:development}
+
+logging:
+  level:
+    cl.tarrobuild.compatibility: DEBUG
+    org.springframework.web: INFO

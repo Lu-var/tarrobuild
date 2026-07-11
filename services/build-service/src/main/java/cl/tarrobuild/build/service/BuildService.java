@@ -130,6 +130,10 @@ public class BuildService {
 
         try {
             ProductClientResponse product = productFeignClient.getProductById(request.productId());
+            if (product == null) {
+                log.warn("Product with ID {} unavailable (product-service down)", request.productId());
+                throw new IllegalArgumentException("Product service is currently unavailable");
+            }
             if (!product.isActive()) {
                 throw new IllegalArgumentException("Product with ID " + request.productId() + " is not active");
             }

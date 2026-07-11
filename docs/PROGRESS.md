@@ -27,7 +27,7 @@
 
 - [ ] **RNF-01** — Response < 500ms
 - [x] **RNF-02** — Validation + semantic HTTP codes
-- [ ] **RNF-03** — Structured logs with correlation ID and downstream propagation
+- [x] **RNF-03** — Structured logs with correlation ID and downstream propagation
 - [x] **RNF-04** — Independent DB per service
 - [x] **RNF-05** — REST-only inter-service communication
 - [x] **RNF-06** — BCrypt password encryption
@@ -64,92 +64,126 @@
 ---
 ### api-gateway :8080
 
+**Done**
+- [x] Swagger/OpenAPI (springdoc)
+- [x] ContextLoads test
+
 **Pending**
-- [ ] Tests
+- [ ] Unit tests
 
 ---
 
 ### auth-service :8081
-**Pending**
-- [ ] Endpoint tests script
-- [ ] Tests
+**Done**
+- [x] Swagger/OpenAPI (springdoc)
+- [x] Tests unitarios (12 tests)
+- [x] ContextLoads test
 
 ---
 
 ### user-service :8082
 
-**Pending**
-- [ ] Endpoint tests script
-- [ ] Tests
+**Done**
+- [x] Swagger/OpenAPI (springdoc)
+- [x] Tests unitarios (18 tests)
+- [x] ContextLoads test
 
 ---
 
 ### category-service :8084
 
-**Pending**
-- [ ] Endpoint tests script
-- [ ] Tests
+**Done**
+- [x] Swagger/OpenAPI (springdoc)
+- [x] Tests unitarios (12 tests)
+- [x] ContextLoads test
 
 ---
 
 ### product-service :8083
 
+**Done**
+- [x] Swagger/OpenAPI (springdoc)
+- [x] Tests unitarios (20 tests)
+- [x] ContextLoads test
+
 **Pending**
 - [ ] FeignClient fallbacks and configurable timeouts (Module 5)
 - [ ] Endpoint tests script
-- [ ] Tests
 
 ---
 
 ### compatibility-service :8085
 
+**Done**
+- [x] Swagger/OpenAPI (springdoc)
+- [x] Tests unitarios (12 tests)
+- [x] ContextLoads test
+
 **Pending**
 - [ ] Endpoint tests script
-- [ ] Tests
 
 ---
 
 ### provider-service :8086
 
+**Done**
+- [x] Swagger/OpenAPI (springdoc)
+- [x] Tests unitarios (16 tests)
+- [x] ContextLoads test
+
 **Pending**
 - [ ] Cross-service integration — currently isolated, no upstream service queries provider data
 - [ ] Endpoint tests script
-- [ ] Tests
 
 ---
 
 ### build-service :8087
 
 **Done**
+- [x] Swagger/OpenAPI (springdoc)
+- [x] Tests unitarios (27 tests)
+- [x] ContextLoads test
 - [x] Lógica de roles (ADMIN/USER) en endpoints GET — ADMIN ve todas, USER solo las propias; /user/{userId} protegido
 
 **Pending**
-- [ ] Tests
+- [ ] Endpoint tests script
 
 ---
 
 ### estimate-service :8088
 
+**Done**
+- [x] Swagger/OpenAPI (springdoc)
+- [x] Tests unitarios (11 tests)
+- [x] ContextLoads test
+
 **Pending**
 - [ ] Deduplicate keys in `application.yaml` (build/product/notification service URLs + server.port are duplicated)
 - [ ] Endpoint tests script (notification as template)
-- [ ] Tests
 
 ---
 
 ### hardware-advisor-service :8089
 
+**Done**
+- [x] Swagger/OpenAPI (springdoc)
+- [x] Tests unitarios (8 tests)
+- [x] ContextLoads test
+
 **Pending**
 - [ ] Endpoint tests script (notification as template)
-- [ ] Tests
 
 ---
 
 ### notification-service :8090
 
+**Done**
+- [x] Swagger/OpenAPI (springdoc)
+- [x] Tests unitarios (8 tests)
+- [x] ContextLoads test
+
 **Pending**
 - [ ] Endpoint tests script (no script file found)
-- [ ] Tests
 ---
 
 ---
@@ -227,6 +261,13 @@
 - **`ResourceAccessException` → 503 (downstream unavailable)**
 - Generic `Exception` → 500
 - Dev (stack trace) vs. prod (message only) responses
+
+---
+
+## Documentación de apoyo
+
+- [TEST-STRATEGY.md](TEST-STRATEGY.md) — Estrategia de pruebas unitarias (154 tests, 10 servicios)
+- [API-DOCS.md](API-DOCS.md) — Documentación Swagger/OpenAPI (11 servicios)
 
 ---
 
