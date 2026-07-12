@@ -1,0 +1,4 @@
+$kind: http-request
+url: "{{tarrobuild}}{{api_prefix}}/products/9999/attributes"
+method: GET
+order: 380

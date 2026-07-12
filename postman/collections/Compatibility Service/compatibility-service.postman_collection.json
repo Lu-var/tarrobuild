@@ -6,7 +6,7 @@
   },
   "item": [
     {
-      "name": "Direct Requests",
+      "name": "Direct",
       "item": [
         {
           "name": "Check Compatibility",
@@ -129,10 +129,10 @@
       ]
     },
     {
-      "name": "Proxy Requests",
+      "name": "Gateway",
       "item": [
         {
-          "name": "Check Compatibility (Proxy)",
+          "name": "Check Compatibility",
           "request": {
             "method": "POST",
             "header": [],
@@ -159,7 +159,7 @@
           }
         },
         {
-          "name": "Get Compatibility By Build (Proxy)",
+          "name": "Get Compatibility By Build",
           "request": {
             "method": "GET",
             "header": [],
@@ -177,7 +177,7 @@
           }
         },
         {
-          "name": "Get Recommendations (Proxy)",
+          "name": "Get Recommendations",
           "request": {
             "method": "GET",
             "header": [],
@@ -196,7 +196,7 @@
           }
         },
         {
-          "name": "Check Invalid Products (Proxy)",
+          "name": "Check Invalid Products",
           "request": {
             "method": "POST",
             "header": [],
@@ -223,7 +223,130 @@
           }
         },
         {
-          "name": "Check Non-existent Build (Proxy)",
+          "name": "Check Non-existent Build",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "host": [
+                "{{api_gateway}}{{api_prefix}}"
+              ],
+              "raw": "{{api_gateway}}{{api_prefix}}/compatibility/check",
+              "path": [
+                "compatibility",
+                "check"
+              ]
+            },
+            "description": "Non-existent build check through the API Gateway.\n\n**Expected:** 404 Not Found",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"productIds\": [\n    1,\n    2\n  ],\n  \"buildId\": 9999\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Monolith",
+      "item": [
+        {
+          "name": "Check Compatibility",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "host": [
+                "{{api_gateway}}{{api_prefix}}"
+              ],
+              "raw": "{{api_gateway}}{{api_prefix}}/compatibility/check",
+              "path": [
+                "compatibility",
+                "check"
+              ]
+            },
+            "description": "Validates compatibility through the API Gateway.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"productIds\": [\n    1,\n    2\n  ],\n  \"buildId\": 1\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Get Compatibility By Build",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "host": [
+                "{{api_gateway}}{{api_prefix}}"
+              ],
+              "raw": "{{api_gateway}}{{api_prefix}}/compatibility/1",
+              "path": [
+                "compatibility",
+                "1"
+              ]
+            },
+            "description": "Retrieves compatibility result through the API Gateway."
+          }
+        },
+        {
+          "name": "Get Recommendations",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "host": [
+                "{{api_gateway}}{{api_prefix}}"
+              ],
+              "raw": "{{api_gateway}}{{api_prefix}}/compatibility/recommendations/1",
+              "path": [
+                "compatibility",
+                "recommendations",
+                "1"
+              ]
+            },
+            "description": "Gets recommendations through the API Gateway."
+          }
+        },
+        {
+          "name": "Check Invalid Products",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "host": [
+                "{{api_gateway}}{{api_prefix}}"
+              ],
+              "raw": "{{api_gateway}}{{api_prefix}}/compatibility/check",
+              "path": [
+                "compatibility",
+                "check"
+              ]
+            },
+            "description": "Invalid products check through the API Gateway.\n\n**Expected:** 400 Bad Request",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"productIds\": [\n    1\n  ],\n  \"buildId\": 1\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Check Non-existent Build",
           "request": {
             "method": "POST",
             "header": [],

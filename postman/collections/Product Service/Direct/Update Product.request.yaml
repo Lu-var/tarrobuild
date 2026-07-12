@@ -1,0 +1,15 @@
+$kind: http-request
+url: "{{product_service}}{{api_prefix}}/products/1"
+method: PUT
+body:
+  type: json
+  content: |-
+    {
+      "name": "Intel Core i9-14900K Updated",
+      "description": "Updated description",
+      "msrp": 700000,
+      "categoryId": 1,
+      "brand": "Intel",
+      "model": "Core i9-14900K"
+    }
+order: 90

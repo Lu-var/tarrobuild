@@ -1,0 +1,4 @@
+$kind: http-request
+url: "{{build_service}}{{api_prefix}}/builds"
+method: GET
+order: 10

@@ -1,5 +1,0 @@
-$kind: http-request
-description: Retrieves a single item from a build by item ID. Returns 404 if not found.
-url: "{{build_service}}/api/builds/1/items/1"
-method: GET
-order: 11000

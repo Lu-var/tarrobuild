@@ -1,8 +1,0 @@
-$kind: http-request
-description: |-
-  Negative test -- tries to delete a non-existent item.
-
-  **Expected:** 404 Not Found
-url: "{{build_service}}/api/builds/1/items/9999"
-method: DELETE
-order: 16000

@@ -1,0 +1,14 @@
+$kind: http-request
+url: "{{api_gateway}}{{api_prefix}}/auth/register"
+method: POST
+body:
+  type: json
+  content: |-
+    {
+      "email": "proxytest@tarrobuild.cl",
+      "password": "ProxyPass123",
+      "name": "Proxy",
+      "lastName": "Test",
+      "phone": "87654321"
+    }
+order: 140

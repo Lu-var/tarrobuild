@@ -1,0 +1,11 @@
+$kind: http-request
+url: "{{auth_service}}{{api_prefix}}/auth/login"
+method: POST
+body:
+  type: json
+  content: |-
+    {
+      "email": "noone@nowhere.com",
+      "password": "Test12345"
+    }
+order: 80

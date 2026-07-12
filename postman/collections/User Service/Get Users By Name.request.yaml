@@ -1,7 +1,0 @@
-$kind: http-request
-description: Searches users by first name. Uses query parameter `name`.
-url: "{{user_service}}/api/users?name=Lucas"
-method: GET
-queryParams:
-  name: Lucas
-order: 2000

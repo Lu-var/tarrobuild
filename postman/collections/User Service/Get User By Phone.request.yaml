@@ -1,5 +1,0 @@
-$kind: http-request
-description: Retrieves a user by their phone number. Returns 404 if not found.
-url: "{{user_service}}/api/users/phone/+56912345678"
-method: GET
-order: 6000

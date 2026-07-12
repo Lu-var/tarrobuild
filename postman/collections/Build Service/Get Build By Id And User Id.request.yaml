@@ -1,5 +1,0 @@
-$kind: http-request
-description: Retrieves a specific build by both build ID and user ID.
-url: "{{build_service}}/api/builds/user/1/1"
-method: GET
-order: 4000

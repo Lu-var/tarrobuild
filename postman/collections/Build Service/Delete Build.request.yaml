@@ -1,8 +1,0 @@
-$kind: http-request
-description: |-
-  Deletes a build by ID.
-
-  **Expected:** 204 No Content
-url: "{{build_service}}/api/builds/1"
-method: DELETE
-order: 8000

@@ -1,0 +1,4 @@
+$kind: http-request
+url: "{{tarrobuild}}{{api_prefix}}/users/phone/+56912345678"
+method: GET
+order: 180

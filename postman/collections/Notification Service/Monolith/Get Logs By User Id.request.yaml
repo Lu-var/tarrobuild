@@ -1,0 +1,4 @@
+$kind: http-request
+url: "{{tarrobuild}}{{api_prefix}}/notifications/logs/user/1"
+method: GET
+order: 210

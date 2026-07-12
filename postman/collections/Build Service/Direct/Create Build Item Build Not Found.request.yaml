@@ -1,0 +1,11 @@
+$kind: http-request
+url: "{{build_service}}{{api_prefix}}/builds/9999/items"
+method: POST
+body:
+  type: json
+  content: |-
+    {
+      "productId": 101,
+      "quantity": 1
+    }
+order: 140

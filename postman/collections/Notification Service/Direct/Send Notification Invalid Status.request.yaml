@@ -1,0 +1,13 @@
+$kind: http-request
+url: "{{notification_service}}{{api_prefix}}/notifications/send"
+method: POST
+body:
+  type: json
+  content: |-
+    {
+      "userId": 1,
+      "type": "TEST",
+      "content": "Invalid status test.",
+      "status": "BOGUS_STATUS"
+    }
+order: 60

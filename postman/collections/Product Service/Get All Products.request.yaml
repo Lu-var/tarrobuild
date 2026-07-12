@@ -1,8 +1,0 @@
-$kind: http-request
-description: Retrieves all products in the system. No filters or pagination applied.
-url: "{{product_service}}/api/products"
-method: GET
-order: 1000
-tests:
-  - name: "Returns 200"
-    statusCode: 200

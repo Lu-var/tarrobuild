@@ -1,1091 +1,1498 @@
 {
-    "info":  {
-                 "name":  "Product Service",
-                 "description":  "# Product Service\n\nBase URL: `{{product_service}}{{api_prefix}}`\n\nManages the product catalog (components, pricing, stock). Supports full CRUD for products and their attributes, including error/edge-case scenarios.",
-                 "schema":  "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
-             },
-    "item":  [
-                 {
-                     "name":  "Direct Requests",
-                     "item":  [
-                                  {
-                                      "name":  "Get All Products",
-                                      "request":  {
-                                                      "method":  "GET",
-                                                      "header":  [
-
-                                                                 ],
-                                                      "url":  {
-                                                                  "host":  [
-                                                                               "{{product_service}}{{api_prefix}}"
-                                                                           ],
-                                                                  "raw":  "{{product_service}}{{api_prefix}}/products",
-                                                                  "path":  [
-                                                                               "products"
-                                                                           ]
-                                                              },
-                                                      "description":  "Retrieves all products in the system. No filters or pagination applied."
-                                                  }
-                                  },
-                                  {
-                                      "name":  "Get Product By Id",
-                                      "request":  {
-                                                      "method":  "GET",
-                                                      "header":  [
-
-                                                                 ],
-                                                      "url":  {
-                                                                  "host":  [
-                                                                               "{{product_service}}{{api_prefix}}"
-                                                                           ],
-                                                                  "raw":  "{{product_service}}{{api_prefix}}/products/1",
-                                                                  "path":  [
-                                                                               "products",
-                                                                               "1"
-                                                                           ]
-                                                              },
-                                                      "description":  "Retrieves a single product by its ID. Returns 404 if not found."
-                                                  }
-                                  },
-                                  {
-                                      "name":  "Get Product By Id Not Found",
-                                      "request":  {
-                                                      "method":  "GET",
-                                                      "header":  [
-
-                                                                 ],
-                                                      "url":  {
-                                                                  "host":  [
-                                                                               "{{product_service}}{{api_prefix}}"
-                                                                           ],
-                                                                  "raw":  "{{product_service}}{{api_prefix}}/products/9999",
-                                                                  "path":  [
-                                                                               "products",
-                                                                               "9999"
-                                                                           ]
-                                                              },
-                                                      "description":  "Negative test -- tries to get a non-existent product.\n\n**Expected:** 404 Not Found"
-                                                  }
-                                  },
-                                  {
-                                      "name":  "Get Products By Category",
-                                      "request":  {
-                                                      "method":  "GET",
-                                                      "header":  [
-
-                                                                 ],
-                                                      "url":  {
-                                                                  "host":  [
-                                                                               "{{product_service}}{{api_prefix}}"
-                                                                           ],
-                                                                  "raw":  "{{product_service}}{{api_prefix}}/products/category/1",
-                                                                  "path":  [
-                                                                               "products",
-                                                                               "category",
-                                                                               "1"
-                                                                           ]
-                                                              },
-                                                      "description":  "Retrieves all products belonging to a specific category by category ID."
-                                                  }
-                                  },
-                                  {
-                                      "name":  "Get Products By Brand",
-                                      "request":  {
-                                                      "method":  "GET",
-                                                      "header":  [
-
-                                                                 ],
-                                                      "url":  {
-                                                                  "host":  [
-                                                                               "{{product_service}}{{api_prefix}}"
-                                                                           ],
-                                                                  "raw":  "{{product_service}}{{api_prefix}}/products/brand/Intel",
-                                                                  "path":  [
-                                                                               "products",
-                                                                               "brand",
-                                                                               "Intel"
-                                                                           ]
-                                                              },
-                                                      "description":  "Retrieves all products of a specific brand (case-insensitive)."
-                                                  }
-                                  },
-                                  {
-                                      "name":  "Get Products By Price Range",
-                                      "request":  {
-                                                      "method":  "GET",
-                                                      "header":  [
-
-                                                                 ],
-                                                      "url":  {
-                                                                  "raw":  "{{product_service}}/api/products/price?minPrice=100000\u0026maxPrice=500000",
-                                                                  "host":  [
-                                                                               "{{product_service}}"
-                                                                           ],
-                                                                  "path":  [
-                                                                               "api",
-                                                                               "products",
-                                                                               "price"
-                                                                           ],
-                                                                  "query":  [
-                                                                                {
-                                                                                    "key":  "minPrice",
-                                                                                    "value":  "100000"
-                                                                                },
-                                                                                {
-                                                                                    "key":  "maxPrice",
-                                                                                    "value":  "500000"
-                                                                                }
-                                                                            ]
-                                                              },
-                                                      "description":  "Retrieves products within a specific price range."
-                                                  }
-                                  },
-                                  {
-                                      "name":  "Create Product",
-                                      "request":  {
-                                                      "method":  "POST",
-                                                      "header":  [
-
-                                                                 ],
-                                                      "url":  {
-                                                                  "host":  [
-                                                                               "{{product_service}}{{api_prefix}}"
-                                                                           ],
-                                                                  "raw":  "{{product_service}}{{api_prefix}}/products",
-                                                                  "path":  [
-                                                                               "products"
-                                                                           ]
-                                                              },
-                                                      "description":  "Creates a new product. Required fields: `name`, `price`, `categoryId`, `brand`, `model`.\n\n**Expected:** 201 Created",
-                                                      "body":  {
-                                                                   "mode":  "raw",
-                                                                   "raw":  "{\n  \"name\": \"Intel Core i9-14900K\",\n  \"description\": \"High-performance processor\",\n  \"msrp\": 650000,\n  \"categoryId\": 1,\n  \"brand\": \"Intel\",\n  \"model\": \"Core i9-14900K\",\n  \"isActive\": true\n}",
-                                                                   "options":  {
-                                                                                   "raw":  {
-                                                                                               "language":  "json"
-                                                                                           }
-                                                                               }
-                                                               }
-                                                  }
-                                  },
-                                  {
-                                      "name":  "Create Product Invalid",
-                                      "request":  {
-                                                      "method":  "POST",
-                                                      "header":  [
-
-                                                                 ],
-                                                      "url":  {
-                                                                  "host":  [
-                                                                               "{{product_service}}{{api_prefix}}"
-                                                                           ],
-                                                                  "raw":  "{{product_service}}{{api_prefix}}/products",
-                                                                  "path":  [
-                                                                               "products"
-                                                                           ]
-                                                              },
-                                                      "description":  "Negative test -- sends null/empty required fields and invalid price.\n\n**Expected:** 400 Bad Request (validation error)",
-                                                      "body":  {
-                                                                   "mode":  "raw",
-                                                                   "raw":  "{\n  \"name\": \"\",\n  \"description\": \"Test\",\n  \"msrp\": -100,\n  \"categoryId\": null,\n  \"brand\": \"\",\n  \"model\": \"\"\n}",
-                                                                   "options":  {
-                                                                                   "raw":  {
-                                                                                               "language":  "json"
-                                                                                           }
-                                                                               }
-                                                               }
-                                                  }
-                                  },
-                                  {
-                                      "name":  "Update Product",
-                                      "request":  {
-                                                      "method":  "PUT",
-                                                      "header":  [
-
-                                                                 ],
-                                                      "url":  {
-                                                                  "host":  [
-                                                                               "{{product_service}}{{api_prefix}}"
-                                                                           ],
-                                                                  "raw":  "{{product_service}}{{api_prefix}}/products/1",
-                                                                  "path":  [
-                                                                               "products",
-                                                                               "1"
-                                                                           ]
-                                                              },
-                                                      "description":  "Updates an existing product\u0027s details.\n\n**Expected:** 200 OK",
-                                                      "body":  {
-                                                                   "mode":  "raw",
-                                                                   "raw":  "{\n  \"name\": \"Intel Core i9-14900K Updated\",\n  \"description\": \"Updated description\",\n  \"msrp\": 700000,\n  \"categoryId\": 1,\n  \"brand\": \"Intel\",\n  \"model\": \"Core i9-14900K\"\n}",
-                                                                   "options":  {
-                                                                                   "raw":  {
-                                                                                               "language":  "json"
-                                                                                           }
-                                                                               }
-                                                               }
-                                                  }
-                                  },
-                                  {
-                                      "name":  "Update Product Not Found",
-                                      "request":  {
-                                                      "method":  "PUT",
-                                                      "header":  [
-
-                                                                 ],
-                                                      "url":  {
-                                                                  "host":  [
-                                                                               "{{product_service}}{{api_prefix}}"
-                                                                           ],
-                                                                  "raw":  "{{product_service}}{{api_prefix}}/products/9999",
-                                                                  "path":  [
-                                                                               "products",
-                                                                               "9999"
-                                                                           ]
-                                                              },
-                                                      "description":  "Negative test -- tries to update a non-existent product.\n\n**Expected:** 404 Not Found",
-                                                      "body":  {
-                                                                   "mode":  "raw",
-                                                                   "raw":  "{\n  \"name\": \"Test\",\n  \"description\": \"Test\",\n  \"msrp\": 100,\n  \"categoryId\": 1,\n  \"brand\": \"Test\",\n  \"model\": \"Test\"\n}",
-                                                                   "options":  {
-                                                                                   "raw":  {
-                                                                                               "language":  "json"
-                                                                                           }
-                                                                               }
-                                                               }
-                                                  }
-                                  },
-                                  {
-                                      "name":  "Delete Product",
-                                      "request":  {
-                                                      "method":  "DELETE",
-                                                      "header":  [
-
-                                                                 ],
-                                                      "url":  {
-                                                                  "host":  [
-                                                                               "{{product_service}}{{api_prefix}}"
-                                                                           ],
-                                                                  "raw":  "{{product_service}}{{api_prefix}}/products/1",
-                                                                  "path":  [
-                                                                               "products",
-                                                                               "1"
-                                                                           ]
-                                                              },
-                                                      "description":  "Deletes a product by ID.\n\n**Expected:** 204 No Content"
-                                                  }
-                                  },
-                                  {
-                                      "name":  "Delete Product Not Found",
-                                      "request":  {
-                                                      "method":  "DELETE",
-                                                      "header":  [
-
-                                                                 ],
-                                                      "url":  {
-                                                                  "host":  [
-                                                                               "{{product_service}}{{api_prefix}}"
-                                                                           ],
-                                                                  "raw":  "{{product_service}}{{api_prefix}}/products/9999",
-                                                                  "path":  [
-                                                                               "products",
-                                                                               "9999"
-                                                                           ]
-                                                              },
-                                                      "description":  "Negative test -- tries to delete a non-existent product.\n\n**Expected:** 404 Not Found"
-                                                  }
-                                  },
-                                  {
-                                      "name":  "Deactivate Product",
-                                      "request":  {
-                                                      "method":  "PATCH",
-                                                      "header":  [
-
-                                                                 ],
-                                                      "url":  {
-                                                                  "host":  [
-                                                                               "{{product_service}}{{api_prefix}}"
-                                                                           ],
-                                                                  "raw":  "{{product_service}}{{api_prefix}}/products/2/deactivate",
-                                                                  "path":  [
-                                                                               "products",
-                                                                               "2",
-                                                                               "deactivate"
-                                                                           ]
-                                                              },
-                                                      "description":  "Soft-deletes (deactivates) a product by ID.\n\n**Expected:** 204 No Content"
-                                                  }
-                                  },
-                                  {
-                                      "name":  "Deactivate Product Not Found",
-                                      "request":  {
-                                                      "method":  "PATCH",
-                                                      "header":  [
-
-                                                                 ],
-                                                      "url":  {
-                                                                  "host":  [
-                                                                               "{{product_service}}{{api_prefix}}"
-                                                                           ],
-                                                                  "raw":  "{{product_service}}{{api_prefix}}/products/9999/deactivate",
-                                                                  "path":  [
-                                                                               "products",
-                                                                               "9999",
-                                                                               "deactivate"
-                                                                           ]
-                                                              },
-                                                      "description":  "Negative test -- tries to deactivate a non-existent product.\n\n**Expected:** 404 Not Found"
-                                                  }
-                                  },
-                                  {
-                                      "name":  "Get Product Attributes",
-                                      "request":  {
-                                                      "method":  "GET",
-                                                      "header":  [
-
-                                                                 ],
-                                                      "url":  {
-                                                                  "host":  [
-                                                                               "{{product_service}}{{api_prefix}}"
-                                                                           ],
-                                                                  "raw":  "{{product_service}}{{api_prefix}}/products/1/attributes",
-                                                                  "path":  [
-                                                                               "products",
-                                                                               "1",
-                                                                               "attributes"
-                                                                           ]
-                                                              },
-                                                      "description":  "Retrieves all attributes for a specific product."
-                                                  }
-                                  },
-                                  {
-                                      "name":  "Get Product Attributes Not Found",
-                                      "request":  {
-                                                      "method":  "GET",
-                                                      "header":  [
-
-                                                                 ],
-                                                      "url":  {
-                                                                  "host":  [
-                                                                               "{{product_service}}{{api_prefix}}"
-                                                                           ],
-                                                                  "raw":  "{{product_service}}{{api_prefix}}/products/9999/attributes",
-                                                                  "path":  [
-                                                                               "products",
-                                                                               "9999",
-                                                                               "attributes"
-                                                                           ]
-                                                              },
-                                                      "description":  "Negative test -- tries to get attributes of a non-existent product.\n\n**Expected:** 404 Not Found"
-                                                  }
-                                  },
-                                  {
-                                      "name":  "Add Product Attribute",
-                                      "request":  {
-                                                      "method":  "POST",
-                                                      "header":  [
-
-                                                                 ],
-                                                      "url":  {
-                                                                  "host":  [
-                                                                               "{{product_service}}{{api_prefix}}"
-                                                                           ],
-                                                                  "raw":  "{{product_service}}{{api_prefix}}/products/1/attributes",
-                                                                  "path":  [
-                                                                               "products",
-                                                                               "1",
-                                                                               "attributes"
-                                                                           ]
-                                                              },
-                                                      "description":  "Adds a new attribute to a product. Required fields: `attributeName`, `attributeValue`.\n\n**Expected:** 201 Created",
-                                                      "body":  {
-                                                                   "mode":  "raw",
-                                                                   "raw":  "{\n  \"attributeName\": \"Socket\",\n  \"attributeValue\": \"LGA1700\"\n}",
-                                                                   "options":  {
-                                                                                   "raw":  {
-                                                                                               "language":  "json"
-                                                                                           }
-                                                                               }
-                                                               }
-                                                  }
-                                  },
-                                  {
-                                      "name":  "Add Product Attribute Invalid",
-                                      "request":  {
-                                                      "method":  "POST",
-                                                      "header":  [
-
-                                                                 ],
-                                                      "url":  {
-                                                                  "host":  [
-                                                                               "{{product_service}}{{api_prefix}}"
-                                                                           ],
-                                                                  "raw":  "{{product_service}}{{api_prefix}}/products/1/attributes",
-                                                                  "path":  [
-                                                                               "products",
-                                                                               "1",
-                                                                               "attributes"
-                                                                           ]
-                                                              },
-                                                      "description":  "Negative test -- sends empty attribute name and value.\n\n**Expected:** 400 Bad Request (validation error)",
-                                                      "body":  {
-                                                                   "mode":  "raw",
-                                                                   "raw":  "{\n  \"attributeName\": \"\",\n  \"attributeValue\": \"\"\n}",
-                                                                   "options":  {
-                                                                                   "raw":  {
-                                                                                               "language":  "json"
-                                                                                           }
-                                                                               }
-                                                               }
-                                                  }
-                                  },
-                                  {
-                                      "name":  "Update Product Attribute",
-                                      "request":  {
-                                                      "method":  "PUT",
-                                                      "header":  [
-
-                                                                 ],
-                                                      "url":  {
-                                                                  "host":  [
-                                                                               "{{product_service}}{{api_prefix}}"
-                                                                           ],
-                                                                  "raw":  "{{product_service}}{{api_prefix}}/products/1/attributes/1",
-                                                                  "path":  [
-                                                                               "products",
-                                                                               "1",
-                                                                               "attributes",
-                                                                               "1"
-                                                                           ]
-                                                              },
-                                                      "description":  "Updates an existing product attribute.\n\n**Expected:** 200 OK",
-                                                      "body":  {
-                                                                   "mode":  "raw",
-                                                                   "raw":  "{\n  \"attributeName\": \"Socket Updated\",\n  \"attributeValue\": \"AM5\"\n}",
-                                                                   "options":  {
-                                                                                   "raw":  {
-                                                                                               "language":  "json"
-                                                                                           }
-                                                                               }
-                                                               }
-                                                  }
-                                  },
-                                  {
-                                      "name":  "Update Product Attribute Not Found",
-                                      "request":  {
-                                                      "method":  "PUT",
-                                                      "header":  [
-
-                                                                 ],
-                                                      "url":  {
-                                                                  "host":  [
-                                                                               "{{product_service}}{{api_prefix}}"
-                                                                           ],
-                                                                  "raw":  "{{product_service}}{{api_prefix}}/products/1/attributes/9999",
-                                                                  "path":  [
-                                                                               "products",
-                                                                               "1",
-                                                                               "attributes",
-                                                                               "9999"
-                                                                           ]
-                                                              },
-                                                      "description":  "Negative test -- tries to update a non-existent attribute.\n\n**Expected:** 404 Not Found",
-                                                      "body":  {
-                                                                   "mode":  "raw",
-                                                                   "raw":  "{\n  \"attributeName\": \"Test\",\n  \"attributeValue\": \"Test\"\n}",
-                                                                   "options":  {
-                                                                                   "raw":  {
-                                                                                               "language":  "json"
-                                                                                           }
-                                                                               }
-                                                               }
-                                                  }
-                                  },
-                                  {
-                                      "name":  "Delete Product Attribute",
-                                      "request":  {
-                                                      "method":  "DELETE",
-                                                      "header":  [
-
-                                                                 ],
-                                                      "url":  {
-                                                                  "host":  [
-                                                                               "{{product_service}}{{api_prefix}}"
-                                                                           ],
-                                                                  "raw":  "{{product_service}}{{api_prefix}}/products/1/attributes/1",
-                                                                  "path":  [
-                                                                               "products",
-                                                                               "1",
-                                                                               "attributes",
-                                                                               "1"
-                                                                           ]
-                                                              },
-                                                      "description":  "Deletes a product attribute by ID.\n\n**Expected:** 204 No Content"
-                                                  }
-                                  },
-                                  {
-                                      "name":  "Delete Product Attribute Not Found",
-                                      "request":  {
-                                                      "method":  "DELETE",
-                                                      "header":  [
-
-                                                                 ],
-                                                      "url":  {
-                                                                  "host":  [
-                                                                               "{{product_service}}{{api_prefix}}"
-                                                                           ],
-                                                                  "raw":  "{{product_service}}{{api_prefix}}/products/1/attributes/9999",
-                                                                  "path":  [
-                                                                               "products",
-                                                                               "1",
-                                                                               "attributes",
-                                                                               "9999"
-                                                                           ]
-                                                              },
-                                                      "description":  "Negative test -- tries to delete a non-existent attribute.\n\n**Expected:** 404 Not Found"
-                                                  }
-                                  }
-                              ]
-                 },
-                 {
-                     "name":  "Proxy Requests",
-                     "item":  [
-                                  {
-                                      "name":  "Get All Products (via gateway)",
-                                      "request":  {
-                                                      "method":  "GET",
-                                                      "header":  [
-
-                                                                 ],
-                                                      "url":  {
-                                                                  "raw":  "{{api_gateway}}{{api_prefix}}/products",
-                                                                  "host":  [
-                                                                               "{{api_gateway}}{{api_prefix}}"
-                                                                           ],
-                                                                  "path":  [
-                                                                               "products"
-                                                                           ]
-                                                              },
-                                                      "description":  "Through gateway: Retrieves all products in the system. No filters or pagination applied."
-                                                  }
-                                  },
-                                  {
-                                      "name":  "Get Product By Id (via gateway)",
-                                      "request":  {
-                                                      "method":  "GET",
-                                                      "header":  [
-
-                                                                 ],
-                                                      "url":  {
-                                                                  "raw":  "{{api_gateway}}{{api_prefix}}/products/1",
-                                                                  "host":  [
-                                                                               "{{api_gateway}}{{api_prefix}}"
-                                                                           ],
-                                                                  "path":  [
-                                                                               "products",
-                                                                               "1"
-                                                                           ]
-                                                              },
-                                                      "description":  "Through gateway: Retrieves a single product by its ID. Returns 404 if not found."
-                                                  }
-                                  },
-                                  {
-                                      "name":  "Get Product By Id Not Found (via gateway)",
-                                      "request":  {
-                                                      "method":  "GET",
-                                                      "header":  [
-
-                                                                 ],
-                                                      "url":  {
-                                                                  "raw":  "{{api_gateway}}{{api_prefix}}/products/9999",
-                                                                  "host":  [
-                                                                               "{{api_gateway}}{{api_prefix}}"
-                                                                           ],
-                                                                  "path":  [
-                                                                               "products",
-                                                                               "9999"
-                                                                           ]
-                                                              },
-                                                      "description":  "Through gateway: Negative test -- tries to get a non-existent product.\n\n**Expected:** 404 Not Found"
-                                                  }
-                                  },
-                                  {
-                                      "name":  "Get Products By Category (via gateway)",
-                                      "request":  {
-                                                      "method":  "GET",
-                                                      "header":  [
-
-                                                                 ],
-                                                      "url":  {
-                                                                  "raw":  "{{api_gateway}}{{api_prefix}}/products/category/1",
-                                                                  "host":  [
-                                                                               "{{api_gateway}}{{api_prefix}}"
-                                                                           ],
-                                                                  "path":  [
-                                                                               "products",
-                                                                               "category",
-                                                                               "1"
-                                                                           ]
-                                                              },
-                                                      "description":  "Through gateway: Retrieves all products belonging to a specific category by category ID."
-                                                  }
-                                  },
-                                  {
-                                      "name":  "Get Products By Brand (via gateway)",
-                                      "request":  {
-                                                      "method":  "GET",
-                                                      "header":  [
-
-                                                                 ],
-                                                      "url":  {
-                                                                  "raw":  "{{api_gateway}}{{api_prefix}}/products/brand/Intel",
-                                                                  "host":  [
-                                                                               "{{api_gateway}}{{api_prefix}}"
-                                                                           ],
-                                                                  "path":  [
-                                                                               "products",
-                                                                               "brand",
-                                                                               "Intel"
-                                                                           ]
-                                                              },
-                                                      "description":  "Through gateway: Retrieves all products of a specific brand (case-insensitive)."
-                                                  }
-                                  },
-                                  {
-                                      "name":  "Get Products By Price Range (via gateway)",
-                                      "request":  {
-                                                      "method":  "GET",
-                                                      "header":  [
-
-                                                                 ],
-                                                      "url":  {
-                                                                   "raw":  "{{api_gateway}}{{api_prefix}}/products/price?minPrice=100000\u0026maxPrice=500000",
-                                                                   "host":  [
-                                                                                "{{api_gateway}}{{api_prefix}}"
-                                                                            ],
-                                                                   "path":  [
-                                                                                "products",
-                                                                                "price"
-                                                                            ],
-                                                                  "query":  [
-                                                                                {
-                                                                                    "key":  "minPrice",
-                                                                                    "value":  "100000"
-                                                                                },
-                                                                                {
-                                                                                    "key":  "maxPrice",
-                                                                                    "value":  "500000"
-                                                                                }
-                                                                            ]
-                                                              },
-                                                      "description":  "Through gateway: Retrieves products within a specific price range."
-                                                  }
-                                  },
-                                  {
-                                      "name":  "Create Product (via gateway)",
-                                      "request":  {
-                                                      "method":  "POST",
-                                                      "header":  [
-
-                                                                 ],
-                                                      "url":  {
-                                                                  "raw":  "{{api_gateway}}{{api_prefix}}/products",
-                                                                  "host":  [
-                                                                               "{{api_gateway}}{{api_prefix}}"
-                                                                           ],
-                                                                  "path":  [
-                                                                               "products"
-                                                                           ]
-                                                              },
-                                                      "description":  "Through gateway: Creates a new product. Required fields: `name`, `price`, `categoryId`, `brand`, `model`.\n\n**Expected:** 201 Created",
-                                                      "body":  {
-                                                                   "mode":  "raw",
-                                                                   "raw":  "{\n  \"name\": \"Intel Core i9-14900K\",\n  \"description\": \"High-performance processor\",\n  \"msrp\": 650000,\n  \"categoryId\": 1,\n  \"brand\": \"Intel\",\n  \"model\": \"Core i9-14900K\",\n  \"isActive\": true\n}",
-                                                                   "options":  {
-                                                                                   "raw":  {
-                                                                                               "language":  "json"
-                                                                                           }
-                                                                               }
-                                                               }
-                                                  }
-                                  },
-                                  {
-                                      "name":  "Create Product Invalid (via gateway)",
-                                      "request":  {
-                                                      "method":  "POST",
-                                                      "header":  [
-
-                                                                 ],
-                                                      "url":  {
-                                                                  "raw":  "{{api_gateway}}{{api_prefix}}/products",
-                                                                  "host":  [
-                                                                               "{{api_gateway}}{{api_prefix}}"
-                                                                           ],
-                                                                  "path":  [
-                                                                               "products"
-                                                                           ]
-                                                              },
-                                                      "description":  "Through gateway: Negative test -- sends null/empty required fields and invalid price.\n\n**Expected:** 400 Bad Request (validation error)",
-                                                      "body":  {
-                                                                   "mode":  "raw",
-                                                                   "raw":  "{\n  \"name\": \"\",\n  \"description\": \"Test\",\n  \"msrp\": -100,\n  \"categoryId\": null,\n  \"brand\": \"\",\n  \"model\": \"\"\n}",
-                                                                   "options":  {
-                                                                                   "raw":  {
-                                                                                               "language":  "json"
-                                                                                           }
-                                                                               }
-                                                               }
-                                                  }
-                                  },
-                                  {
-                                      "name":  "Update Product (via gateway)",
-                                      "request":  {
-                                                      "method":  "PUT",
-                                                      "header":  [
-
-                                                                 ],
-                                                      "url":  {
-                                                                  "raw":  "{{api_gateway}}{{api_prefix}}/products/1",
-                                                                  "host":  [
-                                                                               "{{api_gateway}}{{api_prefix}}"
-                                                                           ],
-                                                                  "path":  [
-                                                                               "products",
-                                                                               "1"
-                                                                           ]
-                                                              },
-                                                      "description":  "Through gateway: Updates an existing product\u0027s details.\n\n**Expected:** 200 OK",
-                                                      "body":  {
-                                                                   "mode":  "raw",
-                                                                   "raw":  "{\n  \"name\": \"Intel Core i9-14900K Updated\",\n  \"description\": \"Updated description\",\n  \"msrp\": 700000,\n  \"categoryId\": 1,\n  \"brand\": \"Intel\",\n  \"model\": \"Core i9-14900K\"\n}",
-                                                                   "options":  {
-                                                                                   "raw":  {
-                                                                                               "language":  "json"
-                                                                                           }
-                                                                               }
-                                                               }
-                                                  }
-                                  },
-                                  {
-                                      "name":  "Update Product Not Found (via gateway)",
-                                      "request":  {
-                                                      "method":  "PUT",
-                                                      "header":  [
-
-                                                                 ],
-                                                      "url":  {
-                                                                  "raw":  "{{api_gateway}}{{api_prefix}}/products/9999",
-                                                                  "host":  [
-                                                                               "{{api_gateway}}{{api_prefix}}"
-                                                                           ],
-                                                                  "path":  [
-                                                                               "products",
-                                                                               "9999"
-                                                                           ]
-                                                              },
-                                                      "description":  "Through gateway: Negative test -- tries to update a non-existent product.\n\n**Expected:** 404 Not Found",
-                                                      "body":  {
-                                                                   "mode":  "raw",
-                                                                   "raw":  "{\n  \"name\": \"Test\",\n  \"description\": \"Test\",\n  \"msrp\": 100,\n  \"categoryId\": 1,\n  \"brand\": \"Test\",\n  \"model\": \"Test\"\n}",
-                                                                   "options":  {
-                                                                                   "raw":  {
-                                                                                               "language":  "json"
-                                                                                           }
-                                                                               }
-                                                               }
-                                                  }
-                                  },
-                                  {
-                                      "name":  "Delete Product (via gateway)",
-                                      "request":  {
-                                                      "method":  "DELETE",
-                                                      "header":  [
-
-                                                                 ],
-                                                      "url":  {
-                                                                  "raw":  "{{api_gateway}}{{api_prefix}}/products/1",
-                                                                  "host":  [
-                                                                               "{{api_gateway}}{{api_prefix}}"
-                                                                           ],
-                                                                  "path":  [
-                                                                               "products",
-                                                                               "1"
-                                                                           ]
-                                                              },
-                                                      "description":  "Through gateway: Deletes a product by ID.\n\n**Expected:** 204 No Content"
-                                                  }
-                                  },
-                                  {
-                                      "name":  "Delete Product Not Found (via gateway)",
-                                      "request":  {
-                                                      "method":  "DELETE",
-                                                      "header":  [
-
-                                                                 ],
-                                                      "url":  {
-                                                                  "raw":  "{{api_gateway}}{{api_prefix}}/products/9999",
-                                                                  "host":  [
-                                                                               "{{api_gateway}}{{api_prefix}}"
-                                                                           ],
-                                                                  "path":  [
-                                                                               "products",
-                                                                               "9999"
-                                                                           ]
-                                                              },
-                                                      "description":  "Through gateway: Negative test -- tries to delete a non-existent product.\n\n**Expected:** 404 Not Found"
-                                                  }
-                                  },
-                                  {
-                                      "name":  "Deactivate Product (via gateway)",
-                                      "request":  {
-                                                      "method":  "PATCH",
-                                                      "header":  [
-
-                                                                 ],
-                                                      "url":  {
-                                                                  "raw":  "{{api_gateway}}{{api_prefix}}/products/2/deactivate",
-                                                                  "host":  [
-                                                                               "{{api_gateway}}{{api_prefix}}"
-                                                                           ],
-                                                                  "path":  [
-                                                                               "products",
-                                                                               "2",
-                                                                               "deactivate"
-                                                                           ]
-                                                              },
-                                                      "description":  "Through gateway: Soft-deletes (deactivates) a product by ID.\n\n**Expected:** 204 No Content"
-                                                  }
-                                  },
-                                  {
-                                      "name":  "Deactivate Product Not Found (via gateway)",
-                                      "request":  {
-                                                      "method":  "PATCH",
-                                                      "header":  [
-
-                                                                 ],
-                                                      "url":  {
-                                                                  "raw":  "{{api_gateway}}{{api_prefix}}/products/9999/deactivate",
-                                                                  "host":  [
-                                                                               "{{api_gateway}}{{api_prefix}}"
-                                                                           ],
-                                                                  "path":  [
-                                                                               "products",
-                                                                               "9999",
-                                                                               "deactivate"
-                                                                           ]
-                                                              },
-                                                      "description":  "Through gateway: Negative test -- tries to deactivate a non-existent product.\n\n**Expected:** 404 Not Found"
-                                                  }
-                                  },
-                                  {
-                                      "name":  "Get Product Attributes (via gateway)",
-                                      "request":  {
-                                                      "method":  "GET",
-                                                      "header":  [
-
-                                                                 ],
-                                                      "url":  {
-                                                                  "raw":  "{{api_gateway}}{{api_prefix}}/products/1/attributes",
-                                                                  "host":  [
-                                                                               "{{api_gateway}}{{api_prefix}}"
-                                                                           ],
-                                                                  "path":  [
-                                                                               "products",
-                                                                               "1",
-                                                                               "attributes"
-                                                                           ]
-                                                              },
-                                                      "description":  "Through gateway: Retrieves all attributes for a specific product."
-                                                  }
-                                  },
-                                  {
-                                      "name":  "Get Product Attributes Not Found (via gateway)",
-                                      "request":  {
-                                                      "method":  "GET",
-                                                      "header":  [
-
-                                                                 ],
-                                                      "url":  {
-                                                                  "raw":  "{{api_gateway}}{{api_prefix}}/products/9999/attributes",
-                                                                  "host":  [
-                                                                               "{{api_gateway}}{{api_prefix}}"
-                                                                           ],
-                                                                  "path":  [
-                                                                               "products",
-                                                                               "9999",
-                                                                               "attributes"
-                                                                           ]
-                                                              },
-                                                      "description":  "Through gateway: Negative test -- tries to get attributes of a non-existent product.\n\n**Expected:** 404 Not Found"
-                                                  }
-                                  },
-                                  {
-                                      "name":  "Add Product Attribute (via gateway)",
-                                      "request":  {
-                                                      "method":  "POST",
-                                                      "header":  [
-
-                                                                 ],
-                                                      "url":  {
-                                                                  "raw":  "{{api_gateway}}{{api_prefix}}/products/1/attributes",
-                                                                  "host":  [
-                                                                               "{{api_gateway}}{{api_prefix}}"
-                                                                           ],
-                                                                  "path":  [
-                                                                               "products",
-                                                                               "1",
-                                                                               "attributes"
-                                                                           ]
-                                                              },
-                                                      "description":  "Through gateway: Adds a new attribute to a product. Required fields: `attributeName`, `attributeValue`.\n\n**Expected:** 201 Created",
-                                                      "body":  {
-                                                                   "mode":  "raw",
-                                                                   "raw":  "{\n  \"attributeName\": \"Socket\",\n  \"attributeValue\": \"LGA1700\"\n}",
-                                                                   "options":  {
-                                                                                   "raw":  {
-                                                                                               "language":  "json"
-                                                                                           }
-                                                                               }
-                                                               }
-                                                  }
-                                  },
-                                  {
-                                      "name":  "Add Product Attribute Invalid (via gateway)",
-                                      "request":  {
-                                                      "method":  "POST",
-                                                      "header":  [
-
-                                                                 ],
-                                                      "url":  {
-                                                                  "raw":  "{{api_gateway}}{{api_prefix}}/products/1/attributes",
-                                                                  "host":  [
-                                                                               "{{api_gateway}}{{api_prefix}}"
-                                                                           ],
-                                                                  "path":  [
-                                                                               "products",
-                                                                               "1",
-                                                                               "attributes"
-                                                                           ]
-                                                              },
-                                                      "description":  "Through gateway: Negative test -- sends empty attribute name and value.\n\n**Expected:** 400 Bad Request (validation error)",
-                                                      "body":  {
-                                                                   "mode":  "raw",
-                                                                   "raw":  "{\n  \"attributeName\": \"\",\n  \"attributeValue\": \"\"\n}",
-                                                                   "options":  {
-                                                                                   "raw":  {
-                                                                                               "language":  "json"
-                                                                                           }
-                                                                               }
-                                                               }
-                                                  }
-                                  },
-                                  {
-                                      "name":  "Update Product Attribute (via gateway)",
-                                      "request":  {
-                                                      "method":  "PUT",
-                                                      "header":  [
-
-                                                                 ],
-                                                      "url":  {
-                                                                  "raw":  "{{api_gateway}}{{api_prefix}}/products/1/attributes/1",
-                                                                  "host":  [
-                                                                               "{{api_gateway}}{{api_prefix}}"
-                                                                           ],
-                                                                  "path":  [
-                                                                               "products",
-                                                                               "1",
-                                                                               "attributes",
-                                                                               "1"
-                                                                           ]
-                                                              },
-                                                      "description":  "Through gateway: Updates an existing product attribute.\n\n**Expected:** 200 OK",
-                                                      "body":  {
-                                                                   "mode":  "raw",
-                                                                   "raw":  "{\n  \"attributeName\": \"Socket Updated\",\n  \"attributeValue\": \"AM5\"\n}",
-                                                                   "options":  {
-                                                                                   "raw":  {
-                                                                                               "language":  "json"
-                                                                                           }
-                                                                               }
-                                                               }
-                                                  }
-                                  },
-                                  {
-                                      "name":  "Update Product Attribute Not Found (via gateway)",
-                                      "request":  {
-                                                      "method":  "PUT",
-                                                      "header":  [
-
-                                                                 ],
-                                                      "url":  {
-                                                                  "raw":  "{{api_gateway}}{{api_prefix}}/products/1/attributes/9999",
-                                                                  "host":  [
-                                                                               "{{api_gateway}}{{api_prefix}}"
-                                                                           ],
-                                                                  "path":  [
-                                                                               "products",
-                                                                               "1",
-                                                                               "attributes",
-                                                                               "9999"
-                                                                           ]
-                                                              },
-                                                      "description":  "Through gateway: Negative test -- tries to update a non-existent attribute.\n\n**Expected:** 404 Not Found",
-                                                      "body":  {
-                                                                   "mode":  "raw",
-                                                                   "raw":  "{\n  \"attributeName\": \"Test\",\n  \"attributeValue\": \"Test\"\n}",
-                                                                   "options":  {
-                                                                                   "raw":  {
-                                                                                               "language":  "json"
-                                                                                           }
-                                                                               }
-                                                               }
-                                                  }
-                                  },
-                                  {
-                                      "name":  "Delete Product Attribute (via gateway)",
-                                      "request":  {
-                                                      "method":  "DELETE",
-                                                      "header":  [
-
-                                                                 ],
-                                                      "url":  {
-                                                                  "raw":  "{{api_gateway}}{{api_prefix}}/products/1/attributes/1",
-                                                                  "host":  [
-                                                                               "{{api_gateway}}{{api_prefix}}"
-                                                                           ],
-                                                                  "path":  [
-                                                                               "products",
-                                                                               "1",
-                                                                               "attributes",
-                                                                               "1"
-                                                                           ]
-                                                              },
-                                                      "description":  "Through gateway: Deletes a product attribute by ID.\n\n**Expected:** 204 No Content"
-                                                  }
-                                  },
-                                  {
-                                      "name":  "Delete Product Attribute Not Found (via gateway)",
-                                      "request":  {
-                                                      "method":  "DELETE",
-                                                      "header":  [
-
-                                                                 ],
-                                                      "url":  {
-                                                                  "raw":  "{{api_gateway}}{{api_prefix}}/products/1/attributes/9999",
-                                                                  "host":  [
-                                                                               "{{api_gateway}}{{api_prefix}}"
-                                                                           ],
-                                                                  "path":  [
-                                                                               "products",
-                                                                               "1",
-                                                                               "attributes",
-                                                                               "9999"
-                                                                           ]
-                                                              },
-                                                      "description":  "Through gateway: Negative test -- tries to delete a non-existent attribute.\n\n**Expected:** 404 Not Found"
-                                                  }
-                                  }
-                              ]
-                 }
-             ]
+  "info": {
+    "name": "Product Service",
+    "description": "# Product Service\n\nBase URL: `{{product_service}}{{api_prefix}}`\n\nManages the product catalog (components, pricing, stock). Supports full CRUD for products and their attributes, including error/edge-case scenarios.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Direct",
+      "item": [
+        {
+          "name": "Get All Products",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "host": [
+                "{{product_service}}{{api_prefix}}"
+              ],
+              "raw": "{{product_service}}{{api_prefix}}/products",
+              "path": [
+                "products"
+              ]
+            },
+            "description": "Retrieves all products in the system. No filters or pagination applied."
+          }
+        },
+        {
+          "name": "Get Product By Id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "host": [
+                "{{product_service}}{{api_prefix}}"
+              ],
+              "raw": "{{product_service}}{{api_prefix}}/products/1",
+              "path": [
+                "products",
+                "1"
+              ]
+            },
+            "description": "Retrieves a single product by its ID. Returns 404 if not found."
+          }
+        },
+        {
+          "name": "Get Product By Id Not Found",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "host": [
+                "{{product_service}}{{api_prefix}}"
+              ],
+              "raw": "{{product_service}}{{api_prefix}}/products/9999",
+              "path": [
+                "products",
+                "9999"
+              ]
+            },
+            "description": "Negative test -- tries to get a non-existent product.\n\n**Expected:** 404 Not Found"
+          }
+        },
+        {
+          "name": "Get Products By Category",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "host": [
+                "{{product_service}}{{api_prefix}}"
+              ],
+              "raw": "{{product_service}}{{api_prefix}}/products/category/1",
+              "path": [
+                "products",
+                "category",
+                "1"
+              ]
+            },
+            "description": "Retrieves all products belonging to a specific category by category ID."
+          }
+        },
+        {
+          "name": "Get Products By Brand",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "host": [
+                "{{product_service}}{{api_prefix}}"
+              ],
+              "raw": "{{product_service}}{{api_prefix}}/products/brand/Intel",
+              "path": [
+                "products",
+                "brand",
+                "Intel"
+              ]
+            },
+            "description": "Retrieves all products of a specific brand (case-insensitive)."
+          }
+        },
+        {
+          "name": "Get Products By Price Range",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{product_service}}/api/products/price?minPrice=100000&maxPrice=500000",
+              "host": [
+                "{{product_service}}"
+              ],
+              "path": [
+                "api",
+                "products",
+                "price"
+              ],
+              "query": [
+                {
+                  "key": "minPrice",
+                  "value": "100000"
+                },
+                {
+                  "key": "maxPrice",
+                  "value": "500000"
+                }
+              ]
+            },
+            "description": "Retrieves products within a specific price range."
+          }
+        },
+        {
+          "name": "Create Product",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "host": [
+                "{{product_service}}{{api_prefix}}"
+              ],
+              "raw": "{{product_service}}{{api_prefix}}/products",
+              "path": [
+                "products"
+              ]
+            },
+            "description": "Creates a new product. Required fields: `name`, `price`, `categoryId`, `brand`, `model`.\n\n**Expected:** 201 Created",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Intel Core i9-14900K\",\n  \"description\": \"High-performance processor\",\n  \"msrp\": 650000,\n  \"categoryId\": 1,\n  \"brand\": \"Intel\",\n  \"model\": \"Core i9-14900K\",\n  \"isActive\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Create Product Invalid",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "host": [
+                "{{product_service}}{{api_prefix}}"
+              ],
+              "raw": "{{product_service}}{{api_prefix}}/products",
+              "path": [
+                "products"
+              ]
+            },
+            "description": "Negative test -- sends null/empty required fields and invalid price.\n\n**Expected:** 400 Bad Request (validation error)",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"\",\n  \"description\": \"Test\",\n  \"msrp\": -100,\n  \"categoryId\": null,\n  \"brand\": \"\",\n  \"model\": \"\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Update Product",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "host": [
+                "{{product_service}}{{api_prefix}}"
+              ],
+              "raw": "{{product_service}}{{api_prefix}}/products/1",
+              "path": [
+                "products",
+                "1"
+              ]
+            },
+            "description": "Updates an existing product's details.\n\n**Expected:** 200 OK",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Intel Core i9-14900K Updated\",\n  \"description\": \"Updated description\",\n  \"msrp\": 700000,\n  \"categoryId\": 1,\n  \"brand\": \"Intel\",\n  \"model\": \"Core i9-14900K\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Update Product Not Found",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "host": [
+                "{{product_service}}{{api_prefix}}"
+              ],
+              "raw": "{{product_service}}{{api_prefix}}/products/9999",
+              "path": [
+                "products",
+                "9999"
+              ]
+            },
+            "description": "Negative test -- tries to update a non-existent product.\n\n**Expected:** 404 Not Found",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Test\",\n  \"description\": \"Test\",\n  \"msrp\": 100,\n  \"categoryId\": 1,\n  \"brand\": \"Test\",\n  \"model\": \"Test\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Delete Product",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "host": [
+                "{{product_service}}{{api_prefix}}"
+              ],
+              "raw": "{{product_service}}{{api_prefix}}/products/1",
+              "path": [
+                "products",
+                "1"
+              ]
+            },
+            "description": "Deletes a product by ID.\n\n**Expected:** 204 No Content"
+          }
+        },
+        {
+          "name": "Delete Product Not Found",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "host": [
+                "{{product_service}}{{api_prefix}}"
+              ],
+              "raw": "{{product_service}}{{api_prefix}}/products/9999",
+              "path": [
+                "products",
+                "9999"
+              ]
+            },
+            "description": "Negative test -- tries to delete a non-existent product.\n\n**Expected:** 404 Not Found"
+          }
+        },
+        {
+          "name": "Deactivate Product",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "host": [
+                "{{product_service}}{{api_prefix}}"
+              ],
+              "raw": "{{product_service}}{{api_prefix}}/products/2/deactivate",
+              "path": [
+                "products",
+                "2",
+                "deactivate"
+              ]
+            },
+            "description": "Soft-deletes (deactivates) a product by ID.\n\n**Expected:** 204 No Content"
+          }
+        },
+        {
+          "name": "Deactivate Product Not Found",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "host": [
+                "{{product_service}}{{api_prefix}}"
+              ],
+              "raw": "{{product_service}}{{api_prefix}}/products/9999/deactivate",
+              "path": [
+                "products",
+                "9999",
+                "deactivate"
+              ]
+            },
+            "description": "Negative test -- tries to deactivate a non-existent product.\n\n**Expected:** 404 Not Found"
+          }
+        },
+        {
+          "name": "Get Product Attributes",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "host": [
+                "{{product_service}}{{api_prefix}}"
+              ],
+              "raw": "{{product_service}}{{api_prefix}}/products/1/attributes",
+              "path": [
+                "products",
+                "1",
+                "attributes"
+              ]
+            },
+            "description": "Retrieves all attributes for a specific product."
+          }
+        },
+        {
+          "name": "Get Product Attributes Not Found",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "host": [
+                "{{product_service}}{{api_prefix}}"
+              ],
+              "raw": "{{product_service}}{{api_prefix}}/products/9999/attributes",
+              "path": [
+                "products",
+                "9999",
+                "attributes"
+              ]
+            },
+            "description": "Negative test -- tries to get attributes of a non-existent product.\n\n**Expected:** 404 Not Found"
+          }
+        },
+        {
+          "name": "Add Product Attribute",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "host": [
+                "{{product_service}}{{api_prefix}}"
+              ],
+              "raw": "{{product_service}}{{api_prefix}}/products/1/attributes",
+              "path": [
+                "products",
+                "1",
+                "attributes"
+              ]
+            },
+            "description": "Adds a new attribute to a product. Required fields: `attributeName`, `attributeValue`.\n\n**Expected:** 201 Created",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"attributeName\": \"Socket\",\n  \"attributeValue\": \"LGA1700\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Add Product Attribute Invalid",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "host": [
+                "{{product_service}}{{api_prefix}}"
+              ],
+              "raw": "{{product_service}}{{api_prefix}}/products/1/attributes",
+              "path": [
+                "products",
+                "1",
+                "attributes"
+              ]
+            },
+            "description": "Negative test -- sends empty attribute name and value.\n\n**Expected:** 400 Bad Request (validation error)",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"attributeName\": \"\",\n  \"attributeValue\": \"\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Update Product Attribute",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "host": [
+                "{{product_service}}{{api_prefix}}"
+              ],
+              "raw": "{{product_service}}{{api_prefix}}/products/1/attributes/1",
+              "path": [
+                "products",
+                "1",
+                "attributes",
+                "1"
+              ]
+            },
+            "description": "Updates an existing product attribute.\n\n**Expected:** 200 OK",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"attributeName\": \"Socket Updated\",\n  \"attributeValue\": \"AM5\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Update Product Attribute Not Found",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "host": [
+                "{{product_service}}{{api_prefix}}"
+              ],
+              "raw": "{{product_service}}{{api_prefix}}/products/1/attributes/9999",
+              "path": [
+                "products",
+                "1",
+                "attributes",
+                "9999"
+              ]
+            },
+            "description": "Negative test -- tries to update a non-existent attribute.\n\n**Expected:** 404 Not Found",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"attributeName\": \"Test\",\n  \"attributeValue\": \"Test\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Delete Product Attribute",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "host": [
+                "{{product_service}}{{api_prefix}}"
+              ],
+              "raw": "{{product_service}}{{api_prefix}}/products/1/attributes/1",
+              "path": [
+                "products",
+                "1",
+                "attributes",
+                "1"
+              ]
+            },
+            "description": "Deletes a product attribute by ID.\n\n**Expected:** 204 No Content"
+          }
+        },
+        {
+          "name": "Delete Product Attribute Not Found",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "host": [
+                "{{product_service}}{{api_prefix}}"
+              ],
+              "raw": "{{product_service}}{{api_prefix}}/products/1/attributes/9999",
+              "path": [
+                "products",
+                "1",
+                "attributes",
+                "9999"
+              ]
+            },
+            "description": "Negative test -- tries to delete a non-existent attribute.\n\n**Expected:** 404 Not Found"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Gateway",
+      "item": [
+        {
+          "name": "Get All Products",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{api_gateway}}{{api_prefix}}/products",
+              "host": [
+                "{{api_gateway}}{{api_prefix}}"
+              ],
+              "path": [
+                "products"
+              ]
+            },
+            "description": "Through gateway: Retrieves all products in the system. No filters or pagination applied."
+          }
+        },
+        {
+          "name": "Get Product By Id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{api_gateway}}{{api_prefix}}/products/1",
+              "host": [
+                "{{api_gateway}}{{api_prefix}}"
+              ],
+              "path": [
+                "products",
+                "1"
+              ]
+            },
+            "description": "Through gateway: Retrieves a single product by its ID. Returns 404 if not found."
+          }
+        },
+        {
+          "name": "Get Product By Id Not Found",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{api_gateway}}{{api_prefix}}/products/9999",
+              "host": [
+                "{{api_gateway}}{{api_prefix}}"
+              ],
+              "path": [
+                "products",
+                "9999"
+              ]
+            },
+            "description": "Through gateway: Negative test -- tries to get a non-existent product.\n\n**Expected:** 404 Not Found"
+          }
+        },
+        {
+          "name": "Get Products By Category",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{api_gateway}}{{api_prefix}}/products/category/1",
+              "host": [
+                "{{api_gateway}}{{api_prefix}}"
+              ],
+              "path": [
+                "products",
+                "category",
+                "1"
+              ]
+            },
+            "description": "Through gateway: Retrieves all products belonging to a specific category by category ID."
+          }
+        },
+        {
+          "name": "Get Products By Brand",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{api_gateway}}{{api_prefix}}/products/brand/Intel",
+              "host": [
+                "{{api_gateway}}{{api_prefix}}"
+              ],
+              "path": [
+                "products",
+                "brand",
+                "Intel"
+              ]
+            },
+            "description": "Through gateway: Retrieves all products of a specific brand (case-insensitive)."
+          }
+        },
+        {
+          "name": "Get Products By Price Range",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{api_gateway}}{{api_prefix}}/products/price?minPrice=100000&maxPrice=500000",
+              "host": [
+                "{{api_gateway}}{{api_prefix}}"
+              ],
+              "path": [
+                "products",
+                "price"
+              ],
+              "query": [
+                {
+                  "key": "minPrice",
+                  "value": "100000"
+                },
+                {
+                  "key": "maxPrice",
+                  "value": "500000"
+                }
+              ]
+            },
+            "description": "Through gateway: Retrieves products within a specific price range."
+          }
+        },
+        {
+          "name": "Create Product",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{api_gateway}}{{api_prefix}}/products",
+              "host": [
+                "{{api_gateway}}{{api_prefix}}"
+              ],
+              "path": [
+                "products"
+              ]
+            },
+            "description": "Through gateway: Creates a new product. Required fields: `name`, `price`, `categoryId`, `brand`, `model`.\n\n**Expected:** 201 Created",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Intel Core i9-14900K\",\n  \"description\": \"High-performance processor\",\n  \"msrp\": 650000,\n  \"categoryId\": 1,\n  \"brand\": \"Intel\",\n  \"model\": \"Core i9-14900K\",\n  \"isActive\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Create Product Invalid",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{api_gateway}}{{api_prefix}}/products",
+              "host": [
+                "{{api_gateway}}{{api_prefix}}"
+              ],
+              "path": [
+                "products"
+              ]
+            },
+            "description": "Through gateway: Negative test -- sends null/empty required fields and invalid price.\n\n**Expected:** 400 Bad Request (validation error)",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"\",\n  \"description\": \"Test\",\n  \"msrp\": -100,\n  \"categoryId\": null,\n  \"brand\": \"\",\n  \"model\": \"\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Update Product",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "{{api_gateway}}{{api_prefix}}/products/1",
+              "host": [
+                "{{api_gateway}}{{api_prefix}}"
+              ],
+              "path": [
+                "products",
+                "1"
+              ]
+            },
+            "description": "Through gateway: Updates an existing product's details.\n\n**Expected:** 200 OK",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Intel Core i9-14900K Updated\",\n  \"description\": \"Updated description\",\n  \"msrp\": 700000,\n  \"categoryId\": 1,\n  \"brand\": \"Intel\",\n  \"model\": \"Core i9-14900K\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Update Product Not Found",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "{{api_gateway}}{{api_prefix}}/products/9999",
+              "host": [
+                "{{api_gateway}}{{api_prefix}}"
+              ],
+              "path": [
+                "products",
+                "9999"
+              ]
+            },
+            "description": "Through gateway: Negative test -- tries to update a non-existent product.\n\n**Expected:** 404 Not Found",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Test\",\n  \"description\": \"Test\",\n  \"msrp\": 100,\n  \"categoryId\": 1,\n  \"brand\": \"Test\",\n  \"model\": \"Test\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Delete Product",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{api_gateway}}{{api_prefix}}/products/1",
+              "host": [
+                "{{api_gateway}}{{api_prefix}}"
+              ],
+              "path": [
+                "products",
+                "1"
+              ]
+            },
+            "description": "Through gateway: Deletes a product by ID.\n\n**Expected:** 204 No Content"
+          }
+        },
+        {
+          "name": "Delete Product Not Found",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{api_gateway}}{{api_prefix}}/products/9999",
+              "host": [
+                "{{api_gateway}}{{api_prefix}}"
+              ],
+              "path": [
+                "products",
+                "9999"
+              ]
+            },
+            "description": "Through gateway: Negative test -- tries to delete a non-existent product.\n\n**Expected:** 404 Not Found"
+          }
+        },
+        {
+          "name": "Deactivate Product",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "{{api_gateway}}{{api_prefix}}/products/2/deactivate",
+              "host": [
+                "{{api_gateway}}{{api_prefix}}"
+              ],
+              "path": [
+                "products",
+                "2",
+                "deactivate"
+              ]
+            },
+            "description": "Through gateway: Soft-deletes (deactivates) a product by ID.\n\n**Expected:** 204 No Content"
+          }
+        },
+        {
+          "name": "Deactivate Product Not Found",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "{{api_gateway}}{{api_prefix}}/products/9999/deactivate",
+              "host": [
+                "{{api_gateway}}{{api_prefix}}"
+              ],
+              "path": [
+                "products",
+                "9999",
+                "deactivate"
+              ]
+            },
+            "description": "Through gateway: Negative test -- tries to deactivate a non-existent product.\n\n**Expected:** 404 Not Found"
+          }
+        },
+        {
+          "name": "Get Product Attributes",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{api_gateway}}{{api_prefix}}/products/1/attributes",
+              "host": [
+                "{{api_gateway}}{{api_prefix}}"
+              ],
+              "path": [
+                "products",
+                "1",
+                "attributes"
+              ]
+            },
+            "description": "Through gateway: Retrieves all attributes for a specific product."
+          }
+        },
+        {
+          "name": "Get Product Attributes Not Found",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{api_gateway}}{{api_prefix}}/products/9999/attributes",
+              "host": [
+                "{{api_gateway}}{{api_prefix}}"
+              ],
+              "path": [
+                "products",
+                "9999",
+                "attributes"
+              ]
+            },
+            "description": "Through gateway: Negative test -- tries to get attributes of a non-existent product.\n\n**Expected:** 404 Not Found"
+          }
+        },
+        {
+          "name": "Add Product Attribute",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{api_gateway}}{{api_prefix}}/products/1/attributes",
+              "host": [
+                "{{api_gateway}}{{api_prefix}}"
+              ],
+              "path": [
+                "products",
+                "1",
+                "attributes"
+              ]
+            },
+            "description": "Through gateway: Adds a new attribute to a product. Required fields: `attributeName`, `attributeValue`.\n\n**Expected:** 201 Created",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"attributeName\": \"Socket\",\n  \"attributeValue\": \"LGA1700\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Add Product Attribute Invalid",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{api_gateway}}{{api_prefix}}/products/1/attributes",
+              "host": [
+                "{{api_gateway}}{{api_prefix}}"
+              ],
+              "path": [
+                "products",
+                "1",
+                "attributes"
+              ]
+            },
+            "description": "Through gateway: Negative test -- sends empty attribute name and value.\n\n**Expected:** 400 Bad Request (validation error)",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"attributeName\": \"\",\n  \"attributeValue\": \"\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Update Product Attribute",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "{{api_gateway}}{{api_prefix}}/products/1/attributes/1",
+              "host": [
+                "{{api_gateway}}{{api_prefix}}"
+              ],
+              "path": [
+                "products",
+                "1",
+                "attributes",
+                "1"
+              ]
+            },
+            "description": "Through gateway: Updates an existing product attribute.\n\n**Expected:** 200 OK",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"attributeName\": \"Socket Updated\",\n  \"attributeValue\": \"AM5\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Update Product Attribute Not Found",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "{{api_gateway}}{{api_prefix}}/products/1/attributes/9999",
+              "host": [
+                "{{api_gateway}}{{api_prefix}}"
+              ],
+              "path": [
+                "products",
+                "1",
+                "attributes",
+                "9999"
+              ]
+            },
+            "description": "Through gateway: Negative test -- tries to update a non-existent attribute.\n\n**Expected:** 404 Not Found",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"attributeName\": \"Test\",\n  \"attributeValue\": \"Test\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Delete Product Attribute",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{api_gateway}}{{api_prefix}}/products/1/attributes/1",
+              "host": [
+                "{{api_gateway}}{{api_prefix}}"
+              ],
+              "path": [
+                "products",
+                "1",
+                "attributes",
+                "1"
+              ]
+            },
+            "description": "Through gateway: Deletes a product attribute by ID.\n\n**Expected:** 204 No Content"
+          }
+        },
+        {
+          "name": "Delete Product Attribute Not Found",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{api_gateway}}{{api_prefix}}/products/1/attributes/9999",
+              "host": [
+                "{{api_gateway}}{{api_prefix}}"
+              ],
+              "path": [
+                "products",
+                "1",
+                "attributes",
+                "9999"
+              ]
+            },
+            "description": "Through gateway: Negative test -- tries to delete a non-existent attribute.\n\n**Expected:** 404 Not Found"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Monolith",
+      "item": [
+        {
+          "name": "Get All Products",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{api_gateway}}{{api_prefix}}/products",
+              "host": [
+                "{{api_gateway}}{{api_prefix}}"
+              ],
+              "path": [
+                "products"
+              ]
+            },
+            "description": "Through gateway: Retrieves all products in the system. No filters or pagination applied."
+          }
+        },
+        {
+          "name": "Get Product By Id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{api_gateway}}{{api_prefix}}/products/1",
+              "host": [
+                "{{api_gateway}}{{api_prefix}}"
+              ],
+              "path": [
+                "products",
+                "1"
+              ]
+            },
+            "description": "Through gateway: Retrieves a single product by its ID. Returns 404 if not found."
+          }
+        },
+        {
+          "name": "Get Product By Id Not Found",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{api_gateway}}{{api_prefix}}/products/9999",
+              "host": [
+                "{{api_gateway}}{{api_prefix}}"
+              ],
+              "path": [
+                "products",
+                "9999"
+              ]
+            },
+            "description": "Through gateway: Negative test -- tries to get a non-existent product.\n\n**Expected:** 404 Not Found"
+          }
+        },
+        {
+          "name": "Get Products By Category",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{api_gateway}}{{api_prefix}}/products/category/1",
+              "host": [
+                "{{api_gateway}}{{api_prefix}}"
+              ],
+              "path": [
+                "products",
+                "category",
+                "1"
+              ]
+            },
+            "description": "Through gateway: Retrieves all products belonging to a specific category by category ID."
+          }
+        },
+        {
+          "name": "Get Products By Brand",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{api_gateway}}{{api_prefix}}/products/brand/Intel",
+              "host": [
+                "{{api_gateway}}{{api_prefix}}"
+              ],
+              "path": [
+                "products",
+                "brand",
+                "Intel"
+              ]
+            },
+            "description": "Through gateway: Retrieves all products of a specific brand (case-insensitive)."
+          }
+        },
+        {
+          "name": "Get Products By Price Range",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{api_gateway}}{{api_prefix}}/products/price?minPrice=100000&maxPrice=500000",
+              "host": [
+                "{{api_gateway}}{{api_prefix}}"
+              ],
+              "path": [
+                "products",
+                "price"
+              ],
+              "query": [
+                {
+                  "key": "minPrice",
+                  "value": "100000"
+                },
+                {
+                  "key": "maxPrice",
+                  "value": "500000"
+                }
+              ]
+            },
+            "description": "Through gateway: Retrieves products within a specific price range."
+          }
+        },
+        {
+          "name": "Create Product",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{api_gateway}}{{api_prefix}}/products",
+              "host": [
+                "{{api_gateway}}{{api_prefix}}"
+              ],
+              "path": [
+                "products"
+              ]
+            },
+            "description": "Through gateway: Creates a new product. Required fields: `name`, `price`, `categoryId`, `brand`, `model`.\n\n**Expected:** 201 Created",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Intel Core i9-14900K\",\n  \"description\": \"High-performance processor\",\n  \"msrp\": 650000,\n  \"categoryId\": 1,\n  \"brand\": \"Intel\",\n  \"model\": \"Core i9-14900K\",\n  \"isActive\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Create Product Invalid",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{api_gateway}}{{api_prefix}}/products",
+              "host": [
+                "{{api_gateway}}{{api_prefix}}"
+              ],
+              "path": [
+                "products"
+              ]
+            },
+            "description": "Through gateway: Negative test -- sends null/empty required fields and invalid price.\n\n**Expected:** 400 Bad Request (validation error)",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"\",\n  \"description\": \"Test\",\n  \"msrp\": -100,\n  \"categoryId\": null,\n  \"brand\": \"\",\n  \"model\": \"\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Update Product",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "{{api_gateway}}{{api_prefix}}/products/1",
+              "host": [
+                "{{api_gateway}}{{api_prefix}}"
+              ],
+              "path": [
+                "products",
+                "1"
+              ]
+            },
+            "description": "Through gateway: Updates an existing product's details.\n\n**Expected:** 200 OK",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Intel Core i9-14900K Updated\",\n  \"description\": \"Updated description\",\n  \"msrp\": 700000,\n  \"categoryId\": 1,\n  \"brand\": \"Intel\",\n  \"model\": \"Core i9-14900K\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Update Product Not Found",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "{{api_gateway}}{{api_prefix}}/products/9999",
+              "host": [
+                "{{api_gateway}}{{api_prefix}}"
+              ],
+              "path": [
+                "products",
+                "9999"
+              ]
+            },
+            "description": "Through gateway: Negative test -- tries to update a non-existent product.\n\n**Expected:** 404 Not Found",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Test\",\n  \"description\": \"Test\",\n  \"msrp\": 100,\n  \"categoryId\": 1,\n  \"brand\": \"Test\",\n  \"model\": \"Test\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Delete Product",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{api_gateway}}{{api_prefix}}/products/1",
+              "host": [
+                "{{api_gateway}}{{api_prefix}}"
+              ],
+              "path": [
+                "products",
+                "1"
+              ]
+            },
+            "description": "Through gateway: Deletes a product by ID.\n\n**Expected:** 204 No Content"
+          }
+        },
+        {
+          "name": "Delete Product Not Found",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{api_gateway}}{{api_prefix}}/products/9999",
+              "host": [
+                "{{api_gateway}}{{api_prefix}}"
+              ],
+              "path": [
+                "products",
+                "9999"
+              ]
+            },
+            "description": "Through gateway: Negative test -- tries to delete a non-existent product.\n\n**Expected:** 404 Not Found"
+          }
+        },
+        {
+          "name": "Deactivate Product",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "{{api_gateway}}{{api_prefix}}/products/2/deactivate",
+              "host": [
+                "{{api_gateway}}{{api_prefix}}"
+              ],
+              "path": [
+                "products",
+                "2",
+                "deactivate"
+              ]
+            },
+            "description": "Through gateway: Soft-deletes (deactivates) a product by ID.\n\n**Expected:** 204 No Content"
+          }
+        },
+        {
+          "name": "Deactivate Product Not Found",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "{{api_gateway}}{{api_prefix}}/products/9999/deactivate",
+              "host": [
+                "{{api_gateway}}{{api_prefix}}"
+              ],
+              "path": [
+                "products",
+                "9999",
+                "deactivate"
+              ]
+            },
+            "description": "Through gateway: Negative test -- tries to deactivate a non-existent product.\n\n**Expected:** 404 Not Found"
+          }
+        },
+        {
+          "name": "Get Product Attributes",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{api_gateway}}{{api_prefix}}/products/1/attributes",
+              "host": [
+                "{{api_gateway}}{{api_prefix}}"
+              ],
+              "path": [
+                "products",
+                "1",
+                "attributes"
+              ]
+            },
+            "description": "Through gateway: Retrieves all attributes for a specific product."
+          }
+        },
+        {
+          "name": "Get Product Attributes Not Found",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{api_gateway}}{{api_prefix}}/products/9999/attributes",
+              "host": [
+                "{{api_gateway}}{{api_prefix}}"
+              ],
+              "path": [
+                "products",
+                "9999",
+                "attributes"
+              ]
+            },
+            "description": "Through gateway: Negative test -- tries to get attributes of a non-existent product.\n\n**Expected:** 404 Not Found"
+          }
+        },
+        {
+          "name": "Add Product Attribute",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{api_gateway}}{{api_prefix}}/products/1/attributes",
+              "host": [
+                "{{api_gateway}}{{api_prefix}}"
+              ],
+              "path": [
+                "products",
+                "1",
+                "attributes"
+              ]
+            },
+            "description": "Through gateway: Adds a new attribute to a product. Required fields: `attributeName`, `attributeValue`.\n\n**Expected:** 201 Created",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"attributeName\": \"Socket\",\n  \"attributeValue\": \"LGA1700\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Add Product Attribute Invalid",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{api_gateway}}{{api_prefix}}/products/1/attributes",
+              "host": [
+                "{{api_gateway}}{{api_prefix}}"
+              ],
+              "path": [
+                "products",
+                "1",
+                "attributes"
+              ]
+            },
+            "description": "Through gateway: Negative test -- sends empty attribute name and value.\n\n**Expected:** 400 Bad Request (validation error)",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"attributeName\": \"\",\n  \"attributeValue\": \"\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Update Product Attribute",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "{{api_gateway}}{{api_prefix}}/products/1/attributes/1",
+              "host": [
+                "{{api_gateway}}{{api_prefix}}"
+              ],
+              "path": [
+                "products",
+                "1",
+                "attributes",
+                "1"
+              ]
+            },
+            "description": "Through gateway: Updates an existing product attribute.\n\n**Expected:** 200 OK",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"attributeName\": \"Socket Updated\",\n  \"attributeValue\": \"AM5\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Update Product Attribute Not Found",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "{{api_gateway}}{{api_prefix}}/products/1/attributes/9999",
+              "host": [
+                "{{api_gateway}}{{api_prefix}}"
+              ],
+              "path": [
+                "products",
+                "1",
+                "attributes",
+                "9999"
+              ]
+            },
+            "description": "Through gateway: Negative test -- tries to update a non-existent attribute.\n\n**Expected:** 404 Not Found",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"attributeName\": \"Test\",\n  \"attributeValue\": \"Test\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Delete Product Attribute",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{api_gateway}}{{api_prefix}}/products/1/attributes/1",
+              "host": [
+                "{{api_gateway}}{{api_prefix}}"
+              ],
+              "path": [
+                "products",
+                "1",
+                "attributes",
+                "1"
+              ]
+            },
+            "description": "Through gateway: Deletes a product attribute by ID.\n\n**Expected:** 204 No Content"
+          }
+        },
+        {
+          "name": "Delete Product Attribute Not Found",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{api_gateway}}{{api_prefix}}/products/1/attributes/9999",
+              "host": [
+                "{{api_gateway}}{{api_prefix}}"
+              ],
+              "path": [
+                "products",
+                "1",
+                "attributes",
+                "9999"
+              ]
+            },
+            "description": "Through gateway: Negative test -- tries to delete a non-existent attribute.\n\n**Expected:** 404 Not Found"
+          }
+        }
+      ]
+    }
+  ]
 }
-

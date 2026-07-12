@@ -1,0 +1,13 @@
+$kind: http-request
+url: "{{tarrobuild}}{{api_prefix}}/users"
+method: POST
+body:
+  type: json
+  content: |-
+    {
+      "name": "Otro",
+      "lastName": "Usuario",
+      "email": "lucas@tarrobuild.cl",
+      "phone": "+56911111111"
+    }
+order: 200

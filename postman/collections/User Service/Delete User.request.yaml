@@ -1,8 +1,0 @@
-$kind: http-request
-description: |-
-  Deletes a user by ID.
-
-  **Expected:** 204 No Content
-url: "{{user_service}}/api/users/1"
-method: DELETE
-order: 11000

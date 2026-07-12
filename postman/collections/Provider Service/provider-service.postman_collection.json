@@ -6,7 +6,7 @@
   },
   "item": [
     {
-      "name": "Direct Requests",
+      "name": "Direct",
       "item": [
         {
           "name": "Get All Providers",
@@ -199,10 +199,10 @@
       ]
     },
     {
-      "name": "Proxy Requests",
+      "name": "Gateway",
       "item": [
         {
-          "name": "Get All Providers (Proxy)",
+          "name": "Get All Providers",
           "request": {
             "method": "GET",
             "header": [],
@@ -219,7 +219,7 @@
           }
         },
         {
-          "name": "Get Provider By Id (Proxy)",
+          "name": "Get Provider By Id",
           "request": {
             "method": "GET",
             "header": [],
@@ -237,7 +237,7 @@
           }
         },
         {
-          "name": "Create Provider (Proxy)",
+          "name": "Create Provider",
           "request": {
             "method": "POST",
             "header": [],
@@ -263,7 +263,7 @@
           }
         },
         {
-          "name": "Update Provider (Proxy)",
+          "name": "Update Provider",
           "request": {
             "method": "PUT",
             "header": [],
@@ -290,7 +290,7 @@
           }
         },
         {
-          "name": "Partial Update Provider (Proxy)",
+          "name": "Partial Update Provider",
           "request": {
             "method": "PATCH",
             "header": [],
@@ -317,7 +317,7 @@
           }
         },
         {
-          "name": "Delete Provider (Proxy)",
+          "name": "Delete Provider",
           "request": {
             "method": "DELETE",
             "header": [],
@@ -335,7 +335,7 @@
           }
         },
         {
-          "name": "Get Provider Products (Proxy)",
+          "name": "Get Provider Products",
           "request": {
             "method": "GET",
             "header": [],
@@ -354,7 +354,7 @@
           }
         },
         {
-          "name": "Get Non-existent Provider (Proxy)",
+          "name": "Get Non-existent Provider",
           "request": {
             "method": "GET",
             "header": [],
@@ -372,7 +372,200 @@
           }
         },
         {
-          "name": "Delete Non-existent Provider (Proxy)",
+          "name": "Delete Non-existent Provider",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "host": [
+                "{{api_gateway}}{{api_prefix}}"
+              ],
+              "raw": "{{api_gateway}}{{api_prefix}}/providers/9999",
+              "path": [
+                "providers",
+                "9999"
+              ]
+            },
+            "description": "Deletes non-existent provider through the API Gateway.\n\n**Expected:** 404 Not Found"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Monolith",
+      "item": [
+        {
+          "name": "Get All Providers",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "host": [
+                "{{api_gateway}}{{api_prefix}}"
+              ],
+              "raw": "{{api_gateway}}{{api_prefix}}/providers",
+              "path": [
+                "providers"
+              ]
+            },
+            "description": "Retrieves all providers through the API Gateway."
+          }
+        },
+        {
+          "name": "Get Provider By Id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "host": [
+                "{{api_gateway}}{{api_prefix}}"
+              ],
+              "raw": "{{api_gateway}}{{api_prefix}}/providers/1",
+              "path": [
+                "providers",
+                "1"
+              ]
+            },
+            "description": "Gets a provider through the API Gateway."
+          }
+        },
+        {
+          "name": "Create Provider",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "host": [
+                "{{api_gateway}}{{api_prefix}}"
+              ],
+              "raw": "{{api_gateway}}{{api_prefix}}/providers",
+              "path": [
+                "providers"
+              ]
+            },
+            "description": "Creates a provider through the API Gateway.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"ProxyProvider\",\n  \"contactEmail\": \"proxy@provider.com\",\n  \"phone\": \"+56211111111\",\n  \"isActive\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Update Provider",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "host": [
+                "{{api_gateway}}{{api_prefix}}"
+              ],
+              "raw": "{{api_gateway}}{{api_prefix}}/providers/1",
+              "path": [
+                "providers",
+                "1"
+              ]
+            },
+            "description": "Updates a provider through the API Gateway.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Proxy Updated\",\n  \"contactEmail\": \"updated@proxy.com\",\n  \"phone\": \"+56222222222\",\n  \"isActive\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Partial Update Provider",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "host": [
+                "{{api_gateway}}{{api_prefix}}"
+              ],
+              "raw": "{{api_gateway}}{{api_prefix}}/providers/1",
+              "path": [
+                "providers",
+                "1"
+              ]
+            },
+            "description": "Partial update through the API Gateway.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Proxy Patched\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Delete Provider",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "host": [
+                "{{api_gateway}}{{api_prefix}}"
+              ],
+              "raw": "{{api_gateway}}{{api_prefix}}/providers/1",
+              "path": [
+                "providers",
+                "1"
+              ]
+            },
+            "description": "Deletes a provider through the API Gateway.\n\n**Expected:** 204 No Content"
+          }
+        },
+        {
+          "name": "Get Provider Products",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "host": [
+                "{{api_gateway}}{{api_prefix}}"
+              ],
+              "raw": "{{api_gateway}}{{api_prefix}}/providers/1/products",
+              "path": [
+                "providers",
+                "1",
+                "products"
+              ]
+            },
+            "description": "Gets provider products through the API Gateway."
+          }
+        },
+        {
+          "name": "Get Non-existent Provider",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "host": [
+                "{{api_gateway}}{{api_prefix}}"
+              ],
+              "raw": "{{api_gateway}}{{api_prefix}}/providers/9999",
+              "path": [
+                "providers",
+                "9999"
+              ]
+            },
+            "description": "Non-existent provider through the API Gateway.\n\n**Expected:** 404 Not Found"
+          }
+        },
+        {
+          "name": "Delete Non-existent Provider",
           "request": {
             "method": "DELETE",
             "header": [],

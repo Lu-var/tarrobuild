@@ -1,0 +1,10 @@
+$kind: http-request
+url: "{{hardware_advisor_service}}{{api_prefix}}/advisor/generate"
+method: POST
+body:
+  type: json
+  content: |-
+    {
+      "userId": 1
+    }
+order: 40

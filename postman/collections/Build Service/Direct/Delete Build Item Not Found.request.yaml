@@ -1,0 +1,4 @@
+$kind: http-request
+url: "{{build_service}}{{api_prefix}}/builds/1/items/9999"
+method: DELETE
+order: 160

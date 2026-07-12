@@ -1,0 +1,14 @@
+$kind: http-request
+url: "{{api_gateway}}{{api_prefix}}/auth/register"
+method: POST
+body:
+  type: json
+  content: |-
+    {
+      "email": "",
+      "password": "",
+      "name": "",
+      "lastName": "",
+      "phone": ""
+    }
+order: 180

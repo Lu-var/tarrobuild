@@ -6,7 +6,7 @@
   },
   "item": [
     {
-      "name": "Direct Requests",
+      "name": "Direct",
       "item": [
         {
           "name": "Calculate Estimate",
@@ -121,10 +121,10 @@
       ]
     },
     {
-      "name": "Proxy Requests",
+      "name": "Gateway",
       "item": [
         {
-          "name": "Calculate Estimate (Proxy)",
+          "name": "Calculate Estimate",
           "request": {
             "method": "POST",
             "header": [],
@@ -151,7 +151,7 @@
           }
         },
         {
-          "name": "Get Estimate By Build (Proxy)",
+          "name": "Get Estimate By Build",
           "request": {
             "method": "GET",
             "header": [],
@@ -169,7 +169,7 @@
           }
         },
         {
-          "name": "Get Estimate By Id (Proxy)",
+          "name": "Get Estimate By Id",
           "request": {
             "method": "GET",
             "header": [],
@@ -188,7 +188,7 @@
           }
         },
         {
-          "name": "Get All Estimates By Build (Proxy)",
+          "name": "Get All Estimates By Build",
           "request": {
             "method": "GET",
             "header": [],
@@ -207,7 +207,122 @@
           }
         },
         {
-          "name": "Calculate Invalid Build (Proxy)",
+          "name": "Calculate Invalid Build",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "host": [
+                "{{api_gateway}}{{api_prefix}}"
+              ],
+              "raw": "{{api_gateway}}{{api_prefix}}/estimate/calculate",
+              "path": [
+                "estimate",
+                "calculate"
+              ]
+            },
+            "description": "Invalid build through the API Gateway.\n\n**Expected:** 404 Not Found",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"buildId\": 9999,\n  \"currency\": \"CLP\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Monolith",
+      "item": [
+        {
+          "name": "Calculate Estimate",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "host": [
+                "{{api_gateway}}{{api_prefix}}"
+              ],
+              "raw": "{{api_gateway}}{{api_prefix}}/estimate/calculate",
+              "path": [
+                "estimate",
+                "calculate"
+              ]
+            },
+            "description": "Calculates estimate through the API Gateway.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"buildId\": 1,\n  \"currency\": \"CLP\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Get Estimate By Build",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "host": [
+                "{{api_gateway}}{{api_prefix}}"
+              ],
+              "raw": "{{api_gateway}}{{api_prefix}}/estimate/1",
+              "path": [
+                "estimate",
+                "1"
+              ]
+            },
+            "description": "Gets estimate through the API Gateway."
+          }
+        },
+        {
+          "name": "Get Estimate By Id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "host": [
+                "{{api_gateway}}{{api_prefix}}"
+              ],
+              "raw": "{{api_gateway}}{{api_prefix}}/estimate/id/1",
+              "path": [
+                "estimate",
+                "id",
+                "1"
+              ]
+            },
+            "description": "Gets estimate by ID through the API Gateway."
+          }
+        },
+        {
+          "name": "Get All Estimates By Build",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "host": [
+                "{{api_gateway}}{{api_prefix}}"
+              ],
+              "raw": "{{api_gateway}}{{api_prefix}}/estimate/all/1",
+              "path": [
+                "estimate",
+                "all",
+                "1"
+              ]
+            },
+            "description": "Gets all estimates through the API Gateway."
+          }
+        },
+        {
+          "name": "Calculate Invalid Build",
           "request": {
             "method": "POST",
             "header": [],

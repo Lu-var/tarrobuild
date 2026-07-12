@@ -1,0 +1,4 @@
+$kind: http-request
+url: "{{provider_service}}{{api_prefix}}/providers/1"
+method: DELETE
+order: 60

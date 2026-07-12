@@ -1,0 +1,4 @@
+$kind: http-request
+url: "{{tarrobuild}}{{api_prefix}}/products/price?minPrice=100000&maxPrice=500000"
+method: GET
+order: 280

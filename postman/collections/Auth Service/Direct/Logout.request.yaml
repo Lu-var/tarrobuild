@@ -1,0 +1,4 @@
+$kind: http-request
+url: "{{auth_service}}{{api_prefix}}/auth/logout"
+method: POST
+order: 130
