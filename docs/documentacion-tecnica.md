@@ -331,4 +331,6 @@ Cada servicio requiere:
 ### Limitaciones del despliegue gratuito
 - Cold start: ~5-10s en el primer request después de inactividad
 - Los servicios se duermen tras 15 minutos sin uso
-- No hay service discovery (Eureka) en el despliegue actual
+- Eureka service discovery implementado: discovery-server en puerto 8761, 11 servicios registrados con `@EnableDiscoveryClient`
+- `lb://` para comunicación inter-service (FeignClient/RestClient), funciona en Docker Compose
+- Gateway usa URLs directas desde variables de entorno por limitación de contenedores aislados en Render

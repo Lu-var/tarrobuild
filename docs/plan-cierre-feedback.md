@@ -29,5 +29,5 @@
 | P-04 | RF-17: Alertas de precio | Baja | Pendiente | Funcionalidad avanzada post-MVP |
 | P-05 | RF-18: Notificaciones automáticas | Baja | Parcial | notification-service existe, falta integrar flujos |
 | P-06 | RNF-01: Response < 500ms | Media | Pendiente | Requiere pruebas de performance |
-| P-07 | Eureka Server (service discovery) | Alta | Pendiente | Requiere nuevo módulo y cambios en 11 servicios |
-| P-08 | Gateway rutas con `lb://` | Alta | Pendiente | Depende de Eureka |
+| P-07 | Eureka Server (service discovery) | Alta | Corregido | discovery-server creado, @EnableDiscoveryClient en 11 servicios, registro en Eureka verificado |
+| P-08 | Gateway rutas con `lb://` | Alta | Rechazado | El gateway usa URLs directas porque las rutas son de entrada única (no necesitan discovery); `lb://` se usa solo para comunicación service-to-service (Feign/RestClient) |
