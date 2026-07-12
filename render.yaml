@@ -33,7 +33,7 @@ services:
           name: tarrobuild-db
           property: connectionString
       - key: EUREKA_URL
-        value: https://discovery-server-xxx.onrender.com/eureka/
+        value: https://discovery-server-whs1.onrender.com/eureka/
 
   - type: web
     name: category-service
@@ -51,7 +51,7 @@ services:
           name: tarrobuild-db
           property: connectionString
       - key: EUREKA_URL
-        value: https://discovery-server-xxx.onrender.com/eureka/
+        value: https://discovery-server-whs1.onrender.com/eureka/
 
   - type: web
     name: provider-service
@@ -69,7 +69,7 @@ services:
           name: tarrobuild-db
           property: connectionString
       - key: EUREKA_URL
-        value: https://discovery-server-xxx.onrender.com/eureka/
+        value: https://discovery-server-whs1.onrender.com/eureka/
 
   - type: web
     name: notification-service
@@ -87,7 +87,7 @@ services:
           name: tarrobuild-db
           property: connectionString
       - key: EUREKA_URL
-        value: https://discovery-server-xxx.onrender.com/eureka/
+        value: https://discovery-server-whs1.onrender.com/eureka/
 
   # ─── Services that depend on (1) ────────────────────────────────
   - type: web
@@ -106,7 +106,7 @@ services:
           name: tarrobuild-db
           property: connectionString
       - key: EUREKA_URL
-        value: https://discovery-server-xxx.onrender.com/eureka/
+        value: https://discovery-server-whs1.onrender.com/eureka/
       - key: JWT_SECRET
         value: EvXDpJvaLKZST142/tWw31XnTiwoQ/nX50n3/4NVD+wrDVz7xaYNQCca0fsz1vwunGTLGZmpYNTJPaqA6OMOog==
 
@@ -126,7 +126,7 @@ services:
           name: tarrobuild-db
           property: connectionString
       - key: EUREKA_URL
-        value: https://discovery-server-xxx.onrender.com/eureka/
+        value: https://discovery-server-whs1.onrender.com/eureka/
 
   # ─── Services that depend on (2) ────────────────────────────────
   - type: web
@@ -145,7 +145,7 @@ services:
           name: tarrobuild-db
           property: connectionString
       - key: EUREKA_URL
-        value: https://discovery-server-xxx.onrender.com/eureka/
+        value: https://discovery-server-whs1.onrender.com/eureka/
 
   # ─── Services that depend on (2)+(3) ────────────────────────────
   - type: web
@@ -164,7 +164,7 @@ services:
           name: tarrobuild-db
           property: connectionString
       - key: EUREKA_URL
-        value: https://discovery-server-xxx.onrender.com/eureka/
+        value: https://discovery-server-whs1.onrender.com/eureka/
 
   # ─── Services that depend on (4) ────────────────────────────────
   - type: web
@@ -183,7 +183,7 @@ services:
           name: tarrobuild-db
           property: connectionString
       - key: EUREKA_URL
-        value: https://discovery-server-xxx.onrender.com/eureka/
+        value: https://discovery-server-whs1.onrender.com/eureka/
 
   - type: web
     name: hardware-advisor-service
@@ -201,7 +201,7 @@ services:
           name: tarrobuild-db
           property: connectionString
       - key: EUREKA_URL
-        value: https://discovery-server-xxx.onrender.com/eureka/
+        value: https://discovery-server-whs1.onrender.com/eureka/
 
   # ─── Gateway (depends on all services) ──────────────────────────
   - type: web
@@ -216,4 +216,4 @@ services:
       - key: SPRING_PROFILES_ACTIVE
         value: render
       - key: EUREKA_URL
-        value: https://discovery-server-xxx.onrender.com/eureka/
+        value: https://discovery-server-whs1.onrender.com/eureka/
