@@ -401,9 +401,9 @@
             "header": [],
             "url": {
               "host": [
-                "{{api_gateway}}{{api_prefix}}"
+                "{{tarrobuild}}{{api_prefix}}"
               ],
-              "raw": "{{api_gateway}}{{api_prefix}}/providers",
+              "raw": "{{tarrobuild}}{{api_prefix}}/providers",
               "path": [
                 "providers"
               ]
@@ -418,9 +418,9 @@
             "header": [],
             "url": {
               "host": [
-                "{{api_gateway}}{{api_prefix}}"
+                "{{tarrobuild}}{{api_prefix}}"
               ],
-              "raw": "{{api_gateway}}{{api_prefix}}/providers/1",
+              "raw": "{{tarrobuild}}{{api_prefix}}/providers/1",
               "path": [
                 "providers",
                 "1"
@@ -436,9 +436,9 @@
             "header": [],
             "url": {
               "host": [
-                "{{api_gateway}}{{api_prefix}}"
+                "{{tarrobuild}}{{api_prefix}}"
               ],
-              "raw": "{{api_gateway}}{{api_prefix}}/providers",
+              "raw": "{{tarrobuild}}{{api_prefix}}/providers",
               "path": [
                 "providers"
               ]
@@ -462,9 +462,9 @@
             "header": [],
             "url": {
               "host": [
-                "{{api_gateway}}{{api_prefix}}"
+                "{{tarrobuild}}{{api_prefix}}"
               ],
-              "raw": "{{api_gateway}}{{api_prefix}}/providers/1",
+              "raw": "{{tarrobuild}}{{api_prefix}}/providers/1",
               "path": [
                 "providers",
                 "1"
@@ -489,9 +489,9 @@
             "header": [],
             "url": {
               "host": [
-                "{{api_gateway}}{{api_prefix}}"
+                "{{tarrobuild}}{{api_prefix}}"
               ],
-              "raw": "{{api_gateway}}{{api_prefix}}/providers/1",
+              "raw": "{{tarrobuild}}{{api_prefix}}/providers/1",
               "path": [
                 "providers",
                 "1"
@@ -516,9 +516,9 @@
             "header": [],
             "url": {
               "host": [
-                "{{api_gateway}}{{api_prefix}}"
+                "{{tarrobuild}}{{api_prefix}}"
               ],
-              "raw": "{{api_gateway}}{{api_prefix}}/providers/1",
+              "raw": "{{tarrobuild}}{{api_prefix}}/providers/1",
               "path": [
                 "providers",
                 "1"
@@ -534,9 +534,9 @@
             "header": [],
             "url": {
               "host": [
-                "{{api_gateway}}{{api_prefix}}"
+                "{{tarrobuild}}{{api_prefix}}"
               ],
-              "raw": "{{api_gateway}}{{api_prefix}}/providers/1/products",
+              "raw": "{{tarrobuild}}{{api_prefix}}/providers/1/products",
               "path": [
                 "providers",
                 "1",
@@ -553,9 +553,9 @@
             "header": [],
             "url": {
               "host": [
-                "{{api_gateway}}{{api_prefix}}"
+                "{{tarrobuild}}{{api_prefix}}"
               ],
-              "raw": "{{api_gateway}}{{api_prefix}}/providers/9999",
+              "raw": "{{tarrobuild}}{{api_prefix}}/providers/9999",
               "path": [
                 "providers",
                 "9999"
@@ -571,9 +571,9 @@
             "header": [],
             "url": {
               "host": [
-                "{{api_gateway}}{{api_prefix}}"
+                "{{tarrobuild}}{{api_prefix}}"
               ],
-              "raw": "{{api_gateway}}{{api_prefix}}/providers/9999",
+              "raw": "{{tarrobuild}}{{api_prefix}}/providers/9999",
               "path": [
                 "providers",
                 "9999"

@@ -34,7 +34,19 @@
             },
             "description": "Logs in as admin. The admin role is required for product/category/provider/user management endpoints.\n\n**Expected:** 200 OK (returns JWT token)"
           },
-          "response": []
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var jsonData = pm.response.json();",
+                  "pm.environment.set(\"admin_token\", jsonData.token);"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
         },
         {
           "name": "User Login",
@@ -62,7 +74,19 @@
             },
             "description": "Logs in as a regular USER role. User role can access builds, estimates, recommendations, and notifications.\n\n**Expected:** 200 OK (returns JWT token)"
           },
-          "response": []
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var jsonData = pm.response.json();",
+                  "pm.environment.set(\"user_token\", jsonData.token);"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
         },
         {
           "name": "Register",
@@ -449,7 +473,19 @@
             },
             "description": "Through gateway: Logs in as admin. The gateway permits POST /api/auth/login without authentication.\n\n**Expected:** 200 OK"
           },
-          "response": []
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var jsonData = pm.response.json();",
+                  "pm.environment.set(\"admin_token\", jsonData.token);"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
         },
         {
           "name": "User Login",
@@ -480,7 +516,19 @@
             },
             "description": "Through gateway: Logs in as a regular user (USER role).\n\n**Expected:** 200 OK"
           },
-          "response": []
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var jsonData = pm.response.json();",
+                  "pm.environment.set(\"user_token\", jsonData.token);"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
         },
         {
           "name": "Register Duplicate Email",
@@ -701,9 +749,9 @@
               }
             },
             "url": {
-              "raw": "{{api_gateway}}{{api_prefix}}/auth/register",
+              "raw": "{{tarrobuild}}{{api_prefix}}/auth/register",
               "host": [
-                "{{api_gateway}}{{api_prefix}}"
+                "{{tarrobuild}}{{api_prefix}}"
               ],
               "path": [
                 "auth",
@@ -732,9 +780,9 @@
               }
             },
             "url": {
-              "raw": "{{api_gateway}}{{api_prefix}}/auth/login",
+              "raw": "{{tarrobuild}}{{api_prefix}}/auth/login",
               "host": [
-                "{{api_gateway}}{{api_prefix}}"
+                "{{tarrobuild}}{{api_prefix}}"
               ],
               "path": [
                 "auth",
@@ -743,7 +791,19 @@
             },
             "description": "Through gateway: Logs in as admin. The gateway permits POST /api/auth/login without authentication.\n\n**Expected:** 200 OK"
           },
-          "response": []
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var jsonData = pm.response.json();",
+                  "pm.environment.set(\"admin_token\", jsonData.token);"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
         },
         {
           "name": "User Login",
@@ -763,9 +823,9 @@
               }
             },
             "url": {
-              "raw": "{{api_gateway}}{{api_prefix}}/auth/login",
+              "raw": "{{tarrobuild}}{{api_prefix}}/auth/login",
               "host": [
-                "{{api_gateway}}{{api_prefix}}"
+                "{{tarrobuild}}{{api_prefix}}"
               ],
               "path": [
                 "auth",
@@ -774,7 +834,19 @@
             },
             "description": "Through gateway: Logs in as a regular user (USER role).\n\n**Expected:** 200 OK"
           },
-          "response": []
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var jsonData = pm.response.json();",
+                  "pm.environment.set(\"user_token\", jsonData.token);"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
         },
         {
           "name": "Register Duplicate Email",
@@ -794,9 +866,9 @@
               }
             },
             "url": {
-              "raw": "{{api_gateway}}{{api_prefix}}/auth/register",
+              "raw": "{{tarrobuild}}{{api_prefix}}/auth/register",
               "host": [
-                "{{api_gateway}}{{api_prefix}}"
+                "{{tarrobuild}}{{api_prefix}}"
               ],
               "path": [
                 "auth",
@@ -825,9 +897,9 @@
               }
             },
             "url": {
-              "raw": "{{api_gateway}}{{api_prefix}}/auth/register",
+              "raw": "{{tarrobuild}}{{api_prefix}}/auth/register",
               "host": [
-                "{{api_gateway}}{{api_prefix}}"
+                "{{tarrobuild}}{{api_prefix}}"
               ],
               "path": [
                 "auth",
@@ -856,9 +928,9 @@
               }
             },
             "url": {
-              "raw": "{{api_gateway}}{{api_prefix}}/auth/login",
+              "raw": "{{tarrobuild}}{{api_prefix}}/auth/login",
               "host": [
-                "{{api_gateway}}{{api_prefix}}"
+                "{{tarrobuild}}{{api_prefix}}"
               ],
               "path": [
                 "auth",
@@ -881,9 +953,9 @@
               }
             ],
             "url": {
-              "raw": "{{api_gateway}}{{api_prefix}}/auth/validate",
+              "raw": "{{tarrobuild}}{{api_prefix}}/auth/validate",
               "host": [
-                "{{api_gateway}}{{api_prefix}}"
+                "{{tarrobuild}}{{api_prefix}}"
               ],
               "path": [
                 "auth",
@@ -900,9 +972,9 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{api_gateway}}{{api_prefix}}/auth/validate",
+              "raw": "{{tarrobuild}}{{api_prefix}}/auth/validate",
               "host": [
-                "{{api_gateway}}{{api_prefix}}"
+                "{{tarrobuild}}{{api_prefix}}"
               ],
               "path": [
                 "auth",
@@ -925,9 +997,9 @@
               }
             ],
             "url": {
-              "raw": "{{api_gateway}}{{api_prefix}}/auth/validate",
+              "raw": "{{tarrobuild}}{{api_prefix}}/auth/validate",
               "host": [
-                "{{api_gateway}}{{api_prefix}}"
+                "{{tarrobuild}}{{api_prefix}}"
               ],
               "path": [
                 "auth",
@@ -959,9 +1031,9 @@
               }
             },
             "url": {
-              "raw": "{{api_gateway}}{{api_prefix}}/auth/logout",
+              "raw": "{{tarrobuild}}{{api_prefix}}/auth/logout",
               "host": [
-                "{{api_gateway}}{{api_prefix}}"
+                "{{tarrobuild}}{{api_prefix}}"
               ],
               "path": [
                 "auth",

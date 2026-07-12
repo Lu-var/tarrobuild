@@ -594,9 +594,9 @@
             "method": "POST",
             "header": [],
             "url": {
-              "raw": "{{api_gateway}}{{api_prefix}}/notifications/send",
+              "raw": "{{tarrobuild}}{{api_prefix}}/notifications/send",
               "host": [
-                "{{api_gateway}}{{api_prefix}}"
+                "{{tarrobuild}}{{api_prefix}}"
               ],
               "path": [
                 "notifications",
@@ -621,9 +621,9 @@
             "method": "POST",
             "header": [],
             "url": {
-              "raw": "{{api_gateway}}{{api_prefix}}/notifications/send",
+              "raw": "{{tarrobuild}}{{api_prefix}}/notifications/send",
               "host": [
-                "{{api_gateway}}{{api_prefix}}"
+                "{{tarrobuild}}{{api_prefix}}"
               ],
               "path": [
                 "notifications",
@@ -648,9 +648,9 @@
             "method": "POST",
             "header": [],
             "url": {
-              "raw": "{{api_gateway}}{{api_prefix}}/notifications/send",
+              "raw": "{{tarrobuild}}{{api_prefix}}/notifications/send",
               "host": [
-                "{{api_gateway}}{{api_prefix}}"
+                "{{tarrobuild}}{{api_prefix}}"
               ],
               "path": [
                 "notifications",
@@ -675,9 +675,9 @@
             "method": "POST",
             "header": [],
             "url": {
-              "raw": "{{api_gateway}}{{api_prefix}}/notifications/send",
+              "raw": "{{tarrobuild}}{{api_prefix}}/notifications/send",
               "host": [
-                "{{api_gateway}}{{api_prefix}}"
+                "{{tarrobuild}}{{api_prefix}}"
               ],
               "path": [
                 "notifications",
@@ -702,9 +702,9 @@
             "method": "POST",
             "header": [],
             "url": {
-              "raw": "{{api_gateway}}{{api_prefix}}/notifications/send",
+              "raw": "{{tarrobuild}}{{api_prefix}}/notifications/send",
               "host": [
-                "{{api_gateway}}{{api_prefix}}"
+                "{{tarrobuild}}{{api_prefix}}"
               ],
               "path": [
                 "notifications",
@@ -729,9 +729,9 @@
             "method": "POST",
             "header": [],
             "url": {
-              "raw": "{{api_gateway}}{{api_prefix}}/notifications/send",
+              "raw": "{{tarrobuild}}{{api_prefix}}/notifications/send",
               "host": [
-                "{{api_gateway}}{{api_prefix}}"
+                "{{tarrobuild}}{{api_prefix}}"
               ],
               "path": [
                 "notifications",
@@ -756,9 +756,9 @@
             "method": "POST",
             "header": [],
             "url": {
-              "raw": "{{api_gateway}}{{api_prefix}}/notifications/send",
+              "raw": "{{tarrobuild}}{{api_prefix}}/notifications/send",
               "host": [
-                "{{api_gateway}}{{api_prefix}}"
+                "{{tarrobuild}}{{api_prefix}}"
               ],
               "path": [
                 "notifications",
@@ -783,9 +783,9 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{api_gateway}}{{api_prefix}}/notifications/logs",
+              "raw": "{{tarrobuild}}{{api_prefix}}/notifications/logs",
               "host": [
-                "{{api_gateway}}{{api_prefix}}"
+                "{{tarrobuild}}{{api_prefix}}"
               ],
               "path": [
                 "notifications",
@@ -801,9 +801,9 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{api_gateway}}{{api_prefix}}/notifications/logs/user/1",
+              "raw": "{{tarrobuild}}{{api_prefix}}/notifications/logs/user/1",
               "host": [
-                "{{api_gateway}}{{api_prefix}}"
+                "{{tarrobuild}}{{api_prefix}}"
               ],
               "path": [
                 "notifications",
@@ -821,9 +821,9 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{api_gateway}}{{api_prefix}}/notifications/logs/user/9999",
+              "raw": "{{tarrobuild}}{{api_prefix}}/notifications/logs/user/9999",
               "host": [
-                "{{api_gateway}}{{api_prefix}}"
+                "{{tarrobuild}}{{api_prefix}}"
               ],
               "path": [
                 "notifications",
@@ -841,9 +841,9 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{api_gateway}}{{api_prefix}}/notifications/logs/1",
+              "raw": "{{tarrobuild}}{{api_prefix}}/notifications/logs/1",
               "host": [
-                "{{api_gateway}}{{api_prefix}}"
+                "{{tarrobuild}}{{api_prefix}}"
               ],
               "path": [
                 "notifications",
@@ -860,9 +860,9 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{api_gateway}}{{api_prefix}}/notifications/logs/9999",
+              "raw": "{{tarrobuild}}{{api_prefix}}/notifications/logs/9999",
               "host": [
-                "{{api_gateway}}{{api_prefix}}"
+                "{{tarrobuild}}{{api_prefix}}"
               ],
               "path": [
                 "notifications",
