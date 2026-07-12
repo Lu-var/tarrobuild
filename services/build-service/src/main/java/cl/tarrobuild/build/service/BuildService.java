@@ -26,16 +26,19 @@ public class BuildService {
     private final ProductFeignClient productFeignClient;
     private final CompatibilityFeignClient compatibilityFeignClient;
     private final NotificationFeignClient notificationFeignClient;
+    private final BuildHistoryService buildHistoryService;
 
     public BuildService(BuildRepository buildRepository, BuildItemRepository buildItemRepository,
                         ProductFeignClient productFeignClient,
                         CompatibilityFeignClient compatibilityFeignClient,
-                        NotificationFeignClient notificationFeignClient) {
+                        NotificationFeignClient notificationFeignClient,
+                        BuildHistoryService buildHistoryService) {
         this.buildRepository = buildRepository;
         this.buildItemRepository = buildItemRepository;
         this.productFeignClient = productFeignClient;
         this.compatibilityFeignClient = compatibilityFeignClient;
         this.notificationFeignClient = notificationFeignClient;
+        this.buildHistoryService = buildHistoryService;
     }
 
     public BuildResponse getBuildById(Long id) {
@@ -84,6 +87,7 @@ public class BuildService {
                 .orElseThrow(() -> new EntityNotFoundException("Build with ID " + id + " not found"));
         targetBuild.setStatus(status);
 
+        buildHistoryService.saveSnapshot(targetBuild);
         Build saved = buildRepository.save(targetBuild);
         sendNotification(targetBuild.getUserId(), "BUILD_STATUS",
                 "Build \"" + targetBuild.getName() + "\" status changed to " + status, "INFO");
@@ -97,6 +101,7 @@ public class BuildService {
                     build.setUserId(request.userId());
                     build.setName(request.name());
 
+                    buildHistoryService.saveSnapshot(build);
                     Build saved = buildRepository.save(build);
                     return toResponse(saved);
                 })
