@@ -26,7 +26,7 @@
             "description": "Validates compatibility of a set of products for a build.\n\n**Expected:** 200 OK",
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"productIds\": [\n    1,\n    2\n  ],\n  \"buildId\": 1\n}",
+              "raw": "{\n  \"productIds\": [\n    1,\n    2\n  ]\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -44,32 +44,14 @@
               "host": [
                 "{{compatibility_service}}{{api_prefix}}"
               ],
-              "raw": "{{compatibility_service}}{{api_prefix}}/compatibility/1",
+              "raw": "{{compatibility_service}}{{api_prefix}}/compatibility/check/1",
               "path": [
                 "compatibility",
+                "check",
                 "1"
               ]
             },
             "description": "Retrieves the compatibility result for a specific build."
-          }
-        },
-        {
-          "name": "Get Recommendations",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "host": [
-                "{{compatibility_service}}{{api_prefix}}"
-              ],
-              "raw": "{{compatibility_service}}{{api_prefix}}/compatibility/recommendations/1",
-              "path": [
-                "compatibility",
-                "recommendations",
-                "1"
-              ]
-            },
-            "description": "Gets recommended compatible components for a build."
           }
         },
         {
@@ -90,7 +72,7 @@
             "description": "Checks with only one product \u2014 should fail validation.\n\n**Expected:** 400 Bad Request",
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"productIds\": [\n    1\n  ],\n  \"buildId\": 1\n}",
+              "raw": "{\n  \"productIds\": [\n    1\n  ]\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -149,7 +131,7 @@
             "description": "Validates compatibility through the API Gateway.",
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"productIds\": [\n    1,\n    2\n  ],\n  \"buildId\": 1\n}",
+              "raw": "{\n  \"productIds\": [\n    1,\n    2\n  ]\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -167,32 +149,14 @@
               "host": [
                 "{{api_gateway}}{{api_prefix}}"
               ],
-              "raw": "{{api_gateway}}{{api_prefix}}/compatibility/1",
+              "raw": "{{api_gateway}}{{api_prefix}}/compatibility/check/1",
               "path": [
                 "compatibility",
+                "check",
                 "1"
               ]
             },
             "description": "Retrieves compatibility result through the API Gateway."
-          }
-        },
-        {
-          "name": "Get Recommendations",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "host": [
-                "{{api_gateway}}{{api_prefix}}"
-              ],
-              "raw": "{{api_gateway}}{{api_prefix}}/compatibility/recommendations/1",
-              "path": [
-                "compatibility",
-                "recommendations",
-                "1"
-              ]
-            },
-            "description": "Gets recommendations through the API Gateway."
           }
         },
         {
@@ -213,7 +177,7 @@
             "description": "Invalid products check through the API Gateway.\n\n**Expected:** 400 Bad Request",
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"productIds\": [\n    1\n  ],\n  \"buildId\": 1\n}",
+              "raw": "{\n  \"productIds\": [\n    1\n  ]\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -272,7 +236,7 @@
             "description": "Validates compatibility through the API Gateway.",
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"productIds\": [\n    1,\n    2\n  ],\n  \"buildId\": 1\n}",
+              "raw": "{\n  \"productIds\": [\n    1,\n    2\n  ]\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -290,32 +254,14 @@
               "host": [
                 "{{tarrobuild}}{{api_prefix}}"
               ],
-              "raw": "{{tarrobuild}}{{api_prefix}}/compatibility/1",
+              "raw": "{{tarrobuild}}{{api_prefix}}/compatibility/check/1",
               "path": [
                 "compatibility",
+                "check",
                 "1"
               ]
             },
             "description": "Retrieves compatibility result through the API Gateway."
-          }
-        },
-        {
-          "name": "Get Recommendations",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "host": [
-                "{{tarrobuild}}{{api_prefix}}"
-              ],
-              "raw": "{{tarrobuild}}{{api_prefix}}/compatibility/recommendations/1",
-              "path": [
-                "compatibility",
-                "recommendations",
-                "1"
-              ]
-            },
-            "description": "Gets recommendations through the API Gateway."
           }
         },
         {
@@ -336,7 +282,7 @@
             "description": "Invalid products check through the API Gateway.\n\n**Expected:** 400 Bad Request",
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"productIds\": [\n    1\n  ],\n  \"buildId\": 1\n}",
+              "raw": "{\n  \"productIds\": [\n    1\n  ]\n}",
               "options": {
                 "raw": {
                   "language": "json"

@@ -12,7 +12,7 @@ CREATE TABLE compatibility_rules (
 
 CREATE TABLE compatibility_checks (
     id          BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    build_id    BIGINT        NOT NULL,
+    build_id    BIGINT,
     product_ids VARCHAR(2000) NOT NULL,
     result      BOOLEAN       NOT NULL,
     details     TEXT,

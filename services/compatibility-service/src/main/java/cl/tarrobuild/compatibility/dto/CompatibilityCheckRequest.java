@@ -6,7 +6,6 @@ import jakarta.validation.constraints.Size;
 import java.util.List;
 
 public record CompatibilityCheckRequest(
-        @NotNull(message = "Build ID cannot be null")
         Long buildId,
 
         @NotNull(message = "Product IDs cannot be null")

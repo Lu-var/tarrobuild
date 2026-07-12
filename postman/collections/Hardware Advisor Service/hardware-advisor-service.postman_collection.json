@@ -17,9 +17,9 @@
               "host": [
                 "{{hardware_advisor_service}}{{api_prefix}}"
               ],
-              "raw": "{{hardware_advisor_service}}{{api_prefix}}/advisor/generate",
+              "raw": "{{hardware_advisor_service}}{{api_prefix}}/recommendations/generate",
               "path": [
-                "advisor",
+                "recommendations",
                 "generate"
               ]
             },
@@ -44,9 +44,8 @@
               "host": [
                 "{{hardware_advisor_service}}{{api_prefix}}"
               ],
-              "raw": "{{hardware_advisor_service}}{{api_prefix}}/advisor/recommendations/1",
+              "raw": "{{hardware_advisor_service}}{{api_prefix}}/recommendations/1",
               "path": [
-                "advisor",
                 "recommendations",
                 "1"
               ]
@@ -63,10 +62,9 @@
               "host": [
                 "{{hardware_advisor_service}}{{api_prefix}}"
               ],
-              "raw": "{{hardware_advisor_service}}{{api_prefix}}/advisor/history/1",
+              "raw": "{{hardware_advisor_service}}{{api_prefix}}/recommendations/1",
               "path": [
-                "advisor",
-                "history",
+                "recommendations",
                 "1"
               ]
             },
@@ -82,9 +80,9 @@
               "host": [
                 "{{hardware_advisor_service}}{{api_prefix}}"
               ],
-              "raw": "{{hardware_advisor_service}}{{api_prefix}}/advisor/generate",
+              "raw": "{{hardware_advisor_service}}{{api_prefix}}/recommendations/generate",
               "path": [
-                "advisor",
+                "recommendations",
                 "generate"
               ]
             },
@@ -114,9 +112,9 @@
               "host": [
                 "{{api_gateway}}{{api_prefix}}"
               ],
-              "raw": "{{api_gateway}}{{api_prefix}}/advisor/generate",
+              "raw": "{{api_gateway}}{{api_prefix}}/recommendations/generate",
               "path": [
-                "advisor",
+                "recommendations",
                 "generate"
               ]
             },
@@ -141,9 +139,8 @@
               "host": [
                 "{{api_gateway}}{{api_prefix}}"
               ],
-              "raw": "{{api_gateway}}{{api_prefix}}/advisor/recommendations/1",
+              "raw": "{{api_gateway}}{{api_prefix}}/recommendations/1",
               "path": [
-                "advisor",
                 "recommendations",
                 "1"
               ]
@@ -160,10 +157,9 @@
               "host": [
                 "{{api_gateway}}{{api_prefix}}"
               ],
-              "raw": "{{api_gateway}}{{api_prefix}}/advisor/history/1",
+              "raw": "{{api_gateway}}{{api_prefix}}/recommendations/1",
               "path": [
-                "advisor",
-                "history",
+                "recommendations",
                 "1"
               ]
             },
@@ -179,9 +175,9 @@
               "host": [
                 "{{api_gateway}}{{api_prefix}}"
               ],
-              "raw": "{{api_gateway}}{{api_prefix}}/advisor/generate",
+              "raw": "{{api_gateway}}{{api_prefix}}/recommendations/generate",
               "path": [
-                "advisor",
+                "recommendations",
                 "generate"
               ]
             },
@@ -211,9 +207,9 @@
               "host": [
                 "{{tarrobuild}}{{api_prefix}}"
               ],
-              "raw": "{{tarrobuild}}{{api_prefix}}/advisor/generate",
+              "raw": "{{tarrobuild}}{{api_prefix}}/recommendations/generate",
               "path": [
-                "advisor",
+                "recommendations",
                 "generate"
               ]
             },
@@ -238,9 +234,8 @@
               "host": [
                 "{{tarrobuild}}{{api_prefix}}"
               ],
-              "raw": "{{tarrobuild}}{{api_prefix}}/advisor/recommendations/1",
+              "raw": "{{tarrobuild}}{{api_prefix}}/recommendations/1",
               "path": [
-                "advisor",
                 "recommendations",
                 "1"
               ]
@@ -257,10 +252,9 @@
               "host": [
                 "{{tarrobuild}}{{api_prefix}}"
               ],
-              "raw": "{{tarrobuild}}{{api_prefix}}/advisor/history/1",
+              "raw": "{{tarrobuild}}{{api_prefix}}/recommendations/1",
               "path": [
-                "advisor",
-                "history",
+                "recommendations",
                 "1"
               ]
             },
@@ -276,9 +270,9 @@
               "host": [
                 "{{tarrobuild}}{{api_prefix}}"
               ],
-              "raw": "{{tarrobuild}}{{api_prefix}}/advisor/generate",
+              "raw": "{{tarrobuild}}{{api_prefix}}/recommendations/generate",
               "path": [
-                "advisor",
+                "recommendations",
                 "generate"
               ]
             },
