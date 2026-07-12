@@ -67,9 +67,7 @@
 **Done**
 - [x] Swagger/OpenAPI (springdoc)
 - [x] ContextLoads test
-
-**Pending**
-- [ ] Unit tests
+- [x] Unit tests (50 tests)
 
 ---
 
@@ -266,7 +264,7 @@
 
 ## Documentación de apoyo
 
-- [TEST-STRATEGY.md](TEST-STRATEGY.md) — Estrategia de pruebas unitarias (154 tests, 10 servicios)
+- [TEST-STRATEGY.md](TEST-STRATEGY.md) — Estrategia de pruebas unitarias (204 tests, 11 servicios)
 - [API-DOCS.md](API-DOCS.md) — Documentación Swagger/OpenAPI (11 servicios)
 
 ---

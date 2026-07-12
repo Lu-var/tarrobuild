@@ -145,8 +145,9 @@ CompatibilityRule { Long id, String sourceCategory, String sourceAttributeName,
 CompatibilityCheck { Long id, Long buildId, String productIds, Boolean result, String details, LocalDateTime createdAt }
 
 // provider-service
-Provider { Long id, String name, String contact, String website, Boolean isActive }
-ProviderProduct { Long id, Long providerId, Long productId, String externalReference }
+Provider { Long id, String name, String contact, String website, Boolean isActive,
+           @OneToMany List<ProviderProduct> products }
+ProviderProduct { Long id, @ManyToOne Provider provider, Long productId, String externalReference }
 
 // build-service
 Build { Long id, Long userId, String name, BuildStatus status, LocalDateTime createdAt,
@@ -182,6 +183,8 @@ NotificationLog { Long id, Long userId, String type, String content, Notificatio
 | hardware-advisor-service | → | product-service | Get products | Feign |
 | hardware-advisor-service | → | compatibility-service | Check compatibility | Feign |
 | hardware-advisor-service | → | notification-service | Send notification | Feign |
+| compatibility-service | → | category-service | Get category specs | RestClient |
+| notification-service | → | user-service | Get user info | RestClient |
 
 ## Actors
 
@@ -291,7 +294,7 @@ public record ApiError(String message, String details, String timestamp) {}
 | **FeignClient** | Multi-endpoint orchestration (e.g. hardware-advisor → 4 services, multiple calls per request) |
 
 - Fallbacks for fault tolerance
-- Configurable timeouts: 5s connect, 5s read
+- Configurable timeouts: 5s connect, 10s read
 - Fire-and-forget for notifications
 - URL config via `@Value` or `@FeignClient(url = "${...}")` with environment variable fallbacks
 
@@ -302,6 +305,8 @@ Each service has:
 - `application.yaml` — name, port, default profile (h2)
 - `application-h2.yaml` — H2 (`ddl-auto: create-drop` + `data.sql`)
 - `application-mysql.yaml` — MySQL + Flyway (`db/migration/mysql/`), `ddl-auto: validate`
+- `application-render.yaml` — PostgreSQL + Flyway (`db/migration/postgresql/`), `ddl-auto: validate`
+- `application-prod.yaml` — MySQL + Flyway (`db/migration/mysql/`), `ddl-auto: validate` (Docker Compose)
 - `V1__init.sql` — schema creation (in `db/migration/{profile}/`)
 - `V2__seed_data.sql` — reference data (in `db/migration/{profile}/`)
 - `pom.xml` — parent: `tarrobuild/pom.xml`, deps: webmvc, data-jpa, validation, h2, mysql-connector-j, flyway-core, flyway-mysql, lombok

@@ -376,6 +376,166 @@ A continuacion se define cada uno de los 11 microservicios del sistema TarroBuil
 | **Comunica con** | Es consultado por estimate-service y hardware-advisor-service. |
 | **Base de datos** | db_notifications |
 
+## 6. Información del equipo
+
+| Integrante | Rol |
+|------------|-----|
+| [Nombre 1] | [Rol] |
+| [Nombre 2] | [Rol] |
+| [Nombre 3] | [Rol] |
+
+## 7. Puertos y bases de datos
+
+| Servicio | Puerto | Base de datos |
+|----------|--------|---------------|
+| api-gateway | 8080 | — |
+| auth-service | 8081 | db_auth |
+| user-service | 8082 | db_users |
+| product-service | 8083 | db_products |
+| category-service | 8084 | db_categories |
+| compatibility-service | 8085 | db_compatibility |
+| provider-service | 8086 | db_providers |
+| build-service | 8087 | db_builds |
+| estimate-service | 8088 | db_estimates |
+| hardware-advisor-service | 8089 | db_recommendations |
+| notification-service | 8090 | db_notifications |
+
+## 8. Variables de entorno
+
+Copiar `.env.example` a `.env` y configurar según el entorno:
+
+```bash
+cp .env.example .env
+```
+
+Variables principales:
+- `SPRING_PROFILES_ACTIVE`: h2 (desarrollo), mysql (Docker), render (producción)
+- `{SERVICE}_URL`: URLs de comunicación entre servicios (local: `http://localhost:PUERTO`)
+- `JWT_SECRET`: secreto para firmar tokens JWT
+- `DATABASE_URL`: solo para perfil render (PostgreSQL)
+
+## 9. Ejecución local
+
+### Requisitos previos
+- Java 21 (Eclipse Temurin)
+- Maven 3.9+ (incluye `mvnw.cmd`)
+- Docker Desktop (opcional, para compose)
+
+### Windows (PowerShell)
+
+```powershell
+# Compilar todo el proyecto
+cd C:\ruta\tarrobuild
+mvnw.cmd clean compile -DskipTests
+
+# Ejecutar un servicio (perfil h2 por defecto)
+cd services\api-gateway
+mvnw.cmd spring-boot:run
+
+# Ejecutar pruebas de un servicio específico
+cd services\auth-service
+mvnw.cmd test
+
+# Ejecutar todas las pruebas del proyecto
+cd ..\..
+mvnw.cmd test
+
+# Docker Compose (base de datos MySQL + todos los servicios)
+docker compose up --build
+```
+
+### Linux/macOS
+
+```bash
+# Compilar
+./mvnw clean compile -DskipTests
+
+# Ejecutar servicio
+cd services/api-gateway
+./mvnw spring-boot:run
+
+# Pruebas
+./mvnw test
+```
+
+### Orden de arranque (local sin Docker)
+1. Los servicios no tienen dependencias externas en perfil h2 (BD embebida)
+2. Iniciar en cualquier orden; el gateway funciona independientemente
+3. Para flujo completo, auth-service y user-service deben estar activos
+
+### Orden de arranque (Docker Compose)
+```bash
+docker compose up --build
+```
+Levanta automáticamente: 10 MySQL → 11 servicios Java con healthchecks.
+
+### Verificar funcionamiento
+```powershell
+# Login como admin
+curl.exe -X POST http://localhost:8080/api/v1/auth/login -H "Content-Type: application/json" -d '{\"email\":\"admin@tarrobuild.cl\",\"password\":\"admin123\"}'
+
+# Listar productos (público)
+curl.exe http://localhost:8080/api/v1/products
+```
+
+## 10. Usuarios de prueba
+
+| Rol | Email | Contraseña |
+|-----|-------|------------|
+| Administrador | admin@tarrobuild.cl | admin123 |
+| Usuario registrado | user@test.com | test123 |
+
+## 11. Swagger UI
+
+Cada servicio expone Swagger UI en:
+```
+http://localhost:{puerto}/swagger-ui/index.html
+```
+
+Ejemplos:
+- Gateway: http://localhost:8080/swagger-ui/index.html
+- auth-service: http://localhost:8081/swagger-ui/index.html
+- product-service: http://localhost:8083/swagger-ui/index.html
+
+## 12. Despliegue en Render
+
+Los 11 servicios están desplegados en Render como servicios web independientes:
+
+| Servicio | URL |
+|----------|-----|
+| api-gateway | https://api-gateway-tzkw.onrender.com |
+| auth-service | https://auth-service-oww8.onrender.com |
+| user-service | https://user-service-1ycx.onrender.com |
+| product-service | https://product-service-e903.onrender.com |
+| category-service | https://category-service-91sc.onrender.com |
+| compatibility-service | https://compatibility-service-3hfz.onrender.com |
+| provider-service | https://provider-service-56hc.onrender.com |
+| build-service | https://build-service-lym5.onrender.com |
+| estimate-service | https://estimate-service-h0h9.onrender.com |
+| hardware-advisor-service | https://hardware-advisor-service-9b8i.onrender.com |
+| notification-service | https://notification-service-d4ww.onrender.com |
+
+## 13. Enlace a tablero de gestión
+
+[Agregar enlace a Trello / GitHub Projects / Jira]
+
+## 14. Documentación adicional
+
+| Archivo | Descripción |
+|---------|-------------|
+| `docs/matriz-requerimientos.md` | Matriz de requerimientos con trazabilidad |
+| `docs/plan-cierre-feedback.md` | Feedback recibido y acciones correctivas |
+| `docs/documentacion-funcional.md` | Documentación funcional del sistema |
+| `docs/documentacion-tecnica.md` | Documentación técnica y ejecución desde cero |
+| `docs/levantamiento-requerimientos-actualizado.md` | Levantamiento actualizado de requerimientos |
+| `docs/ARCHITECTURE.md` | Arquitectura detallada del sistema |
+| `docs/PROGRESS.md` | Estado de avance por servicio |
+| `docs/DONE.md` | Historial de trabajo completado |
+| `docs/API-DOCS.md` | Documentación de APIs Swagger/OpenAPI |
+| `docs/TEST-STRATEGY.md` | Estrategia y cobertura de pruebas |
+| `docs/presentacion-defensa-grupal.md` | Presentación de defensa técnica grupal |
+| `docs/defensa-individual/` | Documentos de defensa individual por integrante |
+
 ## 5.1 Resumen de comunicación inter-servicio
 
 | Servicio origen | Servicio destino | Motivo de la llamada |

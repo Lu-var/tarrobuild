@@ -224,5 +224,4 @@
 
 - [x] `compose.yml` con healthchecks en MySQL, port 8080 para gateway, env vars para hardware-advisor
 - [x] `application-prod.yaml` creado en los 11 servicios
-- [x] `entrypoint.sh` CRLF→LF en todos los servicios + `.gitattributes`
 - [x] `Dockerfile.render` multi-stage en raíz del proyecto
