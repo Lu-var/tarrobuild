@@ -1,6 +1,5 @@
 package cl.tarrobuild.apigateway.config;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.function.RouterFunction;
@@ -16,21 +15,10 @@ import static org.springframework.cloud.gateway.server.mvc.predicate.GatewayRequ
 @Configuration
 public class GatewayRoutesConfig {
 
-    @Value("${AUTH_SERVICE_URL:http://localhost:8081}") private String authUrl;
-    @Value("${USER_SERVICE_URL:http://localhost:8082}") private String userUrl;
-    @Value("${PRODUCT_SERVICE_URL:http://localhost:8083}") private String productUrl;
-    @Value("${CATEGORY_SERVICE_URL:http://localhost:8084}") private String categoryUrl;
-    @Value("${COMPATIBILITY_SERVICE_URL:http://localhost:8085}") private String compatibilityUrl;
-    @Value("${PROVIDER_SERVICE_URL:http://localhost:8086}") private String providerUrl;
-    @Value("${BUILD_SERVICE_URL:http://localhost:8087}") private String buildUrl;
-    @Value("${ESTIMATE_SERVICE_URL:http://localhost:8088}") private String estimateUrl;
-    @Value("${HARDWARE_ADVISOR_SERVICE_URL:http://localhost:8089}") private String advisorUrl;
-    @Value("${NOTIFICATION_SERVICE_URL:http://localhost:8090}") private String notificationUrl;
-
-    private RouterFunction<ServerResponse> v1Route(String id, String apiPath, String url) {
+    private RouterFunction<ServerResponse> v1Route(String id, String apiPath, String lbUrl) {
         return route(id + "-v1")
                 .route(path("/api/v1/" + apiPath + "/**"), http())
-                .before(uri(url))
+                .before(uri(lbUrl))
                 .filter(stripPrefix(2))
                 .filter(prefixPath("/api"))
                 .build();
@@ -40,53 +28,53 @@ public class GatewayRoutesConfig {
     public RouterFunction<ServerResponse> gatewayRoutes() {
         return route("auth-service")
                 .route(path("/api/auth/**"), http())
-                .before(uri(authUrl))
+                .before(uri("lb://auth-service"))
                 .build()
-                .and(v1Route("auth-service", "auth", authUrl))
+                .and(v1Route("auth-service", "auth", "lb://auth-service"))
                 .and(route("user-service")
                         .route(path("/api/users/**"), http())
-                        .before(uri(userUrl))
+                        .before(uri("lb://user-service"))
                         .build())
-                .and(v1Route("user-service", "users", userUrl))
+                .and(v1Route("user-service", "users", "lb://user-service"))
                 .and(route("product-service")
                         .route(path("/api/products/**"), http())
-                        .before(uri(productUrl))
+                        .before(uri("lb://product-service"))
                         .build())
-                .and(v1Route("product-service", "products", productUrl))
+                .and(v1Route("product-service", "products", "lb://product-service"))
                 .and(route("category-service")
                         .route(path("/api/categories/**"), http())
-                        .before(uri(categoryUrl))
+                        .before(uri("lb://category-service"))
                         .build())
-                .and(v1Route("category-service", "categories", categoryUrl))
+                .and(v1Route("category-service", "categories", "lb://category-service"))
                 .and(route("compatibility-service")
                         .route(path("/api/compatibility/**"), http())
-                        .before(uri(compatibilityUrl))
+                        .before(uri("lb://compatibility-service"))
                         .build())
-                .and(v1Route("compatibility-service", "compatibility", compatibilityUrl))
+                .and(v1Route("compatibility-service", "compatibility", "lb://compatibility-service"))
                 .and(route("provider-service")
                         .route(path("/api/providers/**"), http())
-                        .before(uri(providerUrl))
+                        .before(uri("lb://provider-service"))
                         .build())
-                .and(v1Route("provider-service", "providers", providerUrl))
+                .and(v1Route("provider-service", "providers", "lb://provider-service"))
                 .and(route("build-service")
                         .route(path("/api/builds/**"), http())
-                        .before(uri(buildUrl))
+                        .before(uri("lb://build-service"))
                         .build())
-                .and(v1Route("build-service", "builds", buildUrl))
+                .and(v1Route("build-service", "builds", "lb://build-service"))
                 .and(route("estimate-service")
                         .route(path("/api/estimate/**"), http())
-                        .before(uri(estimateUrl))
+                        .before(uri("lb://estimate-service"))
                         .build())
-                .and(v1Route("estimate-service", "estimate", estimateUrl))
+                .and(v1Route("estimate-service", "estimate", "lb://estimate-service"))
                 .and(route("hardware-advisor")
                         .route(path("/api/recommendations/**"), http())
-                        .before(uri(advisorUrl))
+                        .before(uri("lb://hardware-advisor-service"))
                         .build())
-                .and(v1Route("hardware-advisor", "recommendations", advisorUrl))
+                .and(v1Route("hardware-advisor", "recommendations", "lb://hardware-advisor-service"))
                 .and(route("notification-service")
                         .route(path("/api/notifications/**"), http())
-                        .before(uri(notificationUrl))
+                        .before(uri("lb://notification-service"))
                         .build())
-                .and(v1Route("notification-service", "notifications", notificationUrl));
+                .and(v1Route("notification-service", "notifications", "lb://notification-service"));
     }
 }
