@@ -22,6 +22,11 @@ spring:
 app:
   environment: production
 
+feign:
+  client:
+    connect-timeout: 30
+    read-timeout: 90
+
 logging:
   level:
     cl.tarrobuild: INFO
