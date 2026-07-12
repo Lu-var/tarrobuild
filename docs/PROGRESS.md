@@ -106,7 +106,6 @@
 - [x] ContextLoads test
 
 **Pending**
-- [ ] FeignClient fallbacks and configurable timeouts (Module 5)
 - [ ] Endpoint tests script
 
 ---
@@ -157,8 +156,7 @@
 - [x] ContextLoads test
 
 **Pending**
-- [ ] Deduplicate keys in `application.yaml` (build/product/notification service URLs + server.port are duplicated)
-- [ ] Endpoint tests script (notification as template)
+- [ ] Endpoint tests script
 
 ---
 

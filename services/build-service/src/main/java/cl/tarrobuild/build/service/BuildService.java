@@ -1,6 +1,7 @@
 package cl.tarrobuild.build.service;
 
 import cl.tarrobuild.build.client.CompatibilityFeignClient;
+import cl.tarrobuild.build.client.NotificationFeignClient;
 import cl.tarrobuild.build.client.ProductFeignClient;
 import cl.tarrobuild.build.dto.*;
 import cl.tarrobuild.build.model.Build;
@@ -24,14 +25,17 @@ public class BuildService {
     private final BuildItemRepository buildItemRepository;
     private final ProductFeignClient productFeignClient;
     private final CompatibilityFeignClient compatibilityFeignClient;
+    private final NotificationFeignClient notificationFeignClient;
 
     public BuildService(BuildRepository buildRepository, BuildItemRepository buildItemRepository,
                         ProductFeignClient productFeignClient,
-                        CompatibilityFeignClient compatibilityFeignClient) {
+                        CompatibilityFeignClient compatibilityFeignClient,
+                        NotificationFeignClient notificationFeignClient) {
         this.buildRepository = buildRepository;
         this.buildItemRepository = buildItemRepository;
         this.productFeignClient = productFeignClient;
         this.compatibilityFeignClient = compatibilityFeignClient;
+        this.notificationFeignClient = notificationFeignClient;
     }
 
     public BuildResponse getBuildById(Long id) {
@@ -69,6 +73,8 @@ public class BuildService {
         build.setName(request.name());
 
         Build saved = buildRepository.save(build);
+        sendNotification(build.getUserId(), "BUILD_CREATED",
+                "Build \"" + build.getName() + "\" created successfully", "SUCCESS");
         return toResponse(saved);
     }
 
@@ -79,6 +85,8 @@ public class BuildService {
         targetBuild.setStatus(status);
 
         Build saved = buildRepository.save(targetBuild);
+        sendNotification(targetBuild.getUserId(), "BUILD_STATUS",
+                "Build \"" + targetBuild.getName() + "\" status changed to " + status, "INFO");
         return toResponse(saved);
     }
 
@@ -199,6 +207,15 @@ public class BuildService {
             }
         } catch (Exception e) {
             log.warn("Could not run compatibility check for build {}: {}", buildId, e.getMessage());
+        }
+    }
+
+    private void sendNotification(Long userId, String type, String content, String status) {
+        try {
+            notificationFeignClient.sendNotification(new NotificationClientRequest(userId, type, content, status));
+            log.info("Notification sent: {} for user {}", type, userId);
+        } catch (Exception e) {
+            log.warn("Failed to send notification: {}", e.getMessage());
         }
     }
 
