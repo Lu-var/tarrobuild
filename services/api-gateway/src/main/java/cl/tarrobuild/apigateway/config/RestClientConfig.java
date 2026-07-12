@@ -5,7 +5,6 @@ import java.time.Duration;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.http.client.ClientHttpRequestFactoryBuilder;
 import org.springframework.boot.http.client.HttpClientSettings;
-import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.client.ClientHttpRequestFactory;
@@ -15,7 +14,6 @@ import org.springframework.web.client.RestClient;
 public class RestClientConfig {
 
     @Bean
-    @LoadBalanced
     public RestClient.Builder restClientBuilder(
             @Value("${restclient.connect-timeout:5000}") int connectTimeout,
             @Value("${restclient.read-timeout:10000}") int readTimeout) {

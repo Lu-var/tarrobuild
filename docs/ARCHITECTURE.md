@@ -304,7 +304,7 @@ public record ApiError(String message, String details, String timestamp) {}
 - URL resolution via `lb://SERVICE-NAME` through Eureka service discovery
 - RestClient.Builder annotated with `@LoadBalanced` for lb:// support
 - FeignClient without `url` attribute resolves via Eureka by service name
-- Gateway routes use `lb://SERVICE-NAME` URIs for proxying
+
 
 ### Config pattern
 

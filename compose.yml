@@ -368,7 +368,16 @@ services:
       - "8080:8080"
     environment:
       SERVER_PORT: 8080
-      EUREKA_URL: http://discovery-server:8761/eureka/
+      AUTH_SERVICE_URL: http://auth-service:8081
+      USER_SERVICE_URL: http://user-service:8082
+      PRODUCT_SERVICE_URL: http://product-service:8083
+      CATEGORY_SERVICE_URL: http://category-service:8084
+      COMPATIBILITY_SERVICE_URL: http://compatibility-service:8085
+      PROVIDER_SERVICE_URL: http://provider-service:8086
+      BUILD_SERVICE_URL: http://build-service:8087
+      ESTIMATE_SERVICE_URL: http://estimate-service:8088
+      HARDWARE_ADVISOR_SERVICE_URL: http://hardware-advisor-service:8089
+      NOTIFICATION_SERVICE_URL: http://notification-service:8090
     depends_on:
       discovery-server:
         condition: service_started
