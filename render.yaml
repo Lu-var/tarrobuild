@@ -215,5 +215,23 @@ services:
         value: 8080
       - key: SPRING_PROFILES_ACTIVE
         value: render
-      - key: EUREKA_URL
-        value: https://discovery-server-whs1.onrender.com/eureka/
+      - key: AUTH_SERVICE_URL
+        value: https://auth-service-oww8.onrender.com
+      - key: USER_SERVICE_URL
+        value: https://user-service-yuz5.onrender.com
+      - key: PRODUCT_SERVICE_URL
+        value: https://product-service-e903.onrender.com
+      - key: CATEGORY_SERVICE_URL
+        value: https://category-service-4fmr.onrender.com
+      - key: COMPATIBILITY_SERVICE_URL
+        value: https://compatibility-service.onrender.com
+      - key: PROVIDER_SERVICE_URL
+        value: https://provider-service-9ip0.onrender.com
+      - key: BUILD_SERVICE_URL
+        value: https://build-service-lym5.onrender.com
+      - key: ESTIMATE_SERVICE_URL
+        value: https://estimate-service-dkhv.onrender.com
+      - key: HARDWARE_ADVISOR_SERVICE_URL
+        value: https://hardware-advisor-service.onrender.com
+      - key: NOTIFICATION_SERVICE_URL
+        value: https://notification-service-e4ij.onrender.com
