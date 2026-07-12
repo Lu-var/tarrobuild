@@ -2,7 +2,6 @@ package cl.tarrobuild.notification.client;
 
 import cl.tarrobuild.notification.dto.UserClientResponse;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 
@@ -12,10 +11,9 @@ public class UserRestClient {
 
     private final RestClient restClient;
 
-    public UserRestClient(RestClient.Builder builder,
-                          @Value("${user-service.url}") String userServiceUrl) {
+    public UserRestClient(RestClient.Builder builder) {
         this.restClient = builder
-                .baseUrl(userServiceUrl)
+                .baseUrl("lb://user-service")
                 .build();
     }
 

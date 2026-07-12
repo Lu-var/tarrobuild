@@ -2,7 +2,6 @@ package cl.tarrobuild.apigateway.client;
 
 import cl.tarrobuild.apigateway.dto.AuthClientResponse;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 
@@ -12,10 +11,9 @@ public class AuthRestClient {
 
     private final RestClient restClient;
 
-    public AuthRestClient(RestClient.Builder builder,
-                          @Value("${AUTH_SERVICE_URL:http://localhost:8081}") String authServiceUrl) {
+    public AuthRestClient(RestClient.Builder builder) {
         this.restClient = builder
-                .baseUrl(authServiceUrl)
+                .baseUrl("lb://auth-service")
                 .build();
     }
 

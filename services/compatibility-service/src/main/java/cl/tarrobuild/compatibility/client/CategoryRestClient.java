@@ -2,7 +2,6 @@ package cl.tarrobuild.compatibility.client;
 
 import cl.tarrobuild.compatibility.dto.CategoryClientResponse;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.client.RestClientException;
@@ -13,10 +12,9 @@ public class CategoryRestClient {
 
     private final RestClient restClient;
 
-    public CategoryRestClient(RestClient.Builder builder,
-                               @Value("${category-service.url}") String categoryServiceUrl) {
+    public CategoryRestClient(RestClient.Builder builder) {
         this.restClient = builder
-                .baseUrl(categoryServiceUrl)
+                .baseUrl("lb://category-service")
                 .build();
     }
 
