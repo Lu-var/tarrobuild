@@ -209,9 +209,9 @@
             "header": [],
             "url": {
               "host": [
-                "{{api_gateway}}{{api_prefix}}"
+                "{{tarrobuild}}{{api_prefix}}"
               ],
-              "raw": "{{api_gateway}}{{api_prefix}}/advisor/generate",
+              "raw": "{{tarrobuild}}{{api_prefix}}/advisor/generate",
               "path": [
                 "advisor",
                 "generate"
@@ -236,9 +236,9 @@
             "header": [],
             "url": {
               "host": [
-                "{{api_gateway}}{{api_prefix}}"
+                "{{tarrobuild}}{{api_prefix}}"
               ],
-              "raw": "{{api_gateway}}{{api_prefix}}/advisor/recommendations/1",
+              "raw": "{{tarrobuild}}{{api_prefix}}/advisor/recommendations/1",
               "path": [
                 "advisor",
                 "recommendations",
@@ -255,9 +255,9 @@
             "header": [],
             "url": {
               "host": [
-                "{{api_gateway}}{{api_prefix}}"
+                "{{tarrobuild}}{{api_prefix}}"
               ],
-              "raw": "{{api_gateway}}{{api_prefix}}/advisor/history/1",
+              "raw": "{{tarrobuild}}{{api_prefix}}/advisor/history/1",
               "path": [
                 "advisor",
                 "history",
@@ -274,9 +274,9 @@
             "header": [],
             "url": {
               "host": [
-                "{{api_gateway}}{{api_prefix}}"
+                "{{tarrobuild}}{{api_prefix}}"
               ],
-              "raw": "{{api_gateway}}{{api_prefix}}/advisor/generate",
+              "raw": "{{tarrobuild}}{{api_prefix}}/advisor/generate",
               "path": [
                 "advisor",
                 "generate"

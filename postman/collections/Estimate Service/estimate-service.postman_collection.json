@@ -245,9 +245,9 @@
             "header": [],
             "url": {
               "host": [
-                "{{api_gateway}}{{api_prefix}}"
+                "{{tarrobuild}}{{api_prefix}}"
               ],
-              "raw": "{{api_gateway}}{{api_prefix}}/estimate/calculate",
+              "raw": "{{tarrobuild}}{{api_prefix}}/estimate/calculate",
               "path": [
                 "estimate",
                 "calculate"
@@ -272,9 +272,9 @@
             "header": [],
             "url": {
               "host": [
-                "{{api_gateway}}{{api_prefix}}"
+                "{{tarrobuild}}{{api_prefix}}"
               ],
-              "raw": "{{api_gateway}}{{api_prefix}}/estimate/1",
+              "raw": "{{tarrobuild}}{{api_prefix}}/estimate/1",
               "path": [
                 "estimate",
                 "1"
@@ -290,9 +290,9 @@
             "header": [],
             "url": {
               "host": [
-                "{{api_gateway}}{{api_prefix}}"
+                "{{tarrobuild}}{{api_prefix}}"
               ],
-              "raw": "{{api_gateway}}{{api_prefix}}/estimate/id/1",
+              "raw": "{{tarrobuild}}{{api_prefix}}/estimate/id/1",
               "path": [
                 "estimate",
                 "id",
@@ -309,9 +309,9 @@
             "header": [],
             "url": {
               "host": [
-                "{{api_gateway}}{{api_prefix}}"
+                "{{tarrobuild}}{{api_prefix}}"
               ],
-              "raw": "{{api_gateway}}{{api_prefix}}/estimate/all/1",
+              "raw": "{{tarrobuild}}{{api_prefix}}/estimate/all/1",
               "path": [
                 "estimate",
                 "all",
@@ -328,9 +328,9 @@
             "header": [],
             "url": {
               "host": [
-                "{{api_gateway}}{{api_prefix}}"
+                "{{tarrobuild}}{{api_prefix}}"
               ],
-              "raw": "{{api_gateway}}{{api_prefix}}/estimate/calculate",
+              "raw": "{{tarrobuild}}{{api_prefix}}/estimate/calculate",
               "path": [
                 "estimate",
                 "calculate"

@@ -552,9 +552,9 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{api_gateway}}{{api_prefix}}/users",
+              "raw": "{{tarrobuild}}{{api_prefix}}/users",
               "host": [
-                "{{api_gateway}}{{api_prefix}}"
+                "{{tarrobuild}}{{api_prefix}}"
               ],
               "path": [
                 "users"
@@ -569,9 +569,9 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{api_gateway}}{{api_prefix}}/users?name=Lucas",
+              "raw": "{{tarrobuild}}{{api_prefix}}/users?name=Lucas",
               "host": [
-                "{{api_gateway}}{{api_prefix}}"
+                "{{tarrobuild}}{{api_prefix}}"
               ],
               "path": [
                 "users"
@@ -592,9 +592,9 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{api_gateway}}{{api_prefix}}/users?name=Lucas&last_name=Vargas",
+              "raw": "{{tarrobuild}}{{api_prefix}}/users?name=Lucas&last_name=Vargas",
               "host": [
-                "{{api_gateway}}{{api_prefix}}"
+                "{{tarrobuild}}{{api_prefix}}"
               ],
               "path": [
                 "users"
@@ -619,9 +619,9 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{api_gateway}}{{api_prefix}}/users/1",
+              "raw": "{{tarrobuild}}{{api_prefix}}/users/1",
               "host": [
-                "{{api_gateway}}{{api_prefix}}"
+                "{{tarrobuild}}{{api_prefix}}"
               ],
               "path": [
                 "users",
@@ -637,9 +637,9 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{api_gateway}}{{api_prefix}}/users/email/lucas@tarrobuild.cl",
+              "raw": "{{tarrobuild}}{{api_prefix}}/users/email/lucas@tarrobuild.cl",
               "host": [
-                "{{api_gateway}}{{api_prefix}}"
+                "{{tarrobuild}}{{api_prefix}}"
               ],
               "path": [
                 "users",
@@ -656,9 +656,9 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{api_gateway}}{{api_prefix}}/users/phone/+56912345678",
+              "raw": "{{tarrobuild}}{{api_prefix}}/users/phone/+56912345678",
               "host": [
-                "{{api_gateway}}{{api_prefix}}"
+                "{{tarrobuild}}{{api_prefix}}"
               ],
               "path": [
                 "users",
@@ -675,9 +675,9 @@
             "method": "POST",
             "header": [],
             "url": {
-              "raw": "{{api_gateway}}{{api_prefix}}/users",
+              "raw": "{{tarrobuild}}{{api_prefix}}/users",
               "host": [
-                "{{api_gateway}}{{api_prefix}}"
+                "{{tarrobuild}}{{api_prefix}}"
               ],
               "path": [
                 "users"
@@ -701,9 +701,9 @@
             "method": "POST",
             "header": [],
             "url": {
-              "raw": "{{api_gateway}}{{api_prefix}}/users",
+              "raw": "{{tarrobuild}}{{api_prefix}}/users",
               "host": [
-                "{{api_gateway}}{{api_prefix}}"
+                "{{tarrobuild}}{{api_prefix}}"
               ],
               "path": [
                 "users"
@@ -727,9 +727,9 @@
             "method": "POST",
             "header": [],
             "url": {
-              "raw": "{{api_gateway}}{{api_prefix}}/users",
+              "raw": "{{tarrobuild}}{{api_prefix}}/users",
               "host": [
-                "{{api_gateway}}{{api_prefix}}"
+                "{{tarrobuild}}{{api_prefix}}"
               ],
               "path": [
                 "users"
@@ -753,9 +753,9 @@
             "method": "PUT",
             "header": [],
             "url": {
-              "raw": "{{api_gateway}}{{api_prefix}}/users/1",
+              "raw": "{{tarrobuild}}{{api_prefix}}/users/1",
               "host": [
-                "{{api_gateway}}{{api_prefix}}"
+                "{{tarrobuild}}{{api_prefix}}"
               ],
               "path": [
                 "users",
@@ -780,9 +780,9 @@
             "method": "DELETE",
             "header": [],
             "url": {
-              "raw": "{{api_gateway}}{{api_prefix}}/users/1",
+              "raw": "{{tarrobuild}}{{api_prefix}}/users/1",
               "host": [
-                "{{api_gateway}}{{api_prefix}}"
+                "{{tarrobuild}}{{api_prefix}}"
               ],
               "path": [
                 "users",
@@ -798,9 +798,9 @@
             "method": "DELETE",
             "header": [],
             "url": {
-              "raw": "{{api_gateway}}{{api_prefix}}/users/9999",
+              "raw": "{{tarrobuild}}{{api_prefix}}/users/9999",
               "host": [
-                "{{api_gateway}}{{api_prefix}}"
+                "{{tarrobuild}}{{api_prefix}}"
               ],
               "path": [
                 "users",

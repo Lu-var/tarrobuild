@@ -261,9 +261,9 @@
             "header": [],
             "url": {
               "host": [
-                "{{api_gateway}}{{api_prefix}}"
+                "{{tarrobuild}}{{api_prefix}}"
               ],
-              "raw": "{{api_gateway}}{{api_prefix}}/compatibility/check",
+              "raw": "{{tarrobuild}}{{api_prefix}}/compatibility/check",
               "path": [
                 "compatibility",
                 "check"
@@ -288,9 +288,9 @@
             "header": [],
             "url": {
               "host": [
-                "{{api_gateway}}{{api_prefix}}"
+                "{{tarrobuild}}{{api_prefix}}"
               ],
-              "raw": "{{api_gateway}}{{api_prefix}}/compatibility/1",
+              "raw": "{{tarrobuild}}{{api_prefix}}/compatibility/1",
               "path": [
                 "compatibility",
                 "1"
@@ -306,9 +306,9 @@
             "header": [],
             "url": {
               "host": [
-                "{{api_gateway}}{{api_prefix}}"
+                "{{tarrobuild}}{{api_prefix}}"
               ],
-              "raw": "{{api_gateway}}{{api_prefix}}/compatibility/recommendations/1",
+              "raw": "{{tarrobuild}}{{api_prefix}}/compatibility/recommendations/1",
               "path": [
                 "compatibility",
                 "recommendations",
@@ -325,9 +325,9 @@
             "header": [],
             "url": {
               "host": [
-                "{{api_gateway}}{{api_prefix}}"
+                "{{tarrobuild}}{{api_prefix}}"
               ],
-              "raw": "{{api_gateway}}{{api_prefix}}/compatibility/check",
+              "raw": "{{tarrobuild}}{{api_prefix}}/compatibility/check",
               "path": [
                 "compatibility",
                 "check"
@@ -352,9 +352,9 @@
             "header": [],
             "url": {
               "host": [
-                "{{api_gateway}}{{api_prefix}}"
+                "{{tarrobuild}}{{api_prefix}}"
               ],
-              "raw": "{{api_gateway}}{{api_prefix}}/compatibility/check",
+              "raw": "{{tarrobuild}}{{api_prefix}}/compatibility/check",
               "path": [
                 "compatibility",
                 "check"

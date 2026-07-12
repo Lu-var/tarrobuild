@@ -240,9 +240,9 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{api_gateway}}{{api_prefix}}/categories",
+              "raw": "{{tarrobuild}}{{api_prefix}}/categories",
               "host": [
-                "{{api_gateway}}{{api_prefix}}"
+                "{{tarrobuild}}{{api_prefix}}"
               ],
               "path": [
                 "categories"
@@ -257,9 +257,9 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{api_gateway}}{{api_prefix}}/categories/1",
+              "raw": "{{tarrobuild}}{{api_prefix}}/categories/1",
               "host": [
-                "{{api_gateway}}{{api_prefix}}"
+                "{{tarrobuild}}{{api_prefix}}"
               ],
               "path": [
                 "categories",
@@ -275,9 +275,9 @@
             "method": "POST",
             "header": [],
             "url": {
-              "raw": "{{api_gateway}}{{api_prefix}}/categories",
+              "raw": "{{tarrobuild}}{{api_prefix}}/categories",
               "host": [
-                "{{api_gateway}}{{api_prefix}}"
+                "{{tarrobuild}}{{api_prefix}}"
               ],
               "path": [
                 "categories"
@@ -301,9 +301,9 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{api_gateway}}{{api_prefix}}/categories/1/attributes",
+              "raw": "{{tarrobuild}}{{api_prefix}}/categories/1/attributes",
               "host": [
-                "{{api_gateway}}{{api_prefix}}"
+                "{{tarrobuild}}{{api_prefix}}"
               ],
               "path": [
                 "categories",
@@ -320,9 +320,9 @@
             "method": "POST",
             "header": [],
             "url": {
-              "raw": "{{api_gateway}}{{api_prefix}}/categories/1/attributes",
+              "raw": "{{tarrobuild}}{{api_prefix}}/categories/1/attributes",
               "host": [
-                "{{api_gateway}}{{api_prefix}}"
+                "{{tarrobuild}}{{api_prefix}}"
               ],
               "path": [
                 "categories",
