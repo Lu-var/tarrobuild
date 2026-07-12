@@ -24,6 +24,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -57,14 +58,11 @@ class HardwareAdvisorServiceTest {
     private BuildClientResponse build;
     private ProductClientResponse currentGpu;
     private ProductClientResponse currentCpu;
-    private ProductClientResponse upgradeGpu;
-    private ProductClientResponse upgradeGpuFlagship;
-    private ProductClientResponse upgradeCpu;
-    private ProductClientResponse inactiveProduct;
-    private ProductClientResponse cheaperProduct;
 
     @BeforeEach
     void setUp() {
+        lenient().when(productFeignClient.getProductsByCategory(anyLong())).thenReturn(List.of());
+
         BuildItemClientResponse itemGpu = new BuildItemClientResponse(10L, BUILD_ID, 100L, 1);
         BuildItemClientResponse itemCpu = new BuildItemClientResponse(11L, BUILD_ID, 101L, 1);
 
@@ -78,17 +76,6 @@ class HardwareAdvisorServiceTest {
                 "NVIDIA", "RTX 3060", true, List.of());
         currentCpu = new ProductClientResponse(101L, "i5-12400", "Mid-range CPU", 200, 2L,
                 "Intel", "i5-12400", true, List.of());
-
-        upgradeGpu = new ProductClientResponse(102L, "RTX 4070", "High-end GPU", 500, 1L,
-                "NVIDIA", "RTX 4070", true, List.of());
-        upgradeGpuFlagship = new ProductClientResponse(103L, "RTX 4090", "Flagship GPU", 700, 1L,
-                "NVIDIA", "RTX 4090", true, List.of());
-        upgradeCpu = new ProductClientResponse(104L, "i7-13700", "High-end CPU", 350, 2L,
-                "Intel", "i7-13700", true, List.of());
-        inactiveProduct = new ProductClientResponse(105L, "GTX 1060", "Old GPU", 100, 1L,
-                "NVIDIA", "GTX 1060", false, List.of());
-        cheaperProduct = new ProductClientResponse(106L, "RTX 3050", "Entry GPU", 200, 1L,
-                "NVIDIA", "RTX 3050", true, List.of());
     }
 
     private Recommendation createRec(Long id, String rule, Long suggestedProductId, String reason) {
@@ -103,39 +90,43 @@ class HardwareAdvisorServiceTest {
     }
 
     @Test
-    @DisplayName("generate() — build con items, compatibilidad ok, upgrades encontrados, notificación enviada")
-    void generate_withBuildAndUpgrades_shouldReturnRecommendationsAndNotify() {
+    @DisplayName("generate() — build con items, categorías vacías, recomienda componentes faltantes y notifica")
+    void generate_withMissingCategories_shouldRecommendAndNotify() {
         when(buildFeignClient.getBuildById(BUILD_ID)).thenReturn(build);
         when(compatibilityFeignClient.checkCompatibility(any()))
                 .thenReturn(new CompatibilityCheckResponse(1L, BUILD_ID, true, "All compatible", LocalDateTime.now()));
         when(productFeignClient.getProductById(100L)).thenReturn(currentGpu);
         when(productFeignClient.getProductById(101L)).thenReturn(currentCpu);
-        when(productFeignClient.getProductsByCategory(1L))
-                .thenReturn(List.of(currentGpu, upgradeGpu, upgradeGpuFlagship, inactiveProduct, cheaperProduct));
-        when(productFeignClient.getProductsByCategory(2L))
-                .thenReturn(List.of(currentCpu, upgradeCpu));
+
+        ProductClientResponse ram = new ProductClientResponse(201L, "Corsair Vengeance", "32GB DDR5", 150, 3L, "Corsair", "Vengeance", true, List.of());
+        lenient().when(productFeignClient.getProductsByCategory(3L)).thenReturn(List.of(ram));
+        lenient().when(productFeignClient.getProductsByCategory(4L)).thenReturn(List.of(ram));
+        lenient().when(productFeignClient.getProductsByCategory(5L)).thenReturn(List.of(ram));
+        lenient().when(productFeignClient.getProductsByCategory(6L)).thenReturn(List.of(ram));
+        lenient().when(productFeignClient.getProductsByCategory(7L)).thenReturn(List.of(ram));
+        lenient().when(productFeignClient.getProductsByCategory(8L)).thenReturn(List.of(ram));
 
         List<Recommendation> savedList = List.of(
-                createRec(1L, "UPGRADE", 102L,
-                        "Consider upgrading RTX 3060 (NVIDIA RTX 3060) to RTX 4070 (NVIDIA RTX 4070) for +$200"),
-                createRec(2L, "UPGRADE", 103L,
-                        "Consider upgrading RTX 3060 (NVIDIA RTX 3060) to RTX 4090 (NVIDIA RTX 4090) for +$400"),
-                createRec(3L, "UPGRADE", 104L,
-                        "Consider upgrading i5-12400 (Intel i5-12400) to i7-13700 (Intel i7-13700) for +$150")
+                createRec(3L, "MISSING_COMPONENT", 201L, "Te falta RAM: Corsair Vengeance (Corsair) - $150"),
+                createRec(4L, "MISSING_COMPONENT", 201L, "Te falta Motherboard: Corsair Vengeance (Corsair) - $150"),
+                createRec(5L, "MISSING_COMPONENT", 201L, "Te falta Storage: Corsair Vengeance (Corsair) - $150"),
+                createRec(6L, "MISSING_COMPONENT", 201L, "Te falta PSU: Corsair Vengeance (Corsair) - $150"),
+                createRec(7L, "MISSING_COMPONENT", 201L, "Te falta Case: Corsair Vengeance (Corsair) - $150"),
+                createRec(8L, "MISSING_COMPONENT", 201L, "Te falta Cooling: Corsair Vengeance (Corsair) - $150")
         );
         when(recommendationRepository.saveAll(any())).thenReturn(savedList);
 
         List<RecommendationResponse> result = service.generate(new GenerateRecommendationsRequest(BUILD_ID));
 
-        assertEquals(3, result.size());
-        assertTrue(result.stream().allMatch(r -> "UPGRADE".equals(r.ruleApplied())));
+        assertEquals(6, result.size());
+        assertTrue(result.stream().allMatch(r -> "MISSING_COMPONENT".equals(r.ruleApplied())));
 
         verify(notificationFeignClient).sendNotification(notificationCaptor.capture());
         NotificationClientRequest sent = notificationCaptor.getValue();
         assertEquals(USER_ID, sent.userId());
         assertEquals("RECOMMENDATION", sent.type());
         assertEquals("INFO", sent.status());
-        assertTrue(sent.content().contains("3"));
+        assertTrue(sent.content().contains("6"));
         assertTrue(sent.content().contains(BUILD_NAME));
     }
 
@@ -177,8 +168,6 @@ class HardwareAdvisorServiceTest {
                         "Motherboard incompatible with CPU", LocalDateTime.now()));
         when(productFeignClient.getProductById(100L)).thenReturn(currentGpu);
         when(productFeignClient.getProductById(101L)).thenReturn(currentCpu);
-        when(productFeignClient.getProductsByCategory(1L)).thenReturn(List.of(currentGpu));
-        when(productFeignClient.getProductsByCategory(2L)).thenReturn(List.of(currentCpu));
 
         Recommendation compatRec = createRec(1L, "INCOMPATIBILITY", null,
                 "Build has compatibility issues: Motherboard incompatible with CPU");
@@ -196,17 +185,13 @@ class HardwareAdvisorServiceTest {
     }
 
     @Test
-    @DisplayName("generate() — sin upgrades disponibles para productos actuales")
-    void generate_noUpgradesAvailable_shouldReturnEmptyList() {
+    @DisplayName("generate() — todas las categorías llenas (1 y 2), sin recomendaciones")
+    void generate_allCategoriesFilled_shouldReturnEmpty() {
         when(buildFeignClient.getBuildById(BUILD_ID)).thenReturn(build);
         when(compatibilityFeignClient.checkCompatibility(any()))
                 .thenReturn(new CompatibilityCheckResponse(1L, BUILD_ID, true, "All compatible", LocalDateTime.now()));
         when(productFeignClient.getProductById(100L)).thenReturn(currentGpu);
         when(productFeignClient.getProductById(101L)).thenReturn(currentCpu);
-        when(productFeignClient.getProductsByCategory(1L))
-                .thenReturn(List.of(currentGpu, cheaperProduct, inactiveProduct));
-        when(productFeignClient.getProductsByCategory(2L))
-                .thenReturn(List.of(currentCpu));
 
         when(recommendationRepository.saveAll(any())).thenReturn(List.of());
 

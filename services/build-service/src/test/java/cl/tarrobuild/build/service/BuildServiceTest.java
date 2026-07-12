@@ -1,5 +1,6 @@
 package cl.tarrobuild.build.service;
 
+import cl.tarrobuild.build.client.NotificationFeignClient;
 import cl.tarrobuild.build.client.ProductFeignClient;
 import cl.tarrobuild.build.dto.*;
 import cl.tarrobuild.build.model.Build;
@@ -36,6 +37,12 @@ class BuildServiceTest {
 
     @Mock
     private ProductFeignClient productFeignClient;
+
+    @Mock
+    private NotificationFeignClient notificationFeignClient;
+
+    @Mock
+    private BuildHistoryService buildHistoryService;
 
     @InjectMocks
     private BuildService buildService;
