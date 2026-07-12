@@ -7,12 +7,6 @@ spring:
 server:
   port: ${SERVER_PORT:8085}
 
-product-service:
-  url: ${PRODUCT_SERVICE_URL:http://localhost:8083}
-
-category-service:
-  url: ${CATEGORY_SERVICE_URL:http://localhost:8084}
-
 restclient:
   connect-timeout: 5000
   read-timeout: 10000

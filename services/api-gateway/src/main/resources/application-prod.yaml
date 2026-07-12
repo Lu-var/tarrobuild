@@ -12,5 +12,3 @@ logging:
       max-file-size: 100MB
       max-history: 30
 
-auth-service:
-  url: ${AUTH_SERVICE_URL:http://auth-service:8081}

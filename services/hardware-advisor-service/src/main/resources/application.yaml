@@ -10,18 +10,6 @@ server:
 app:
   environment: production
 
-build-service:
-  url: ${BUILD_SERVICE_URL:http://localhost:8087}
-
-product-service:
-  url: ${PRODUCT_SERVICE_URL:http://localhost:8083}
-
-compatibility-service:
-  url: ${COMPATIBILITY_SERVICE_URL:http://localhost:8085}
-
-notification-service:
-  url: ${NOTIFICATION_SERVICE_URL:http://localhost:8090}
-
 logging:
   level:
     cl.tarrobuild: INFO

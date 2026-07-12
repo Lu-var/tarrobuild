@@ -19,9 +19,6 @@ spring:
       hibernate:
         default_schema: auth
         format_sql: true
-user-service:
-  url: ${USER_SERVICE_URL:http://localhost:8082}
-
 jwt:
   secret: ${JWT_SECRET:aB3dEfGhIjKlMnOpQrStUvWxYz0123456789AbCdEfGhIjKlMnOpQrStUv}
   expiration: ${JWT_EXPIRATION:3600000}

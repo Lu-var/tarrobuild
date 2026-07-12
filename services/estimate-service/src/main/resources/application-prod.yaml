@@ -30,11 +30,3 @@ logging:
       max-file-size: 100MB
       max-history: 30
 
-build-service:
-  url: ${BUILD_SERVICE_URL:http://build-service:8087}
-
-product-service:
-  url: ${PRODUCT_SERVICE_URL:http://product-service:8083}
-
-notification-service:
-  url: ${NOTIFICATION_SERVICE_URL:http://notification-service:8090}

@@ -30,5 +30,3 @@ logging:
       max-file-size: 100MB
       max-history: 30
 
-product-service:
-  url: ${PRODUCT_SERVICE_URL:http://product-service:8083}

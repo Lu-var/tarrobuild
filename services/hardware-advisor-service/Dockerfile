@@ -12,6 +12,7 @@ COPY services/notification-service/pom.xml services/notification-service/
 COPY services/product-service/pom.xml services/product-service/
 COPY services/provider-service/pom.xml services/provider-service/
 COPY services/user-service/pom.xml services/user-service/
+COPY services/discovery-server/pom.xml services/discovery-server/
 COPY services/hardware-advisor-service/src services/hardware-advisor-service/src
 RUN mvn package -pl services/hardware-advisor-service -am -DskipTests -B
 

@@ -7,12 +7,6 @@ spring:
 server:
   port: ${SERVER_PORT:8087}
 
-product-service:
-  url: ${PRODUCT_SERVICE_URL:http://localhost:8083}
-
-compatibility-service:
-  url: ${COMPATIBILITY_SERVICE_URL:http://localhost:8085}
-
 app:
   environment: production
 

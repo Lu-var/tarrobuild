@@ -19,15 +19,6 @@ spring:
       hibernate:
         default_schema: build
         format_sql: true
-product-service:
-  url: ${PRODUCT_SERVICE_URL:http://localhost:8083}
-
-compatibility-service:
-  url: ${COMPATIBILITY_SERVICE_URL:http://localhost:8085}
-
-provider-service:
-  url: ${PROVIDER_SERVICE_URL:http://localhost:8086}
-
 app:
   environment: production
 
