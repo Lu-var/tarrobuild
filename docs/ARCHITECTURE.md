@@ -14,28 +14,30 @@ Plataforma online para asistencia de armado de computadores y análisis de compa
 | Build | Maven multi-module |
 | Auth | BCrypt + JWT |
 | Inter-service | RestClient / FeignClient |
+| Service Discovery | Eureka (Netflix) |
 
 ## Architecture diagram
 
 ```
-CLIENTE
-   |
-API GATEWAY :8080
-   |
-------------------------------------------------------------
-|       |       |       |       |       |       |          |
+                           DISCOVERY SERVER :8761
+                               |
+                               v
+CLIENTE → API GATEWAY :8080
+              |
+---------------------------------------------------------------
+|       |       |       |       |       |       |             |
 AUTH   USER   PRODUCT CATEGORY COMPAT PROVIDER  BUILD
 8081   8082    8083    8084    8085   8086     8087
-------------------------------------------------------------
-                         |
-                         v
-                  ESTIMATE :8088
-                         |
-                         v
-              HARDWARE ADVISOR :8089
-                         |
-                         v
-              NOTIFICATION :8090
+---------------------------------------------------------------
+                          |
+                          v
+                   ESTIMATE :8088
+                          |
+                          v
+               HARDWARE ADVISOR :8089
+                          |
+                          v
+               NOTIFICATION :8090
 ```
 
 ## Services
@@ -53,6 +55,7 @@ AUTH   USER   PRODUCT CATEGORY COMPAT PROVIDER  BUILD
 | MS-09 | estimate-service | 8088 | Cost calculation for a build. | Estimate | db_estimates |
 | MS-10 | hardware-advisor-service | 8089 | Upgrade/suggestion recommendations. | Recommendation | db_advisor |
 | MS-11 | notification-service | 8090 | Send and log system notifications. | NotificationLog | db_notifications |
+| MS-12 | discovery-server | 8761 | Service discovery (Eureka). All services register and resolve via lb://. | none | none |
 
 ## Database
 
@@ -89,7 +92,7 @@ spring:
 
 ### Docker compose (prod)
 
-Local deployment via `docker compose up` uses the `prod` Spring profile (`SPRING_PROFILES_ACTIVE=prod`). Each service has an `application-prod.yaml` with MySQL datasource + Flyway pointing to `classpath:db/migration/mysql`. See `compose.yml` at project root for full configuration (11 services, 10 MySQL databases, healthchecks, port mappings).
+Local deployment via `docker compose up` uses the `prod` Spring profile (`SPRING_PROFILES_ACTIVE=prod`). Each service has an `application-prod.yaml` with MySQL datasource + Flyway pointing to `classpath:db/migration/mysql`. All services register with Eureka at `http://discovery-server:8761/eureka/`. See `compose.yml` at project root for full configuration (12 services, 10 MySQL databases, healthchecks, port mappings).
 
 ### Render — PostgreSQL
 
@@ -167,6 +170,8 @@ NotificationLog { Long id, Long userId, String type, String content, Notificatio
 ```
 
 ## Inter-service communication
+
+All calls use `lb://SERVICE-NAME` resolved through Eureka service discovery. The discovery-server runs on port 8761 and every service registers with its `spring.application.name`.
 
 | Origin | → | Destination | Reason | Method |
 |--------|---|-------------|--------|--------|
@@ -296,7 +301,10 @@ public record ApiError(String message, String details, String timestamp) {}
 - Fallbacks for fault tolerance
 - Configurable timeouts: 5s connect, 10s read
 - Fire-and-forget for notifications
-- URL config via `@Value` or `@FeignClient(url = "${...}")` with environment variable fallbacks
+- URL resolution via `lb://SERVICE-NAME` through Eureka service discovery
+- RestClient.Builder annotated with `@LoadBalanced` for lb:// support
+- FeignClient without `url` attribute resolves via Eureka by service name
+- Gateway routes use `lb://SERVICE-NAME` URIs for proxying
 
 ### Config pattern
 
@@ -309,4 +317,5 @@ Each service has:
 - `application-prod.yaml` — MySQL + Flyway (`db/migration/mysql/`), `ddl-auto: validate` (Docker Compose)
 - `V1__init.sql` — schema creation (in `db/migration/{profile}/`)
 - `V2__seed_data.sql` — reference data (in `db/migration/{profile}/`)
-- `pom.xml` — parent: `tarrobuild/pom.xml`, deps: webmvc, data-jpa, validation, h2, mysql-connector-j, flyway-core, flyway-mysql, lombok
+- `pom.xml` — parent: `tarrobuild/pom.xml`, deps: webmvc, data-jpa, validation, h2, mysql-connector-j, flyway-core, flyway-mysql, lombok, eureka-client
+- `eureka.client.serviceUrl.defaultZone` — `${EUREKA_URL:http://localhost:8761/eureka/}`
