@@ -42,6 +42,8 @@
 | Timeouts configurables | RestClient y Feign con timeouts desde YAML | `application.yaml` en servicios con cliente |
 | Eureka service discovery | discovery-server (@EnableEurekaServer) + registro de 11 servicios (@EnableDiscoveryClient), comunicación inter-service con `lb://` | `discovery-server/`, `pom.xml`, `application.yaml` en cada servicio |
 | Gateway con URLs directas | Gateway redirecciona a servicios via URLs directas desde variables de entorno, no usa `lb://` por limitación de Render (contenedores aislados) | `GatewayRoutesConfig.java`, `compose.yml`, `render.yaml` |
+| Timeouts Render 30s/90s | Timeouts aumentados para cold starts de Render free tier (>50s) | `application-render.yaml` en 8 servicios |
+| Postman reestructurado | Colecciones organizadas en `Direct/`, `Gateway/`, `Monolith/` con requests de nombre limpio | `postman/collections/` |
 
 ## Requerimientos eliminados o reemplazados
 
