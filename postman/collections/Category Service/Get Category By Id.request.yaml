@@ -1,5 +1,0 @@
-$kind: http-request
-description: Retrieves a single category by ID. Returns 404 if not found.
-url: "{{category_service}}/api/categories/1"
-method: GET
-order: 2000

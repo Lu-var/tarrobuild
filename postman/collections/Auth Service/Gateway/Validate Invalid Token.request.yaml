@@ -1,0 +1,4 @@
+$kind: http-request
+url: "{{api_gateway}}{{api_prefix}}/auth/validate"
+method: GET
+order: 220

@@ -1,0 +1,13 @@
+$kind: http-request
+url: "{{tarrobuild}}{{api_prefix}}/providers"
+method: POST
+body:
+  type: json
+  content: |-
+    {
+      "name": "ProxyProvider",
+      "contactEmail": "proxy@provider.com",
+      "phone": "+56211111111",
+      "isActive": true
+    }
+order: 120

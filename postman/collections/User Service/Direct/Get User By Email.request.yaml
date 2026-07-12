@@ -1,0 +1,4 @@
+$kind: http-request
+url: "{{user_service}}{{api_prefix}}/users/email/lucas@tarrobuild.cl"
+method: GET
+order: 50

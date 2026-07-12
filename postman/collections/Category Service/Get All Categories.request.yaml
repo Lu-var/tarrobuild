@@ -1,5 +1,0 @@
-$kind: http-request
-description: Retrieves all categories in the system.
-url: "{{category_service}}/api/categories"
-method: GET
-order: 1000

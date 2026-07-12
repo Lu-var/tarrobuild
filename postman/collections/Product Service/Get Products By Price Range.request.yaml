@@ -1,8 +1,0 @@
-$kind: http-request
-description: Retrieves products within a specific price range.
-url: "{{product_service}}/api/products/price?minPrice=100000&maxPrice=500000"
-method: GET
-order: 6000
-tests:
-  - name: "Returns 200"
-    statusCode: 200

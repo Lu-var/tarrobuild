@@ -1,0 +1,11 @@
+$kind: http-request
+url: "{{build_service}}{{api_prefix}}/builds"
+method: POST
+body:
+  type: json
+  content: |-
+    {
+      "userId": 1,
+      "name": "My New Build"
+    }
+order: 50

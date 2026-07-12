@@ -1,0 +1,16 @@
+$kind: http-request
+url: "{{product_service}}{{api_prefix}}/products"
+method: POST
+body:
+  type: json
+  content: |-
+    {
+      "name": "Intel Core i9-14900K",
+      "description": "High-performance processor",
+      "msrp": 650000,
+      "categoryId": 1,
+      "brand": "Intel",
+      "model": "Core i9-14900K",
+      "isActive": true
+    }
+order: 70

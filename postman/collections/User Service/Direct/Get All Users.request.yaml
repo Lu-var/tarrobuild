@@ -1,0 +1,4 @@
+$kind: http-request
+url: "{{user_service}}{{api_prefix}}/users"
+method: GET
+order: 10

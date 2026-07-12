@@ -1,0 +1,12 @@
+$kind: http-request
+url: "{{api_gateway}}{{api_prefix}}/users/1"
+method: PUT
+body:
+  type: json
+  content: |-
+    {
+      "name": "Lucas Updated",
+      "lastName": "Vargas",
+      "phone": "+56999999999"
+    }
+order: 220

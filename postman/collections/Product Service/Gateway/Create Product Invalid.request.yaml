@@ -1,0 +1,15 @@
+$kind: http-request
+url: "{{api_gateway}}{{api_prefix}}/products"
+method: POST
+body:
+  type: json
+  content: |-
+    {
+      "name": "",
+      "description": "Test",
+      "msrp": -100,
+      "categoryId": null,
+      "brand": "",
+      "model": ""
+    }
+order: 300

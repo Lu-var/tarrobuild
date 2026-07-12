@@ -1,0 +1,4 @@
+$kind: http-request
+url: "{{api_gateway}}{{api_prefix}}/products/2/deactivate"
+method: PATCH
+order: 350

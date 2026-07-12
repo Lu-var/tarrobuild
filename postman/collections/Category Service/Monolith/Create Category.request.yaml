@@ -1,0 +1,13 @@
+$kind: http-request
+url: "{{tarrobuild}}{{api_prefix}}/categories"
+method: POST
+body:
+  type: json
+  content: |-
+    {
+      "name": "GPU",
+      "slug": "gpu",
+      "description": "Graphics cards",
+      "isActive": true
+    }
+order: 80

@@ -1,5 +1,0 @@
-$kind: http-request
-description: Retrieves all users in the system.
-url: "{{user_service}}/api/users"
-method: GET
-order: 1000

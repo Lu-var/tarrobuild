@@ -1,0 +1,12 @@
+$kind: http-request
+url: "{{tarrobuild}}{{api_prefix}}/advisor/generate"
+method: POST
+body:
+  type: json
+  content: |-
+    {
+      "userId": 1,
+      "budget": 1500000,
+      "purpose": "gaming"
+    }
+order: 50

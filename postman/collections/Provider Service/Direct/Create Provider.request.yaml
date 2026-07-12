@@ -1,0 +1,13 @@
+$kind: http-request
+url: "{{provider_service}}{{api_prefix}}/providers"
+method: POST
+body:
+  type: json
+  content: |-
+    {
+      "name": "TechSupply Inc.",
+      "contactEmail": "sales@techsupply.com",
+      "phone": "+56212345678",
+      "isActive": true
+    }
+order: 30

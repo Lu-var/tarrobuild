@@ -1,0 +1,13 @@
+$kind: http-request
+url: "{{api_gateway}}{{api_prefix}}/providers/1"
+method: PUT
+body:
+  type: json
+  content: |-
+    {
+      "name": "Proxy Updated",
+      "contactEmail": "updated@proxy.com",
+      "phone": "+56222222222",
+      "isActive": true
+    }
+order: 130

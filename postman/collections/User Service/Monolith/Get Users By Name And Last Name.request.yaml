@@ -1,0 +1,4 @@
+$kind: http-request
+url: "{{tarrobuild}}{{api_prefix}}/users?name=Lucas&last_name=Vargas"
+method: GET
+order: 150

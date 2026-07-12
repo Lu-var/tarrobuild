@@ -1,0 +1,13 @@
+$kind: http-request
+url: "{{notification_service}}{{api_prefix}}/notifications/send"
+method: POST
+body:
+  type: json
+  content: |-
+    {
+      "userId": 1,
+      "type": "BUILD_ERROR",
+      "content": "Build #12 contains incompatible components: CPU LGA1700 is not compatible with cooler AM5.",
+      "status": "ERROR"
+    }
+order: 50

@@ -1,0 +1,13 @@
+$kind: http-request
+url: "{{user_service}}{{api_prefix}}/users"
+method: POST
+body:
+  type: json
+  content: |-
+    {
+      "name": "Lucas",
+      "lastName": "Vargas",
+      "email": "lucas@tarrobuild.cl",
+      "phone": "+56912345678"
+    }
+order: 70

@@ -1,0 +1,14 @@
+$kind: http-request
+url: "{{auth_service}}{{api_prefix}}/auth/register"
+method: POST
+body:
+  type: json
+  content: |-
+    {
+      "email": "test@tarrobuild.cl",
+      "password": "TestPass123",
+      "name": "Test",
+      "lastName": "User",
+      "phone": "12345678"
+    }
+order: 30

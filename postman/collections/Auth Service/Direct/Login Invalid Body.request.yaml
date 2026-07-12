@@ -1,0 +1,8 @@
+$kind: http-request
+url: "{{auth_service}}{{api_prefix}}/auth/login"
+method: POST
+body:
+  type: json
+  content: |-
+    {}
+order: 90

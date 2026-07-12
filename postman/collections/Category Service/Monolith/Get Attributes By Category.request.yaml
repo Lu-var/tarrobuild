@@ -1,0 +1,4 @@
+$kind: http-request
+url: "{{tarrobuild}}{{api_prefix}}/categories/1/attributes"
+method: GET
+order: 90

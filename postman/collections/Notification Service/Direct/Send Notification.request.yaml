@@ -1,0 +1,13 @@
+$kind: http-request
+url: "{{notification_service}}{{api_prefix}}/notifications/send"
+method: POST
+body:
+  type: json
+  content: |-
+    {
+      "userId": 1,
+      "type": "ESTIMATE_READY",
+      "content": "Your budget estimate for build #5 is ready.",
+      "status": "INFO"
+    }
+order: 10

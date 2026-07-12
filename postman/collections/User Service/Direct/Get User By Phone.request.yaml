@@ -1,0 +1,4 @@
+$kind: http-request
+url: "{{user_service}}{{api_prefix}}/users/phone/+56912345678"
+method: GET
+order: 60

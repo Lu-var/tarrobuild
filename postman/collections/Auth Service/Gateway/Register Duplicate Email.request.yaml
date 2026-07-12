@@ -1,0 +1,14 @@
+$kind: http-request
+url: "{{api_gateway}}{{api_prefix}}/auth/register"
+method: POST
+body:
+  type: json
+  content: |-
+    {
+      "email": "admin@tarrobuild.cl",
+      "password": "admin123",
+      "name": "Dup",
+      "lastName": "Admin",
+      "phone": "98765432"
+    }
+order: 170

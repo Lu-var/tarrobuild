@@ -1,596 +1,816 @@
 {
-    "info":  {
-                 "name":  "User Service",
-                 "description":  "# User Service\n\nBase URL: `{{user_service}}{{api_prefix}}`\n\nManages application users. Supports CRUD operations plus search by name, email, and phone, including error/edge-case scenarios.",
-                 "schema":  "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
-             },
-    "item":  [
-                 {
-                     "name":  "Direct Requests",
-                     "item":  [
-                                  {
-                                      "name":  "Get All Users",
-                                      "request":  {
-                                                      "method":  "GET",
-                                                      "header":  [
-
-                                                                 ],
-                                                      "url":  {
-                                                                  "host":  [
-                                                                               "{{user_service}}{{api_prefix}}"
-                                                                           ],
-                                                                  "raw":  "{{user_service}}{{api_prefix}}/users",
-                                                                  "path":  [
-                                                                               "users"
-                                                                           ]
-                                                              },
-                                                      "description":  "Retrieves all users in the system."
-                                                  }
-                                  },
-                                  {
-                                      "name":  "Get Users By Name",
-                                      "request":  {
-                                                      "method":  "GET",
-                                                      "header":  [
-
-                                                                 ],
-                                                      "url":  {
-                                                                  "query":  [
-                                                                                {
-                                                                                    "key":  "name",
-                                                                                    "value":  "Lucas"
-                                                                                }
-                                                                            ],
-                                                                  "host":  [
-                                                                               "{{user_service}}{{api_prefix}}"
-                                                                           ],
-                                                                  "raw":  "{{user_service}}{{api_prefix}}/users?name=Lucas",
-                                                                  "path":  [
-                                                                               "users"
-                                                                           ]
-                                                              },
-                                                      "description":  "Searches users by first name. Uses query parameter `name`."
-                                                  }
-                                  },
-                                  {
-                                      "name":  "Get Users By Name And Last Name",
-                                      "request":  {
-                                                      "method":  "GET",
-                                                      "header":  [
-
-                                                                 ],
-                                                      "url":  {
-                                                                  "query":  [
-                                                                                {
-                                                                                    "key":  "name",
-                                                                                    "value":  "Lucas"
-                                                                                },
-                                                                                {
-                                                                                    "key":  "last_name",
-                                                                                    "value":  "Vargas"
-                                                                                }
-                                                                            ],
-                                                                  "host":  [
-                                                                               "{{user_service}}{{api_prefix}}"
-                                                                           ],
-                                                                  "raw":  "{{user_service}}{{api_prefix}}/users?name=Lucas\u0026last_name=Vargas",
-                                                                  "path":  [
-                                                                               "users"
-                                                                           ]
-                                                              },
-                                                      "description":  "Searches users by both first name and last name."
-                                                  }
-                                  },
-                                  {
-                                      "name":  "Get User By Id",
-                                      "request":  {
-                                                      "method":  "GET",
-                                                      "header":  [
-
-                                                                 ],
-                                                      "url":  {
-                                                                  "host":  [
-                                                                               "{{user_service}}{{api_prefix}}"
-                                                                           ],
-                                                                  "raw":  "{{user_service}}{{api_prefix}}/users/1",
-                                                                  "path":  [
-                                                                               "users",
-                                                                               "1"
-                                                                           ]
-                                                              },
-                                                      "description":  "Retrieves a single user by ID. Returns 404 if not found."
-                                                  }
-                                  },
-                                  {
-                                      "name":  "Get User By Email",
-                                      "request":  {
-                                                      "method":  "GET",
-                                                      "header":  [
-
-                                                                 ],
-                                                      "url":  {
-                                                                  "host":  [
-                                                                               "{{user_service}}{{api_prefix}}"
-                                                                           ],
-                                                                  "raw":  "{{user_service}}{{api_prefix}}/users/email/lucas@tarrobuild.cl",
-                                                                  "path":  [
-                                                                               "users",
-                                                                               "email",
-                                                                               "lucas@tarrobuild.cl"
-                                                                           ]
-                                                              },
-                                                      "description":  "Retrieves a user by their email address. Returns 404 if not found."
-                                                  }
-                                  },
-                                  {
-                                      "name":  "Get User By Phone",
-                                      "request":  {
-                                                      "method":  "GET",
-                                                      "header":  [
-
-                                                                 ],
-                                                      "url":  {
-                                                                  "host":  [
-                                                                               "{{user_service}}{{api_prefix}}"
-                                                                           ],
-                                                                  "raw":  "{{user_service}}{{api_prefix}}/users/phone/+56912345678",
-                                                                  "path":  [
-                                                                               "users",
-                                                                               "phone",
-                                                                               "+56912345678"
-                                                                           ]
-                                                              },
-                                                      "description":  "Retrieves a user by their phone number. Returns 404 if not found."
-                                                  }
-                                  },
-                                  {
-                                      "name":  "Create User",
-                                      "request":  {
-                                                      "method":  "POST",
-                                                      "header":  [
-
-                                                                 ],
-                                                      "url":  {
-                                                                  "host":  [
-                                                                               "{{user_service}}{{api_prefix}}"
-                                                                           ],
-                                                                  "raw":  "{{user_service}}{{api_prefix}}/users",
-                                                                  "path":  [
-                                                                               "users"
-                                                                           ]
-                                                              },
-                                                      "description":  "Creates a new user. Required fields: `name`, `lastName`, `email`, `phone`.\n\n**Expected:** 201 Created",
-                                                      "body":  {
-                                                                   "mode":  "raw",
-                                                                   "raw":  "{\n  \"name\": \"Lucas\",\n  \"lastName\": \"Vargas\",\n  \"email\": \"lucas@tarrobuild.cl\",\n  \"phone\": \"+56912345678\"\n}",
-                                                                   "options":  {
-                                                                                   "raw":  {
-                                                                                               "language":  "json"
-                                                                                           }
-                                                                               }
-                                                               }
-                                                  }
-                                  },
-                                  {
-                                      "name":  "Create User Duplicate Email",
-                                      "request":  {
-                                                      "method":  "POST",
-                                                      "header":  [
-
-                                                                 ],
-                                                      "url":  {
-                                                                  "host":  [
-                                                                               "{{user_service}}{{api_prefix}}"
-                                                                           ],
-                                                                  "raw":  "{{user_service}}{{api_prefix}}/users",
-                                                                  "path":  [
-                                                                               "users"
-                                                                           ]
-                                                              },
-                                                      "description":  "Negative test -- tries to create a user with an already-registered email.\n\n**Expected:** 409 Conflict (duplicate email)",
-                                                      "body":  {
-                                                                   "mode":  "raw",
-                                                                   "raw":  "{\n  \"name\": \"Otro\",\n  \"lastName\": \"Usuario\",\n  \"email\": \"lucas@tarrobuild.cl\",\n  \"phone\": \"+56911111111\"\n}",
-                                                                   "options":  {
-                                                                                   "raw":  {
-                                                                                               "language":  "json"
-                                                                                           }
-                                                                               }
-                                                               }
-                                                  }
-                                  },
-                                  {
-                                      "name":  "Create User Invalid",
-                                      "request":  {
-                                                      "method":  "POST",
-                                                      "header":  [
-
-                                                                 ],
-                                                      "url":  {
-                                                                  "host":  [
-                                                                               "{{user_service}}{{api_prefix}}"
-                                                                           ],
-                                                                  "raw":  "{{user_service}}{{api_prefix}}/users",
-                                                                  "path":  [
-                                                                               "users"
-                                                                           ]
-                                                              },
-                                                      "description":  "Negative test -- sends empty name/lastName, invalid email, and too-short phone.\n\n**Expected:** 400 Bad Request (validation errors)",
-                                                      "body":  {
-                                                                   "mode":  "raw",
-                                                                   "raw":  "{\n  \"name\": \"\",\n  \"lastName\": \"\",\n  \"email\": \"notanemail\",\n  \"phone\": \"1\"\n}",
-                                                                   "options":  {
-                                                                                   "raw":  {
-                                                                                               "language":  "json"
-                                                                                           }
-                                                                               }
-                                                               }
-                                                  }
-                                  },
-                                  {
-                                      "name":  "Update User",
-                                      "request":  {
-                                                      "method":  "PUT",
-                                                      "header":  [
-
-                                                                 ],
-                                                      "url":  {
-                                                                  "host":  [
-                                                                               "{{user_service}}{{api_prefix}}"
-                                                                           ],
-                                                                  "raw":  "{{user_service}}{{api_prefix}}/users/1",
-                                                                  "path":  [
-                                                                               "users",
-                                                                               "1"
-                                                                           ]
-                                                              },
-                                                      "description":  "Updates an existing user\u0027s name and phone. Email is not included (not updatable).\n\n**Expected:** 200 OK",
-                                                      "body":  {
-                                                                   "mode":  "raw",
-                                                                   "raw":  "{\n  \"name\": \"Lucas Updated\",\n  \"lastName\": \"Vargas\",\n  \"phone\": \"+56999999999\"\n}",
-                                                                   "options":  {
-                                                                                   "raw":  {
-                                                                                               "language":  "json"
-                                                                                           }
-                                                                               }
-                                                               }
-                                                  }
-                                  },
-                                  {
-                                      "name":  "Delete User",
-                                      "request":  {
-                                                      "method":  "DELETE",
-                                                      "header":  [
-
-                                                                 ],
-                                                      "url":  {
-                                                                  "host":  [
-                                                                               "{{user_service}}{{api_prefix}}"
-                                                                           ],
-                                                                  "raw":  "{{user_service}}{{api_prefix}}/users/1",
-                                                                  "path":  [
-                                                                               "users",
-                                                                               "1"
-                                                                           ]
-                                                              },
-                                                      "description":  "Deletes a user by ID.\n\n**Expected:** 204 No Content"
-                                                  }
-                                  },
-                                  {
-                                      "name":  "Delete User Not Found",
-                                      "request":  {
-                                                      "method":  "DELETE",
-                                                      "header":  [
-
-                                                                 ],
-                                                      "url":  {
-                                                                  "host":  [
-                                                                               "{{user_service}}{{api_prefix}}"
-                                                                           ],
-                                                                  "raw":  "{{user_service}}{{api_prefix}}/users/9999",
-                                                                  "path":  [
-                                                                               "users",
-                                                                               "9999"
-                                                                           ]
-                                                              },
-                                                      "description":  "Negative test -- tries to delete a non-existent user.\n\n**Expected:** 404 Not Found"
-                                                  }
-                                  }
-                              ]
-                 },
-                 {
-                     "name":  "Proxy Requests",
-                     "item":  [
-                                  {
-                                      "name":  "Get All Users (via gateway)",
-                                      "request":  {
-                                                      "method":  "GET",
-                                                      "header":  [
-
-                                                                 ],
-                                                      "url":  {
-                                                                  "raw":  "{{api_gateway}}{{api_prefix}}/users",
-                                                                  "host":  [
-                                                                               "{{api_gateway}}{{api_prefix}}"
-                                                                           ],
-                                                                  "path":  [
-                                                                               "users"
-                                                                           ]
-                                                              },
-                                                      "description":  "Through gateway: Retrieves all users in the system."
-                                                  }
-                                  },
-                                  {
-                                      "name":  "Get Users By Name (via gateway)",
-                                      "request":  {
-                                                      "method":  "GET",
-                                                      "header":  [
-
-                                                                 ],
-                                                      "url":  {
-                                                                  "raw":  "{{api_gateway}}{{api_prefix}}/users?name=Lucas",
-                                                                  "host":  [
-                                                                               "{{api_gateway}}{{api_prefix}}"
-                                                                           ],
-                                                                  "path":  [
-                                                                               "users"
-                                                                           ],
-                                                                  "query":  [
-                                                                                {
-                                                                                    "key":  "name",
-                                                                                    "value":  "Lucas"
-                                                                                }
-                                                                            ]
-                                                              },
-                                                      "description":  "Through gateway: Searches users by first name. Uses query parameter `name`."
-                                                  }
-                                  },
-                                  {
-                                      "name":  "Get Users By Name And Last Name (via gateway)",
-                                      "request":  {
-                                                      "method":  "GET",
-                                                      "header":  [
-
-                                                                 ],
-                                                      "url":  {
-                                                                  "raw":  "{{api_gateway}}{{api_prefix}}/users?name=Lucas\u0026last_name=Vargas",
-                                                                  "host":  [
-                                                                               "{{api_gateway}}{{api_prefix}}"
-                                                                           ],
-                                                                  "path":  [
-                                                                               "users"
-                                                                           ],
-                                                                  "query":  [
-                                                                                {
-                                                                                    "key":  "name",
-                                                                                    "value":  "Lucas"
-                                                                                },
-                                                                                {
-                                                                                    "key":  "last_name",
-                                                                                    "value":  "Vargas"
-                                                                                }
-                                                                            ]
-                                                              },
-                                                      "description":  "Through gateway: Searches users by both first name and last name."
-                                                  }
-                                  },
-                                  {
-                                      "name":  "Get User By Id (via gateway)",
-                                      "request":  {
-                                                      "method":  "GET",
-                                                      "header":  [
-
-                                                                 ],
-                                                      "url":  {
-                                                                  "raw":  "{{api_gateway}}{{api_prefix}}/users/1",
-                                                                  "host":  [
-                                                                               "{{api_gateway}}{{api_prefix}}"
-                                                                           ],
-                                                                  "path":  [
-                                                                               "users",
-                                                                               "1"
-                                                                           ]
-                                                              },
-                                                      "description":  "Through gateway: Retrieves a single user by ID. Returns 404 if not found."
-                                                  }
-                                  },
-                                  {
-                                      "name":  "Get User By Email (via gateway)",
-                                      "request":  {
-                                                      "method":  "GET",
-                                                      "header":  [
-
-                                                                 ],
-                                                      "url":  {
-                                                                  "raw":  "{{api_gateway}}{{api_prefix}}/users/email/lucas@tarrobuild.cl",
-                                                                  "host":  [
-                                                                               "{{api_gateway}}{{api_prefix}}"
-                                                                           ],
-                                                                  "path":  [
-                                                                               "users",
-                                                                               "email",
-                                                                               "lucas@tarrobuild.cl"
-                                                                           ]
-                                                              },
-                                                      "description":  "Through gateway: Retrieves a user by their email address. Returns 404 if not found."
-                                                  }
-                                  },
-                                  {
-                                      "name":  "Get User By Phone (via gateway)",
-                                      "request":  {
-                                                      "method":  "GET",
-                                                      "header":  [
-
-                                                                 ],
-                                                      "url":  {
-                                                                  "raw":  "{{api_gateway}}{{api_prefix}}/users/phone/+56912345678",
-                                                                  "host":  [
-                                                                               "{{api_gateway}}{{api_prefix}}"
-                                                                           ],
-                                                                  "path":  [
-                                                                               "users",
-                                                                               "phone",
-                                                                               "+56912345678"
-                                                                           ]
-                                                              },
-                                                      "description":  "Through gateway: Retrieves a user by their phone number. Returns 404 if not found."
-                                                  }
-                                  },
-                                  {
-                                      "name":  "Create User (via gateway)",
-                                      "request":  {
-                                                      "method":  "POST",
-                                                      "header":  [
-
-                                                                 ],
-                                                      "url":  {
-                                                                  "raw":  "{{api_gateway}}{{api_prefix}}/users",
-                                                                  "host":  [
-                                                                               "{{api_gateway}}{{api_prefix}}"
-                                                                           ],
-                                                                  "path":  [
-                                                                               "users"
-                                                                           ]
-                                                              },
-                                                      "description":  "Through gateway: Creates a new user. Required fields: `name`, `lastName`, `email`, `phone`.\n\n**Expected:** 201 Created",
-                                                      "body":  {
-                                                                   "mode":  "raw",
-                                                                   "raw":  "{\n  \"name\": \"Lucas\",\n  \"lastName\": \"Vargas\",\n  \"email\": \"lucas@tarrobuild.cl\",\n  \"phone\": \"+56912345678\"\n}",
-                                                                   "options":  {
-                                                                                   "raw":  {
-                                                                                               "language":  "json"
-                                                                                           }
-                                                                               }
-                                                               }
-                                                  }
-                                  },
-                                  {
-                                      "name":  "Create User Duplicate Email (via gateway)",
-                                      "request":  {
-                                                      "method":  "POST",
-                                                      "header":  [
-
-                                                                 ],
-                                                      "url":  {
-                                                                  "raw":  "{{api_gateway}}{{api_prefix}}/users",
-                                                                  "host":  [
-                                                                               "{{api_gateway}}{{api_prefix}}"
-                                                                           ],
-                                                                  "path":  [
-                                                                               "users"
-                                                                           ]
-                                                              },
-                                                      "description":  "Through gateway: Negative test -- tries to create a user with an already-registered email.\n\n**Expected:** 409 Conflict (duplicate email)",
-                                                      "body":  {
-                                                                   "mode":  "raw",
-                                                                   "raw":  "{\n  \"name\": \"Otro\",\n  \"lastName\": \"Usuario\",\n  \"email\": \"lucas@tarrobuild.cl\",\n  \"phone\": \"+56911111111\"\n}",
-                                                                   "options":  {
-                                                                                   "raw":  {
-                                                                                               "language":  "json"
-                                                                                           }
-                                                                               }
-                                                               }
-                                                  }
-                                  },
-                                  {
-                                      "name":  "Create User Invalid (via gateway)",
-                                      "request":  {
-                                                      "method":  "POST",
-                                                      "header":  [
-
-                                                                 ],
-                                                      "url":  {
-                                                                  "raw":  "{{api_gateway}}{{api_prefix}}/users",
-                                                                  "host":  [
-                                                                               "{{api_gateway}}{{api_prefix}}"
-                                                                           ],
-                                                                  "path":  [
-                                                                               "users"
-                                                                           ]
-                                                              },
-                                                      "description":  "Through gateway: Negative test -- sends empty name/lastName, invalid email, and too-short phone.\n\n**Expected:** 400 Bad Request (validation errors)",
-                                                      "body":  {
-                                                                   "mode":  "raw",
-                                                                   "raw":  "{\n  \"name\": \"\",\n  \"lastName\": \"\",\n  \"email\": \"notanemail\",\n  \"phone\": \"1\"\n}",
-                                                                   "options":  {
-                                                                                   "raw":  {
-                                                                                               "language":  "json"
-                                                                                           }
-                                                                               }
-                                                               }
-                                                  }
-                                  },
-                                  {
-                                      "name":  "Update User (via gateway)",
-                                      "request":  {
-                                                      "method":  "PUT",
-                                                      "header":  [
-
-                                                                 ],
-                                                      "url":  {
-                                                                  "raw":  "{{api_gateway}}{{api_prefix}}/users/1",
-                                                                  "host":  [
-                                                                               "{{api_gateway}}{{api_prefix}}"
-                                                                           ],
-                                                                  "path":  [
-                                                                               "users",
-                                                                               "1"
-                                                                           ]
-                                                              },
-                                                      "description":  "Through gateway: Updates an existing user\u0027s name and phone. Email is not included (not updatable).\n\n**Expected:** 200 OK",
-                                                      "body":  {
-                                                                   "mode":  "raw",
-                                                                   "raw":  "{\n  \"name\": \"Lucas Updated\",\n  \"lastName\": \"Vargas\",\n  \"phone\": \"+56999999999\"\n}",
-                                                                   "options":  {
-                                                                                   "raw":  {
-                                                                                               "language":  "json"
-                                                                                           }
-                                                                               }
-                                                               }
-                                                  }
-                                  },
-                                  {
-                                      "name":  "Delete User (via gateway)",
-                                      "request":  {
-                                                      "method":  "DELETE",
-                                                      "header":  [
-
-                                                                 ],
-                                                      "url":  {
-                                                                  "raw":  "{{api_gateway}}{{api_prefix}}/users/1",
-                                                                  "host":  [
-                                                                               "{{api_gateway}}{{api_prefix}}"
-                                                                           ],
-                                                                  "path":  [
-                                                                               "users",
-                                                                               "1"
-                                                                           ]
-                                                              },
-                                                      "description":  "Through gateway: Deletes a user by ID.\n\n**Expected:** 204 No Content"
-                                                  }
-                                  },
-                                  {
-                                      "name":  "Delete User Not Found (via gateway)",
-                                      "request":  {
-                                                      "method":  "DELETE",
-                                                      "header":  [
-
-                                                                 ],
-                                                      "url":  {
-                                                                  "raw":  "{{api_gateway}}{{api_prefix}}/users/9999",
-                                                                  "host":  [
-                                                                               "{{api_gateway}}{{api_prefix}}"
-                                                                           ],
-                                                                  "path":  [
-                                                                               "users",
-                                                                               "9999"
-                                                                           ]
-                                                              },
-                                                      "description":  "Through gateway: Negative test -- tries to delete a non-existent user.\n\n**Expected:** 404 Not Found"
-                                                  }
-                                  }
-                              ]
-                 }
-             ]
+  "info": {
+    "name": "User Service",
+    "description": "# User Service\n\nBase URL: `{{user_service}}{{api_prefix}}`\n\nManages application users. Supports CRUD operations plus search by name, email, and phone, including error/edge-case scenarios.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Direct",
+      "item": [
+        {
+          "name": "Get All Users",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "host": [
+                "{{user_service}}{{api_prefix}}"
+              ],
+              "raw": "{{user_service}}{{api_prefix}}/users",
+              "path": [
+                "users"
+              ]
+            },
+            "description": "Retrieves all users in the system."
+          }
+        },
+        {
+          "name": "Get Users By Name",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "query": [
+                {
+                  "key": "name",
+                  "value": "Lucas"
+                }
+              ],
+              "host": [
+                "{{user_service}}{{api_prefix}}"
+              ],
+              "raw": "{{user_service}}{{api_prefix}}/users?name=Lucas",
+              "path": [
+                "users"
+              ]
+            },
+            "description": "Searches users by first name. Uses query parameter `name`."
+          }
+        },
+        {
+          "name": "Get Users By Name And Last Name",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "query": [
+                {
+                  "key": "name",
+                  "value": "Lucas"
+                },
+                {
+                  "key": "last_name",
+                  "value": "Vargas"
+                }
+              ],
+              "host": [
+                "{{user_service}}{{api_prefix}}"
+              ],
+              "raw": "{{user_service}}{{api_prefix}}/users?name=Lucas&last_name=Vargas",
+              "path": [
+                "users"
+              ]
+            },
+            "description": "Searches users by both first name and last name."
+          }
+        },
+        {
+          "name": "Get User By Id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "host": [
+                "{{user_service}}{{api_prefix}}"
+              ],
+              "raw": "{{user_service}}{{api_prefix}}/users/1",
+              "path": [
+                "users",
+                "1"
+              ]
+            },
+            "description": "Retrieves a single user by ID. Returns 404 if not found."
+          }
+        },
+        {
+          "name": "Get User By Email",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "host": [
+                "{{user_service}}{{api_prefix}}"
+              ],
+              "raw": "{{user_service}}{{api_prefix}}/users/email/lucas@tarrobuild.cl",
+              "path": [
+                "users",
+                "email",
+                "lucas@tarrobuild.cl"
+              ]
+            },
+            "description": "Retrieves a user by their email address. Returns 404 if not found."
+          }
+        },
+        {
+          "name": "Get User By Phone",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "host": [
+                "{{user_service}}{{api_prefix}}"
+              ],
+              "raw": "{{user_service}}{{api_prefix}}/users/phone/+56912345678",
+              "path": [
+                "users",
+                "phone",
+                "+56912345678"
+              ]
+            },
+            "description": "Retrieves a user by their phone number. Returns 404 if not found."
+          }
+        },
+        {
+          "name": "Create User",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "host": [
+                "{{user_service}}{{api_prefix}}"
+              ],
+              "raw": "{{user_service}}{{api_prefix}}/users",
+              "path": [
+                "users"
+              ]
+            },
+            "description": "Creates a new user. Required fields: `name`, `lastName`, `email`, `phone`.\n\n**Expected:** 201 Created",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Lucas\",\n  \"lastName\": \"Vargas\",\n  \"email\": \"lucas@tarrobuild.cl\",\n  \"phone\": \"+56912345678\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Create User Duplicate Email",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "host": [
+                "{{user_service}}{{api_prefix}}"
+              ],
+              "raw": "{{user_service}}{{api_prefix}}/users",
+              "path": [
+                "users"
+              ]
+            },
+            "description": "Negative test -- tries to create a user with an already-registered email.\n\n**Expected:** 409 Conflict (duplicate email)",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Otro\",\n  \"lastName\": \"Usuario\",\n  \"email\": \"lucas@tarrobuild.cl\",\n  \"phone\": \"+56911111111\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Create User Invalid",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "host": [
+                "{{user_service}}{{api_prefix}}"
+              ],
+              "raw": "{{user_service}}{{api_prefix}}/users",
+              "path": [
+                "users"
+              ]
+            },
+            "description": "Negative test -- sends empty name/lastName, invalid email, and too-short phone.\n\n**Expected:** 400 Bad Request (validation errors)",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"\",\n  \"lastName\": \"\",\n  \"email\": \"notanemail\",\n  \"phone\": \"1\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Update User",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "host": [
+                "{{user_service}}{{api_prefix}}"
+              ],
+              "raw": "{{user_service}}{{api_prefix}}/users/1",
+              "path": [
+                "users",
+                "1"
+              ]
+            },
+            "description": "Updates an existing user's name and phone. Email is not included (not updatable).\n\n**Expected:** 200 OK",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Lucas Updated\",\n  \"lastName\": \"Vargas\",\n  \"phone\": \"+56999999999\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Delete User",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "host": [
+                "{{user_service}}{{api_prefix}}"
+              ],
+              "raw": "{{user_service}}{{api_prefix}}/users/1",
+              "path": [
+                "users",
+                "1"
+              ]
+            },
+            "description": "Deletes a user by ID.\n\n**Expected:** 204 No Content"
+          }
+        },
+        {
+          "name": "Delete User Not Found",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "host": [
+                "{{user_service}}{{api_prefix}}"
+              ],
+              "raw": "{{user_service}}{{api_prefix}}/users/9999",
+              "path": [
+                "users",
+                "9999"
+              ]
+            },
+            "description": "Negative test -- tries to delete a non-existent user.\n\n**Expected:** 404 Not Found"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Gateway",
+      "item": [
+        {
+          "name": "Get All Users",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{api_gateway}}{{api_prefix}}/users",
+              "host": [
+                "{{api_gateway}}{{api_prefix}}"
+              ],
+              "path": [
+                "users"
+              ]
+            },
+            "description": "Through gateway: Retrieves all users in the system."
+          }
+        },
+        {
+          "name": "Get Users By Name",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{api_gateway}}{{api_prefix}}/users?name=Lucas",
+              "host": [
+                "{{api_gateway}}{{api_prefix}}"
+              ],
+              "path": [
+                "users"
+              ],
+              "query": [
+                {
+                  "key": "name",
+                  "value": "Lucas"
+                }
+              ]
+            },
+            "description": "Through gateway: Searches users by first name. Uses query parameter `name`."
+          }
+        },
+        {
+          "name": "Get Users By Name And Last Name",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{api_gateway}}{{api_prefix}}/users?name=Lucas&last_name=Vargas",
+              "host": [
+                "{{api_gateway}}{{api_prefix}}"
+              ],
+              "path": [
+                "users"
+              ],
+              "query": [
+                {
+                  "key": "name",
+                  "value": "Lucas"
+                },
+                {
+                  "key": "last_name",
+                  "value": "Vargas"
+                }
+              ]
+            },
+            "description": "Through gateway: Searches users by both first name and last name."
+          }
+        },
+        {
+          "name": "Get User By Id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{api_gateway}}{{api_prefix}}/users/1",
+              "host": [
+                "{{api_gateway}}{{api_prefix}}"
+              ],
+              "path": [
+                "users",
+                "1"
+              ]
+            },
+            "description": "Through gateway: Retrieves a single user by ID. Returns 404 if not found."
+          }
+        },
+        {
+          "name": "Get User By Email",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{api_gateway}}{{api_prefix}}/users/email/lucas@tarrobuild.cl",
+              "host": [
+                "{{api_gateway}}{{api_prefix}}"
+              ],
+              "path": [
+                "users",
+                "email",
+                "lucas@tarrobuild.cl"
+              ]
+            },
+            "description": "Through gateway: Retrieves a user by their email address. Returns 404 if not found."
+          }
+        },
+        {
+          "name": "Get User By Phone",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{api_gateway}}{{api_prefix}}/users/phone/+56912345678",
+              "host": [
+                "{{api_gateway}}{{api_prefix}}"
+              ],
+              "path": [
+                "users",
+                "phone",
+                "+56912345678"
+              ]
+            },
+            "description": "Through gateway: Retrieves a user by their phone number. Returns 404 if not found."
+          }
+        },
+        {
+          "name": "Create User",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{api_gateway}}{{api_prefix}}/users",
+              "host": [
+                "{{api_gateway}}{{api_prefix}}"
+              ],
+              "path": [
+                "users"
+              ]
+            },
+            "description": "Through gateway: Creates a new user. Required fields: `name`, `lastName`, `email`, `phone`.\n\n**Expected:** 201 Created",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Lucas\",\n  \"lastName\": \"Vargas\",\n  \"email\": \"lucas@tarrobuild.cl\",\n  \"phone\": \"+56912345678\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Create User Duplicate Email",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{api_gateway}}{{api_prefix}}/users",
+              "host": [
+                "{{api_gateway}}{{api_prefix}}"
+              ],
+              "path": [
+                "users"
+              ]
+            },
+            "description": "Through gateway: Negative test -- tries to create a user with an already-registered email.\n\n**Expected:** 409 Conflict (duplicate email)",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Otro\",\n  \"lastName\": \"Usuario\",\n  \"email\": \"lucas@tarrobuild.cl\",\n  \"phone\": \"+56911111111\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Create User Invalid",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{api_gateway}}{{api_prefix}}/users",
+              "host": [
+                "{{api_gateway}}{{api_prefix}}"
+              ],
+              "path": [
+                "users"
+              ]
+            },
+            "description": "Through gateway: Negative test -- sends empty name/lastName, invalid email, and too-short phone.\n\n**Expected:** 400 Bad Request (validation errors)",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"\",\n  \"lastName\": \"\",\n  \"email\": \"notanemail\",\n  \"phone\": \"1\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Update User",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "{{api_gateway}}{{api_prefix}}/users/1",
+              "host": [
+                "{{api_gateway}}{{api_prefix}}"
+              ],
+              "path": [
+                "users",
+                "1"
+              ]
+            },
+            "description": "Through gateway: Updates an existing user's name and phone. Email is not included (not updatable).\n\n**Expected:** 200 OK",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Lucas Updated\",\n  \"lastName\": \"Vargas\",\n  \"phone\": \"+56999999999\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Delete User",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{api_gateway}}{{api_prefix}}/users/1",
+              "host": [
+                "{{api_gateway}}{{api_prefix}}"
+              ],
+              "path": [
+                "users",
+                "1"
+              ]
+            },
+            "description": "Through gateway: Deletes a user by ID.\n\n**Expected:** 204 No Content"
+          }
+        },
+        {
+          "name": "Delete User Not Found",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{api_gateway}}{{api_prefix}}/users/9999",
+              "host": [
+                "{{api_gateway}}{{api_prefix}}"
+              ],
+              "path": [
+                "users",
+                "9999"
+              ]
+            },
+            "description": "Through gateway: Negative test -- tries to delete a non-existent user.\n\n**Expected:** 404 Not Found"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Monolith",
+      "item": [
+        {
+          "name": "Get All Users",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{api_gateway}}{{api_prefix}}/users",
+              "host": [
+                "{{api_gateway}}{{api_prefix}}"
+              ],
+              "path": [
+                "users"
+              ]
+            },
+            "description": "Through gateway: Retrieves all users in the system."
+          }
+        },
+        {
+          "name": "Get Users By Name",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{api_gateway}}{{api_prefix}}/users?name=Lucas",
+              "host": [
+                "{{api_gateway}}{{api_prefix}}"
+              ],
+              "path": [
+                "users"
+              ],
+              "query": [
+                {
+                  "key": "name",
+                  "value": "Lucas"
+                }
+              ]
+            },
+            "description": "Through gateway: Searches users by first name. Uses query parameter `name`."
+          }
+        },
+        {
+          "name": "Get Users By Name And Last Name",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{api_gateway}}{{api_prefix}}/users?name=Lucas&last_name=Vargas",
+              "host": [
+                "{{api_gateway}}{{api_prefix}}"
+              ],
+              "path": [
+                "users"
+              ],
+              "query": [
+                {
+                  "key": "name",
+                  "value": "Lucas"
+                },
+                {
+                  "key": "last_name",
+                  "value": "Vargas"
+                }
+              ]
+            },
+            "description": "Through gateway: Searches users by both first name and last name."
+          }
+        },
+        {
+          "name": "Get User By Id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{api_gateway}}{{api_prefix}}/users/1",
+              "host": [
+                "{{api_gateway}}{{api_prefix}}"
+              ],
+              "path": [
+                "users",
+                "1"
+              ]
+            },
+            "description": "Through gateway: Retrieves a single user by ID. Returns 404 if not found."
+          }
+        },
+        {
+          "name": "Get User By Email",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{api_gateway}}{{api_prefix}}/users/email/lucas@tarrobuild.cl",
+              "host": [
+                "{{api_gateway}}{{api_prefix}}"
+              ],
+              "path": [
+                "users",
+                "email",
+                "lucas@tarrobuild.cl"
+              ]
+            },
+            "description": "Through gateway: Retrieves a user by their email address. Returns 404 if not found."
+          }
+        },
+        {
+          "name": "Get User By Phone",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{api_gateway}}{{api_prefix}}/users/phone/+56912345678",
+              "host": [
+                "{{api_gateway}}{{api_prefix}}"
+              ],
+              "path": [
+                "users",
+                "phone",
+                "+56912345678"
+              ]
+            },
+            "description": "Through gateway: Retrieves a user by their phone number. Returns 404 if not found."
+          }
+        },
+        {
+          "name": "Create User",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{api_gateway}}{{api_prefix}}/users",
+              "host": [
+                "{{api_gateway}}{{api_prefix}}"
+              ],
+              "path": [
+                "users"
+              ]
+            },
+            "description": "Through gateway: Creates a new user. Required fields: `name`, `lastName`, `email`, `phone`.\n\n**Expected:** 201 Created",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Lucas\",\n  \"lastName\": \"Vargas\",\n  \"email\": \"lucas@tarrobuild.cl\",\n  \"phone\": \"+56912345678\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Create User Duplicate Email",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{api_gateway}}{{api_prefix}}/users",
+              "host": [
+                "{{api_gateway}}{{api_prefix}}"
+              ],
+              "path": [
+                "users"
+              ]
+            },
+            "description": "Through gateway: Negative test -- tries to create a user with an already-registered email.\n\n**Expected:** 409 Conflict (duplicate email)",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Otro\",\n  \"lastName\": \"Usuario\",\n  \"email\": \"lucas@tarrobuild.cl\",\n  \"phone\": \"+56911111111\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Create User Invalid",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{api_gateway}}{{api_prefix}}/users",
+              "host": [
+                "{{api_gateway}}{{api_prefix}}"
+              ],
+              "path": [
+                "users"
+              ]
+            },
+            "description": "Through gateway: Negative test -- sends empty name/lastName, invalid email, and too-short phone.\n\n**Expected:** 400 Bad Request (validation errors)",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"\",\n  \"lastName\": \"\",\n  \"email\": \"notanemail\",\n  \"phone\": \"1\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Update User",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "{{api_gateway}}{{api_prefix}}/users/1",
+              "host": [
+                "{{api_gateway}}{{api_prefix}}"
+              ],
+              "path": [
+                "users",
+                "1"
+              ]
+            },
+            "description": "Through gateway: Updates an existing user's name and phone. Email is not included (not updatable).\n\n**Expected:** 200 OK",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Lucas Updated\",\n  \"lastName\": \"Vargas\",\n  \"phone\": \"+56999999999\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Delete User",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{api_gateway}}{{api_prefix}}/users/1",
+              "host": [
+                "{{api_gateway}}{{api_prefix}}"
+              ],
+              "path": [
+                "users",
+                "1"
+              ]
+            },
+            "description": "Through gateway: Deletes a user by ID.\n\n**Expected:** 204 No Content"
+          }
+        },
+        {
+          "name": "Delete User Not Found",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{api_gateway}}{{api_prefix}}/users/9999",
+              "host": [
+                "{{api_gateway}}{{api_prefix}}"
+              ],
+              "path": [
+                "users",
+                "9999"
+              ]
+            },
+            "description": "Through gateway: Negative test -- tries to delete a non-existent user.\n\n**Expected:** 404 Not Found"
+          }
+        }
+      ]
+    }
+  ]
 }
-

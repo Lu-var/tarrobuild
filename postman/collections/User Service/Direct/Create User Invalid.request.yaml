@@ -1,0 +1,13 @@
+$kind: http-request
+url: "{{user_service}}{{api_prefix}}/users"
+method: POST
+body:
+  type: json
+  content: |-
+    {
+      "name": "",
+      "lastName": "",
+      "email": "notanemail",
+      "phone": "1"
+    }
+order: 90

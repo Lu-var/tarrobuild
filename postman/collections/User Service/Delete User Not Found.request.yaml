@@ -1,8 +1,0 @@
-$kind: http-request
-description: |-
-  Negative test -- tries to delete a non-existent user.
-
-  **Expected:** 404 Not Found
-url: "{{user_service}}/api/users/9999"
-method: DELETE
-order: 12000

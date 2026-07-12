@@ -1,0 +1,13 @@
+$kind: http-request
+url: "{{tarrobuild}}{{api_prefix}}/notifications/send"
+method: POST
+body:
+  type: json
+  content: |-
+    {
+      "userId": 1,
+      "type": "COMPATIBILITY_WARNING",
+      "content": "Build #5 has incompatible components: CPU socket LGA1700 does not match motherboard socket AM5.",
+      "status": "WARNING"
+    }
+order: 140

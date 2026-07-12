@@ -1,5 +1,0 @@
-$kind: http-request
-description: Retrieves all items associated with a specific build.
-url: "{{build_service}}/api/builds/1/items"
-method: GET
-order: 10000

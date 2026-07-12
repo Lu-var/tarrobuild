@@ -1,0 +1,4 @@
+$kind: http-request
+url: "{{tarrobuild}}{{api_prefix}}/products/1/attributes/1"
+method: DELETE
+order: 430

@@ -1,0 +1,11 @@
+$kind: http-request
+url: "{{estimate_service}}{{api_prefix}}/estimate/calculate"
+method: POST
+body:
+  type: json
+  content: |-
+    {
+      "buildId": 9999,
+      "currency": "CLP"
+    }
+order: 50
