@@ -25,6 +25,10 @@ jwt:
 app:
   environment: production
 
+restclient:
+  connect-timeout: 30000
+  read-timeout: 90000
+
 logging:
   level:
     cl.tarrobuild: INFO
