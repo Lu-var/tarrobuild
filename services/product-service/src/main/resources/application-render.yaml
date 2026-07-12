@@ -19,9 +19,6 @@ spring:
       hibernate:
         default_schema: product
         format_sql: true
-category-service:
-  url: ${CATEGORY_SERVICE_URL:http://localhost:8084}
-
 app:
   environment: production
 

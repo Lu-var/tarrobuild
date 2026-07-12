@@ -4,15 +4,6 @@ spring:
   profiles:
     active: ${SPRING_PROFILES_ACTIVE:h2}
 
-build-service:
-  url: ${BUILD_SERVICE_URL:http://localhost:8087}
-
-product-service:
-  url: ${PRODUCT_SERVICE_URL:http://localhost:8083}
-
-notification-service:
-  url: ${NOTIFICATION_SERVICE_URL:http://localhost:8090}
-
 app:
   environment: production
 
