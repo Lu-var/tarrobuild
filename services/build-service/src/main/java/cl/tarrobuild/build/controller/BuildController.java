@@ -1,7 +1,9 @@
 package cl.tarrobuild.build.controller;
 
 import cl.tarrobuild.build.dto.*;
+import cl.tarrobuild.build.service.BuildHistoryService;
 import cl.tarrobuild.build.service.BuildService;
+import cl.tarrobuild.build.service.FavoriteService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -18,9 +20,14 @@ import java.util.List;
 public class BuildController {
 
     private final BuildService buildService;
+    private final FavoriteService favoriteService;
+    private final BuildHistoryService buildHistoryService;
 
-    public BuildController(BuildService buildService) {
+    public BuildController(BuildService buildService, FavoriteService favoriteService,
+                           BuildHistoryService buildHistoryService) {
         this.buildService = buildService;
+        this.favoriteService = favoriteService;
+        this.buildHistoryService = buildHistoryService;
     }
 
     @GetMapping
@@ -143,5 +150,27 @@ public class BuildController {
     public ResponseEntity<Void> deleteItem(@PathVariable Long buildId, @PathVariable Long itemId) {
         buildService.deleteItem(itemId, buildId);
         return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/{buildId}/favorite")
+    @Operation(summary = "Marcar o desmarcar una build como favorita (toggle)")
+    @ApiResponse(responseCode = "404", description = "Build no encontrado")
+    public ResponseEntity<FavoriteResponse> toggleFavorite(
+            @PathVariable Long buildId,
+            @RequestHeader("X-User-Id") Long userId) {
+        return ResponseEntity.ok(favoriteService.toggleFavorite(userId, buildId));
+    }
+
+    @GetMapping("/favorites")
+    @Operation(summary = "Obtener todas las builds favoritas del usuario")
+    public ResponseEntity<List<FavoriteResponse>> getFavorites(@RequestHeader("X-User-Id") Long userId) {
+        return ResponseEntity.ok(favoriteService.getFavoritesByUserId(userId));
+    }
+
+    @GetMapping("/{buildId}/history")
+    @Operation(summary = "Obtener el historial de cambios de una build")
+    @ApiResponse(responseCode = "404", description = "Build no encontrado")
+    public ResponseEntity<List<BuildHistoryResponse>> getBuildHistory(@PathVariable Long buildId) {
+        return ResponseEntity.ok(buildHistoryService.getHistoryByBuildId(buildId));
     }
 }
