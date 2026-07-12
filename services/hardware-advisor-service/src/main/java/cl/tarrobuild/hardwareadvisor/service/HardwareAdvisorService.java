@@ -13,10 +13,17 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 @Slf4j
 @Service
 public class HardwareAdvisorService {
+
+    private static final Map<Long, String> CATEGORY_NAMES = Map.of(
+            1L, "CPU", 2L, "GPU", 3L, "RAM", 4L, "Motherboard",
+            5L, "Storage", 6L, "PSU", 7L, "Case", 8L, "Cooling"
+    );
 
     private final RecommendationRepository recommendationRepository;
     private final BuildFeignClient buildFeignClient;
@@ -66,26 +73,43 @@ public class HardwareAdvisorService {
             ));
         }
 
-        // 4. For each product, look for upgrades
-        for (BuildItemClientResponse item : build.items()) {
-            ProductClientResponse currentProduct = productFeignClient.getProductById(item.productId());
-            if (currentProduct == null) continue;
+        // 4. Recommend missing categories
+        List<Long> usedCategories = build.items().stream()
+                .map(item -> {
+                    ProductClientResponse p = productFeignClient.getProductById(item.productId());
+                    return p != null ? p.categoryId() : null;
+                })
+                .filter(Objects::nonNull)
+                .distinct()
+                .toList();
 
-            List<ProductClientResponse> alternatives = productFeignClient.getProductsByCategory(currentProduct.categoryId());
-            for (ProductClientResponse alt : alternatives) {
-                if (alt.id().equals(currentProduct.id()) || !alt.isActive()) continue;
-                if (alt.msrp() > currentProduct.msrp()) {
-                    recommendations.add(createRecommendation(
-                            request.buildId(),
-                            "UPGRADE",
-                            alt.id(),
-                            String.format("Consider upgrading %s (%s %s) to %s (%s %s) for +$%d",
-                                    currentProduct.name(), currentProduct.brand(), currentProduct.model(),
-                                    alt.name(), alt.brand(), alt.model(),
-                                    alt.msrp() - currentProduct.msrp())
-                    ));
-                }
+        for (Long catId : CATEGORY_NAMES.keySet()) {
+            if (usedCategories.contains(catId)) continue;
+
+            List<ProductClientResponse> available = productFeignClient.getProductsByCategory(catId);
+            if (available.isEmpty()) continue;
+
+            ProductClientResponse suggestion = available.stream()
+                    .filter(ProductClientResponse::isActive)
+                    .findFirst().orElse(null);
+            if (suggestion == null) continue;
+
+            if (!usedCategories.isEmpty()) {
+                List<Long> checkIds = new ArrayList<>(productIds);
+                checkIds.add(suggestion.id());
+                CompatibilityCheckRequest compatReq = new CompatibilityCheckRequest(null, checkIds);
+                CompatibilityCheckResponse compat = compatibilityFeignClient.checkCompatibility(compatReq);
+                if (compat != null && Boolean.FALSE.equals(compat.result())) continue;
             }
+
+            String categoryName = getCategoryName(catId);
+            recommendations.add(createRecommendation(
+                    request.buildId(),
+                    "MISSING_COMPONENT",
+                    suggestion.id(),
+                    String.format("Te falta %s: %s (%s) - $%d",
+                            categoryName, suggestion.name(), suggestion.brand(), suggestion.msrp())
+            ));
         }
 
         // 5. Save
@@ -118,6 +142,10 @@ public class HardwareAdvisorService {
                 .map(this::toResponse)
                 .orElseThrow(() -> new EntityNotFoundException(
                         "Recommendation with ID " + id + " not found"));
+    }
+
+    private String getCategoryName(Long categoryId) {
+        return CATEGORY_NAMES.getOrDefault(categoryId, "Component");
     }
 
     private Recommendation createRecommendation(Long buildId, String ruleApplied, Long suggestedProductId, String reason) {
