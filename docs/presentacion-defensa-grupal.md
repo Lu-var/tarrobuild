@@ -154,10 +154,7 @@ URLs:
 
 ## 14. Distribución de trabajo
 
-| Integrante | Módulos principales |
-|------------|-------------------|
-| [Nombre 1] | [Módulos] |
-| [Nombre 2] | [Módulos] |
-| [Nombre 3] | [Módulos] |
+- Lucas Vargas
+- Camila Corocedo
 
 Ver `docs/defensa-individual/` para los documentos individuales de cada integrante.
