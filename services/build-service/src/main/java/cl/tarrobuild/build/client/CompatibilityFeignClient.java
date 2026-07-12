@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-@FeignClient(name = "compatibility-service", url = "${compatibility-service.url}", fallbackFactory = CompatibilityFeignClientFallbackFactory.class)
+@FeignClient(name = "compatibility-service", fallbackFactory = CompatibilityFeignClientFallbackFactory.class)
 public interface CompatibilityFeignClient {
 
     @PostMapping("/api/compatibility/check")
