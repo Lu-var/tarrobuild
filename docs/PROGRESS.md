@@ -55,11 +55,12 @@
 ---
 ### Cross-cutting
 
+**Done**
+- [x] Eureka Service Discovery — discovery-server module, @EnableDiscoveryClient en 11 servicios, FeignClients y RestClients con `lb://`
+- [x] Gateway con URLs directas (no lb://) para compatibilidad con Render
+
 **Pending**
 - [ ] (optional) Split profiles into `dev`/`prod` (environment) + `h2`/`mysql` (database)
-- [ ] Fix dependency chain in `.opencode/agents/shared-context.md` — add `user-service` before `category-service` (currently omitted, but `auth-service` depends on it)
-- [ ] Fix dependency chain in `.opencode/agents/planner.md` — same missing `user-service` fix
-- [ ] Fix `.opencode/agents/implementor.md` — change "entity" to "model" as the package name (actual package is `model/`, not `entity/`)
 
 ---
 ### api-gateway :8080

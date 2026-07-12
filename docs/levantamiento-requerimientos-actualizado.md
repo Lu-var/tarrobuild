@@ -40,6 +40,8 @@
 | Docker compose | compose.yml con healthchecks y dependencias | `compose.yml`, `application-prod.yaml` |
 | Postman collections | 210 requests en 10 colecciones | `postman/collections/` |
 | Timeouts configurables | RestClient y Feign con timeouts desde YAML | `application.yaml` en servicios con cliente |
+| Eureka service discovery | discovery-server (@EnableEurekaServer) + registro de 11 servicios (@EnableDiscoveryClient), comunicación inter-service con `lb://` | `discovery-server/`, `pom.xml`, `application.yaml` en cada servicio |
+| Gateway con URLs directas | Gateway redirecciona a servicios via URLs directas desde variables de entorno, no usa `lb://` por limitación de Render (contenedores aislados) | `GatewayRoutesConfig.java`, `compose.yml`, `render.yaml` |
 
 ## Requerimientos eliminados o reemplazados
 
