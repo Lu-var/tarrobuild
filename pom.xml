@@ -30,6 +30,7 @@
         <module>services/product-service</module>
         <module>services/provider-service</module>
         <module>services/user-service</module>
+        <module>services/discovery-server</module>
     </modules>
 
     <properties>
@@ -112,6 +113,11 @@
             <artifactId>spring-boot-devtools</artifactId>
             <scope>runtime</scope>
             <optional>true</optional>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
         </dependency>
 
     </dependencies>
