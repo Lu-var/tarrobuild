@@ -6,6 +6,9 @@ spring:
     password:
   flyway:
     enabled: false
+  sql:
+    init:
+      mode: always
   h2:
     console:
       enabled: true
@@ -22,3 +25,7 @@ logging:
   level:
     cl.tarrobuild: DEBUG
     org.hibernate.SQL: DEBUG
+
+eureka:
+  client:
+    enabled: false

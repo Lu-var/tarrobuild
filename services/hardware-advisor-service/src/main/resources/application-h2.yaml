@@ -6,6 +6,9 @@ spring:
     password:
   flyway:
     enabled: false
+  sql:
+    init:
+      mode: always
   h2:
     console:
       enabled: true
@@ -14,6 +17,23 @@ spring:
     defer-datasource-initialization: true
     hibernate:
       ddl-auto: create-drop
+  cloud:
+    discovery:
+      client:
+        simple:
+          instances:
+            build-service:
+              - uri: http://localhost:8087
+            product-service:
+              - uri: http://localhost:8083
+            compatibility-service:
+              - uri: http://localhost:8085
+            notification-service:
+              - uri: http://localhost:8090
+
+eureka:
+  client:
+    enabled: false
 
 app:
   environment: development
