@@ -205,7 +205,13 @@
           "name": "Get All Providers",
           "request": {
             "method": "GET",
-            "header": [],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
             "url": {
               "host": [
                 "{{api_gateway}}{{api_prefix}}"
@@ -222,7 +228,13 @@
           "name": "Get Provider By Id",
           "request": {
             "method": "GET",
-            "header": [],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
             "url": {
               "host": [
                 "{{api_gateway}}{{api_prefix}}"
@@ -240,7 +252,13 @@
           "name": "Create Provider",
           "request": {
             "method": "POST",
-            "header": [],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
             "url": {
               "host": [
                 "{{api_gateway}}{{api_prefix}}"
@@ -266,7 +284,13 @@
           "name": "Update Provider",
           "request": {
             "method": "PUT",
-            "header": [],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
             "url": {
               "host": [
                 "{{api_gateway}}{{api_prefix}}"
@@ -293,7 +317,13 @@
           "name": "Partial Update Provider",
           "request": {
             "method": "PATCH",
-            "header": [],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
             "url": {
               "host": [
                 "{{api_gateway}}{{api_prefix}}"
@@ -320,7 +350,13 @@
           "name": "Delete Provider",
           "request": {
             "method": "DELETE",
-            "header": [],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
             "url": {
               "host": [
                 "{{api_gateway}}{{api_prefix}}"
@@ -338,7 +374,13 @@
           "name": "Get Provider Products",
           "request": {
             "method": "GET",
-            "header": [],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
             "url": {
               "host": [
                 "{{api_gateway}}{{api_prefix}}"
@@ -357,7 +399,13 @@
           "name": "Get Non-existent Provider",
           "request": {
             "method": "GET",
-            "header": [],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
             "url": {
               "host": [
                 "{{api_gateway}}{{api_prefix}}"
@@ -375,7 +423,13 @@
           "name": "Delete Non-existent Provider",
           "request": {
             "method": "DELETE",
-            "header": [],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
             "url": {
               "host": [
                 "{{api_gateway}}{{api_prefix}}"
@@ -398,7 +452,13 @@
           "name": "Get All Providers",
           "request": {
             "method": "GET",
-            "header": [],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
             "url": {
               "host": [
                 "{{tarrobuild}}{{api_prefix}}"
@@ -415,7 +475,13 @@
           "name": "Get Provider By Id",
           "request": {
             "method": "GET",
-            "header": [],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
             "url": {
               "host": [
                 "{{tarrobuild}}{{api_prefix}}"
@@ -433,7 +499,13 @@
           "name": "Create Provider",
           "request": {
             "method": "POST",
-            "header": [],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
             "url": {
               "host": [
                 "{{tarrobuild}}{{api_prefix}}"
@@ -459,7 +531,13 @@
           "name": "Update Provider",
           "request": {
             "method": "PUT",
-            "header": [],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
             "url": {
               "host": [
                 "{{tarrobuild}}{{api_prefix}}"
@@ -486,7 +564,13 @@
           "name": "Partial Update Provider",
           "request": {
             "method": "PATCH",
-            "header": [],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
             "url": {
               "host": [
                 "{{tarrobuild}}{{api_prefix}}"
@@ -513,7 +597,13 @@
           "name": "Delete Provider",
           "request": {
             "method": "DELETE",
-            "header": [],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
             "url": {
               "host": [
                 "{{tarrobuild}}{{api_prefix}}"
@@ -531,7 +621,13 @@
           "name": "Get Provider Products",
           "request": {
             "method": "GET",
-            "header": [],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
             "url": {
               "host": [
                 "{{tarrobuild}}{{api_prefix}}"
@@ -550,7 +646,13 @@
           "name": "Get Non-existent Provider",
           "request": {
             "method": "GET",
-            "header": [],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
             "url": {
               "host": [
                 "{{tarrobuild}}{{api_prefix}}"
@@ -568,7 +670,13 @@
           "name": "Delete Non-existent Provider",
           "request": {
             "method": "DELETE",
-            "header": [],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
             "url": {
               "host": [
                 "{{tarrobuild}}{{api_prefix}}"

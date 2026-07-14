@@ -628,7 +628,13 @@
           "name": "Create Product",
           "request": {
             "method": "POST",
-            "header": [],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
             "url": {
               "raw": "{{api_gateway}}{{api_prefix}}/products",
               "host": [
@@ -654,7 +660,13 @@
           "name": "Create Product Invalid",
           "request": {
             "method": "POST",
-            "header": [],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
             "url": {
               "raw": "{{api_gateway}}{{api_prefix}}/products",
               "host": [
@@ -680,7 +692,13 @@
           "name": "Update Product",
           "request": {
             "method": "PUT",
-            "header": [],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
             "url": {
               "raw": "{{api_gateway}}{{api_prefix}}/products/1",
               "host": [
@@ -707,7 +725,13 @@
           "name": "Update Product Not Found",
           "request": {
             "method": "PUT",
-            "header": [],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
             "url": {
               "raw": "{{api_gateway}}{{api_prefix}}/products/9999",
               "host": [
@@ -734,7 +758,13 @@
           "name": "Delete Product",
           "request": {
             "method": "DELETE",
-            "header": [],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
             "url": {
               "raw": "{{api_gateway}}{{api_prefix}}/products/1",
               "host": [
@@ -752,7 +782,13 @@
           "name": "Delete Product Not Found",
           "request": {
             "method": "DELETE",
-            "header": [],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
             "url": {
               "raw": "{{api_gateway}}{{api_prefix}}/products/9999",
               "host": [
@@ -770,7 +806,13 @@
           "name": "Deactivate Product",
           "request": {
             "method": "PATCH",
-            "header": [],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
             "url": {
               "raw": "{{api_gateway}}{{api_prefix}}/products/2/deactivate",
               "host": [
@@ -789,7 +831,13 @@
           "name": "Deactivate Product Not Found",
           "request": {
             "method": "PATCH",
-            "header": [],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
             "url": {
               "raw": "{{api_gateway}}{{api_prefix}}/products/9999/deactivate",
               "host": [
@@ -846,7 +894,13 @@
           "name": "Add Product Attribute",
           "request": {
             "method": "POST",
-            "header": [],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
             "url": {
               "raw": "{{api_gateway}}{{api_prefix}}/products/1/attributes",
               "host": [
@@ -874,7 +928,13 @@
           "name": "Add Product Attribute Invalid",
           "request": {
             "method": "POST",
-            "header": [],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
             "url": {
               "raw": "{{api_gateway}}{{api_prefix}}/products/1/attributes",
               "host": [
@@ -902,7 +962,13 @@
           "name": "Update Product Attribute",
           "request": {
             "method": "PUT",
-            "header": [],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
             "url": {
               "raw": "{{api_gateway}}{{api_prefix}}/products/1/attributes/1",
               "host": [
@@ -931,7 +997,13 @@
           "name": "Update Product Attribute Not Found",
           "request": {
             "method": "PUT",
-            "header": [],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
             "url": {
               "raw": "{{api_gateway}}{{api_prefix}}/products/1/attributes/9999",
               "host": [
@@ -960,7 +1032,13 @@
           "name": "Delete Product Attribute",
           "request": {
             "method": "DELETE",
-            "header": [],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
             "url": {
               "raw": "{{api_gateway}}{{api_prefix}}/products/1/attributes/1",
               "host": [
@@ -980,7 +1058,13 @@
           "name": "Delete Product Attribute Not Found",
           "request": {
             "method": "DELETE",
-            "header": [],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
             "url": {
               "raw": "{{api_gateway}}{{api_prefix}}/products/1/attributes/9999",
               "host": [
@@ -1124,7 +1208,13 @@
           "name": "Create Product",
           "request": {
             "method": "POST",
-            "header": [],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
             "url": {
               "raw": "{{tarrobuild}}{{api_prefix}}/products",
               "host": [
@@ -1150,7 +1240,13 @@
           "name": "Create Product Invalid",
           "request": {
             "method": "POST",
-            "header": [],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
             "url": {
               "raw": "{{tarrobuild}}{{api_prefix}}/products",
               "host": [
@@ -1176,7 +1272,13 @@
           "name": "Update Product",
           "request": {
             "method": "PUT",
-            "header": [],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
             "url": {
               "raw": "{{tarrobuild}}{{api_prefix}}/products/1",
               "host": [
@@ -1203,7 +1305,13 @@
           "name": "Update Product Not Found",
           "request": {
             "method": "PUT",
-            "header": [],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
             "url": {
               "raw": "{{tarrobuild}}{{api_prefix}}/products/9999",
               "host": [
@@ -1230,7 +1338,13 @@
           "name": "Delete Product",
           "request": {
             "method": "DELETE",
-            "header": [],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
             "url": {
               "raw": "{{tarrobuild}}{{api_prefix}}/products/1",
               "host": [
@@ -1248,7 +1362,13 @@
           "name": "Delete Product Not Found",
           "request": {
             "method": "DELETE",
-            "header": [],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
             "url": {
               "raw": "{{tarrobuild}}{{api_prefix}}/products/9999",
               "host": [
@@ -1266,7 +1386,13 @@
           "name": "Deactivate Product",
           "request": {
             "method": "PATCH",
-            "header": [],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
             "url": {
               "raw": "{{tarrobuild}}{{api_prefix}}/products/2/deactivate",
               "host": [
@@ -1285,7 +1411,13 @@
           "name": "Deactivate Product Not Found",
           "request": {
             "method": "PATCH",
-            "header": [],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
             "url": {
               "raw": "{{tarrobuild}}{{api_prefix}}/products/9999/deactivate",
               "host": [
@@ -1342,7 +1474,13 @@
           "name": "Add Product Attribute",
           "request": {
             "method": "POST",
-            "header": [],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
             "url": {
               "raw": "{{tarrobuild}}{{api_prefix}}/products/1/attributes",
               "host": [
@@ -1370,7 +1508,13 @@
           "name": "Add Product Attribute Invalid",
           "request": {
             "method": "POST",
-            "header": [],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
             "url": {
               "raw": "{{tarrobuild}}{{api_prefix}}/products/1/attributes",
               "host": [
@@ -1398,7 +1542,13 @@
           "name": "Update Product Attribute",
           "request": {
             "method": "PUT",
-            "header": [],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
             "url": {
               "raw": "{{tarrobuild}}{{api_prefix}}/products/1/attributes/1",
               "host": [
@@ -1427,7 +1577,13 @@
           "name": "Update Product Attribute Not Found",
           "request": {
             "method": "PUT",
-            "header": [],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
             "url": {
               "raw": "{{tarrobuild}}{{api_prefix}}/products/1/attributes/9999",
               "host": [
@@ -1456,7 +1612,13 @@
           "name": "Delete Product Attribute",
           "request": {
             "method": "DELETE",
-            "header": [],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
             "url": {
               "raw": "{{tarrobuild}}{{api_prefix}}/products/1/attributes/1",
               "host": [
@@ -1476,7 +1638,13 @@
           "name": "Delete Product Attribute Not Found",
           "request": {
             "method": "DELETE",
-            "header": [],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
             "url": {
               "raw": "{{tarrobuild}}{{api_prefix}}/products/1/attributes/9999",
               "host": [

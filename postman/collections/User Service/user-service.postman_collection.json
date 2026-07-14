@@ -281,7 +281,13 @@
           "name": "Get All Users",
           "request": {
             "method": "GET",
-            "header": [],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
             "url": {
               "raw": "{{api_gateway}}{{api_prefix}}/users",
               "host": [
@@ -298,7 +304,13 @@
           "name": "Get Users By Name",
           "request": {
             "method": "GET",
-            "header": [],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
             "url": {
               "raw": "{{api_gateway}}{{api_prefix}}/users?name=Lucas",
               "host": [
@@ -321,7 +333,13 @@
           "name": "Get Users By Name And Last Name",
           "request": {
             "method": "GET",
-            "header": [],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
             "url": {
               "raw": "{{api_gateway}}{{api_prefix}}/users?name=Lucas&last_name=Vargas",
               "host": [
@@ -348,7 +366,13 @@
           "name": "Get User By Id",
           "request": {
             "method": "GET",
-            "header": [],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
             "url": {
               "raw": "{{api_gateway}}{{api_prefix}}/users/1",
               "host": [
@@ -366,7 +390,13 @@
           "name": "Get User By Email",
           "request": {
             "method": "GET",
-            "header": [],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
             "url": {
               "raw": "{{api_gateway}}{{api_prefix}}/users/email/lucas@tarrobuild.cl",
               "host": [
@@ -385,7 +415,13 @@
           "name": "Get User By Phone",
           "request": {
             "method": "GET",
-            "header": [],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
             "url": {
               "raw": "{{api_gateway}}{{api_prefix}}/users/phone/+56912345678",
               "host": [
@@ -404,7 +440,13 @@
           "name": "Create User",
           "request": {
             "method": "POST",
-            "header": [],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
             "url": {
               "raw": "{{api_gateway}}{{api_prefix}}/users",
               "host": [
@@ -430,7 +472,13 @@
           "name": "Create User Duplicate Email",
           "request": {
             "method": "POST",
-            "header": [],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
             "url": {
               "raw": "{{api_gateway}}{{api_prefix}}/users",
               "host": [
@@ -456,7 +504,13 @@
           "name": "Create User Invalid",
           "request": {
             "method": "POST",
-            "header": [],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
             "url": {
               "raw": "{{api_gateway}}{{api_prefix}}/users",
               "host": [
@@ -482,7 +536,13 @@
           "name": "Update User",
           "request": {
             "method": "PUT",
-            "header": [],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
             "url": {
               "raw": "{{api_gateway}}{{api_prefix}}/users/1",
               "host": [
@@ -509,7 +569,13 @@
           "name": "Delete User",
           "request": {
             "method": "DELETE",
-            "header": [],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
             "url": {
               "raw": "{{api_gateway}}{{api_prefix}}/users/1",
               "host": [
@@ -527,7 +593,13 @@
           "name": "Delete User Not Found",
           "request": {
             "method": "DELETE",
-            "header": [],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
             "url": {
               "raw": "{{api_gateway}}{{api_prefix}}/users/9999",
               "host": [
@@ -550,7 +622,13 @@
           "name": "Get All Users",
           "request": {
             "method": "GET",
-            "header": [],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
             "url": {
               "raw": "{{tarrobuild}}{{api_prefix}}/users",
               "host": [
@@ -567,7 +645,13 @@
           "name": "Get Users By Name",
           "request": {
             "method": "GET",
-            "header": [],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
             "url": {
               "raw": "{{tarrobuild}}{{api_prefix}}/users?name=Lucas",
               "host": [
@@ -590,7 +674,13 @@
           "name": "Get Users By Name And Last Name",
           "request": {
             "method": "GET",
-            "header": [],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
             "url": {
               "raw": "{{tarrobuild}}{{api_prefix}}/users?name=Lucas&last_name=Vargas",
               "host": [
@@ -617,7 +707,13 @@
           "name": "Get User By Id",
           "request": {
             "method": "GET",
-            "header": [],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
             "url": {
               "raw": "{{tarrobuild}}{{api_prefix}}/users/1",
               "host": [
@@ -635,7 +731,13 @@
           "name": "Get User By Email",
           "request": {
             "method": "GET",
-            "header": [],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
             "url": {
               "raw": "{{tarrobuild}}{{api_prefix}}/users/email/lucas@tarrobuild.cl",
               "host": [
@@ -654,7 +756,13 @@
           "name": "Get User By Phone",
           "request": {
             "method": "GET",
-            "header": [],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
             "url": {
               "raw": "{{tarrobuild}}{{api_prefix}}/users/phone/+56912345678",
               "host": [
@@ -673,7 +781,13 @@
           "name": "Create User",
           "request": {
             "method": "POST",
-            "header": [],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
             "url": {
               "raw": "{{tarrobuild}}{{api_prefix}}/users",
               "host": [
@@ -699,7 +813,13 @@
           "name": "Create User Duplicate Email",
           "request": {
             "method": "POST",
-            "header": [],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
             "url": {
               "raw": "{{tarrobuild}}{{api_prefix}}/users",
               "host": [
@@ -725,7 +845,13 @@
           "name": "Create User Invalid",
           "request": {
             "method": "POST",
-            "header": [],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
             "url": {
               "raw": "{{tarrobuild}}{{api_prefix}}/users",
               "host": [
@@ -751,7 +877,13 @@
           "name": "Update User",
           "request": {
             "method": "PUT",
-            "header": [],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
             "url": {
               "raw": "{{tarrobuild}}{{api_prefix}}/users/1",
               "host": [
@@ -778,7 +910,13 @@
           "name": "Delete User",
           "request": {
             "method": "DELETE",
-            "header": [],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
             "url": {
               "raw": "{{tarrobuild}}{{api_prefix}}/users/1",
               "host": [
@@ -796,7 +934,13 @@
           "name": "Delete User Not Found",
           "request": {
             "method": "DELETE",
-            "header": [],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
             "url": {
               "raw": "{{tarrobuild}}{{api_prefix}}/users/9999",
               "host": [

@@ -127,7 +127,13 @@
           "name": "Calculate Estimate",
           "request": {
             "method": "POST",
-            "header": [],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
             "url": {
               "host": [
                 "{{api_gateway}}{{api_prefix}}"
@@ -154,7 +160,13 @@
           "name": "Get Estimate By Build",
           "request": {
             "method": "GET",
-            "header": [],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
             "url": {
               "host": [
                 "{{api_gateway}}{{api_prefix}}"
@@ -172,7 +184,13 @@
           "name": "Get Estimate By Id",
           "request": {
             "method": "GET",
-            "header": [],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
             "url": {
               "host": [
                 "{{api_gateway}}{{api_prefix}}"
@@ -191,7 +209,13 @@
           "name": "Get All Estimates By Build",
           "request": {
             "method": "GET",
-            "header": [],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
             "url": {
               "host": [
                 "{{api_gateway}}{{api_prefix}}"
@@ -210,7 +234,13 @@
           "name": "Calculate Invalid Build",
           "request": {
             "method": "POST",
-            "header": [],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
             "url": {
               "host": [
                 "{{api_gateway}}{{api_prefix}}"
@@ -242,7 +272,13 @@
           "name": "Calculate Estimate",
           "request": {
             "method": "POST",
-            "header": [],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
             "url": {
               "host": [
                 "{{tarrobuild}}{{api_prefix}}"
@@ -269,7 +305,13 @@
           "name": "Get Estimate By Build",
           "request": {
             "method": "GET",
-            "header": [],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
             "url": {
               "host": [
                 "{{tarrobuild}}{{api_prefix}}"
@@ -287,7 +329,13 @@
           "name": "Get Estimate By Id",
           "request": {
             "method": "GET",
-            "header": [],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
             "url": {
               "host": [
                 "{{tarrobuild}}{{api_prefix}}"
@@ -306,7 +354,13 @@
           "name": "Get All Estimates By Build",
           "request": {
             "method": "GET",
-            "header": [],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
             "url": {
               "host": [
                 "{{tarrobuild}}{{api_prefix}}"
@@ -325,7 +379,13 @@
           "name": "Calculate Invalid Build",
           "request": {
             "method": "POST",
-            "header": [],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
             "url": {
               "host": [
                 "{{tarrobuild}}{{api_prefix}}"

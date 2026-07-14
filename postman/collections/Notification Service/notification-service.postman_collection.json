@@ -302,7 +302,13 @@
           "name": "Send Notification",
           "request": {
             "method": "POST",
-            "header": [],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
             "url": {
               "raw": "{{api_gateway}}{{api_prefix}}/notifications/send",
               "host": [
@@ -329,7 +335,13 @@
           "name": "Send Notification Warning",
           "request": {
             "method": "POST",
-            "header": [],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
             "url": {
               "raw": "{{api_gateway}}{{api_prefix}}/notifications/send",
               "host": [
@@ -356,7 +368,13 @@
           "name": "Send Notification Invalid",
           "request": {
             "method": "POST",
-            "header": [],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
             "url": {
               "raw": "{{api_gateway}}{{api_prefix}}/notifications/send",
               "host": [
@@ -383,7 +401,13 @@
           "name": "Send Notification Success",
           "request": {
             "method": "POST",
-            "header": [],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
             "url": {
               "raw": "{{api_gateway}}{{api_prefix}}/notifications/send",
               "host": [
@@ -410,7 +434,13 @@
           "name": "Send Notification Error",
           "request": {
             "method": "POST",
-            "header": [],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
             "url": {
               "raw": "{{api_gateway}}{{api_prefix}}/notifications/send",
               "host": [
@@ -437,7 +467,13 @@
           "name": "Send Notification Invalid Status",
           "request": {
             "method": "POST",
-            "header": [],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
             "url": {
               "raw": "{{api_gateway}}{{api_prefix}}/notifications/send",
               "host": [
@@ -464,7 +500,13 @@
           "name": "Send Notification Missing Status",
           "request": {
             "method": "POST",
-            "header": [],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
             "url": {
               "raw": "{{api_gateway}}{{api_prefix}}/notifications/send",
               "host": [
@@ -491,7 +533,13 @@
           "name": "Get All Logs",
           "request": {
             "method": "GET",
-            "header": [],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
             "url": {
               "raw": "{{api_gateway}}{{api_prefix}}/notifications/logs",
               "host": [
@@ -509,7 +557,13 @@
           "name": "Get Logs By User Id",
           "request": {
             "method": "GET",
-            "header": [],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
             "url": {
               "raw": "{{api_gateway}}{{api_prefix}}/notifications/logs/user/1",
               "host": [
@@ -529,7 +583,13 @@
           "name": "Get Logs By User Id No Results",
           "request": {
             "method": "GET",
-            "header": [],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
             "url": {
               "raw": "{{api_gateway}}{{api_prefix}}/notifications/logs/user/9999",
               "host": [
@@ -549,7 +609,13 @@
           "name": "Get Log By Id",
           "request": {
             "method": "GET",
-            "header": [],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
             "url": {
               "raw": "{{api_gateway}}{{api_prefix}}/notifications/logs/1",
               "host": [
@@ -568,7 +634,13 @@
           "name": "Get Log By Id Not Found",
           "request": {
             "method": "GET",
-            "header": [],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
             "url": {
               "raw": "{{api_gateway}}{{api_prefix}}/notifications/logs/9999",
               "host": [
@@ -592,7 +664,13 @@
           "name": "Send Notification",
           "request": {
             "method": "POST",
-            "header": [],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
             "url": {
               "raw": "{{tarrobuild}}{{api_prefix}}/notifications/send",
               "host": [
@@ -619,7 +697,13 @@
           "name": "Send Notification Warning",
           "request": {
             "method": "POST",
-            "header": [],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
             "url": {
               "raw": "{{tarrobuild}}{{api_prefix}}/notifications/send",
               "host": [
@@ -646,7 +730,13 @@
           "name": "Send Notification Invalid",
           "request": {
             "method": "POST",
-            "header": [],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
             "url": {
               "raw": "{{tarrobuild}}{{api_prefix}}/notifications/send",
               "host": [
@@ -673,7 +763,13 @@
           "name": "Send Notification Success",
           "request": {
             "method": "POST",
-            "header": [],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
             "url": {
               "raw": "{{tarrobuild}}{{api_prefix}}/notifications/send",
               "host": [
@@ -700,7 +796,13 @@
           "name": "Send Notification Error",
           "request": {
             "method": "POST",
-            "header": [],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
             "url": {
               "raw": "{{tarrobuild}}{{api_prefix}}/notifications/send",
               "host": [
@@ -727,7 +829,13 @@
           "name": "Send Notification Invalid Status",
           "request": {
             "method": "POST",
-            "header": [],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
             "url": {
               "raw": "{{tarrobuild}}{{api_prefix}}/notifications/send",
               "host": [
@@ -754,7 +862,13 @@
           "name": "Send Notification Missing Status",
           "request": {
             "method": "POST",
-            "header": [],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
             "url": {
               "raw": "{{tarrobuild}}{{api_prefix}}/notifications/send",
               "host": [
@@ -781,7 +895,13 @@
           "name": "Get All Logs",
           "request": {
             "method": "GET",
-            "header": [],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
             "url": {
               "raw": "{{tarrobuild}}{{api_prefix}}/notifications/logs",
               "host": [
@@ -799,7 +919,13 @@
           "name": "Get Logs By User Id",
           "request": {
             "method": "GET",
-            "header": [],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
             "url": {
               "raw": "{{tarrobuild}}{{api_prefix}}/notifications/logs/user/1",
               "host": [
@@ -819,7 +945,13 @@
           "name": "Get Logs By User Id No Results",
           "request": {
             "method": "GET",
-            "header": [],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
             "url": {
               "raw": "{{tarrobuild}}{{api_prefix}}/notifications/logs/user/9999",
               "host": [
@@ -839,7 +971,13 @@
           "name": "Get Log By Id",
           "request": {
             "method": "GET",
-            "header": [],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
             "url": {
               "raw": "{{tarrobuild}}{{api_prefix}}/notifications/logs/1",
               "host": [
@@ -858,7 +996,13 @@
           "name": "Get Log By Id Not Found",
           "request": {
             "method": "GET",
-            "header": [],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
             "url": {
               "raw": "{{tarrobuild}}{{api_prefix}}/notifications/logs/9999",
               "host": [

@@ -107,7 +107,13 @@
           "name": "Generate Recommendations",
           "request": {
             "method": "POST",
-            "header": [],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
             "url": {
               "host": [
                 "{{api_gateway}}{{api_prefix}}"
@@ -134,7 +140,13 @@
           "name": "Get Recommendations By User",
           "request": {
             "method": "GET",
-            "header": [],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
             "url": {
               "host": [
                 "{{api_gateway}}{{api_prefix}}"
@@ -152,7 +164,13 @@
           "name": "Get Recommendation History",
           "request": {
             "method": "GET",
-            "header": [],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
             "url": {
               "host": [
                 "{{api_gateway}}{{api_prefix}}"
@@ -170,7 +188,13 @@
           "name": "Generate Invalid Request",
           "request": {
             "method": "POST",
-            "header": [],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
             "url": {
               "host": [
                 "{{api_gateway}}{{api_prefix}}"
@@ -202,7 +226,13 @@
           "name": "Generate Recommendations",
           "request": {
             "method": "POST",
-            "header": [],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
             "url": {
               "host": [
                 "{{tarrobuild}}{{api_prefix}}"
@@ -229,7 +259,13 @@
           "name": "Get Recommendations By User",
           "request": {
             "method": "GET",
-            "header": [],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
             "url": {
               "host": [
                 "{{tarrobuild}}{{api_prefix}}"
@@ -247,7 +283,13 @@
           "name": "Get Recommendation History",
           "request": {
             "method": "GET",
-            "header": [],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
             "url": {
               "host": [
                 "{{tarrobuild}}{{api_prefix}}"
@@ -265,7 +307,13 @@
           "name": "Generate Invalid Request",
           "request": {
             "method": "POST",
-            "header": [],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
             "url": {
               "host": [
                 "{{tarrobuild}}{{api_prefix}}"

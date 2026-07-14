@@ -144,7 +144,13 @@
           "name": "Get Compatibility By Build",
           "request": {
             "method": "GET",
-            "header": [],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
             "url": {
               "host": [
                 "{{api_gateway}}{{api_prefix}}"
@@ -249,7 +255,13 @@
           "name": "Get Compatibility By Build",
           "request": {
             "method": "GET",
-            "header": [],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
             "url": {
               "host": [
                 "{{tarrobuild}}{{api_prefix}}"

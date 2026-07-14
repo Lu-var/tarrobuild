@@ -160,7 +160,13 @@
           "name": "Create Category",
           "request": {
             "method": "POST",
-            "header": [],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
             "url": {
               "raw": "{{api_gateway}}{{api_prefix}}/categories",
               "host": [
@@ -205,7 +211,13 @@
           "name": "Create Attribute Definition",
           "request": {
             "method": "POST",
-            "header": [],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
             "url": {
               "raw": "{{api_gateway}}{{api_prefix}}/categories/1/attributes",
               "host": [
@@ -273,7 +285,13 @@
           "name": "Create Category",
           "request": {
             "method": "POST",
-            "header": [],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
             "url": {
               "raw": "{{tarrobuild}}{{api_prefix}}/categories",
               "host": [
@@ -318,7 +336,13 @@
           "name": "Create Attribute Definition",
           "request": {
             "method": "POST",
-            "header": [],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
             "url": {
               "raw": "{{tarrobuild}}{{api_prefix}}/categories/1/attributes",
               "host": [
