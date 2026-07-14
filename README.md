@@ -380,9 +380,8 @@ A continuacion se define cada uno de los 11 microservicios del sistema TarroBuil
 
 | Integrante | Rol |
 |------------|-----|
-| [Nombre 1] | [Rol] |
-| [Nombre 2] | [Rol] |
-| [Nombre 3] | [Rol] |
+| Lucas Vargas | Backend Developer |
+| Camila Corocedo | Backend Developer |
 
 ## 7. Puertos y bases de datos
 
@@ -517,7 +516,7 @@ Los 11 servicios están desplegados en Render como servicios web independientes:
 
 ## 13. Enlace a tablero de gestión
 
-[Agregar enlace a Trello / GitHub Projects / Jira]
+No se utilizó tablero externo; la trazabilidad se gestionó mediante ramas GitHub (git flow) y pull requests.
 
 ## 14. Documentación adicional
 

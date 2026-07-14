@@ -27,7 +27,7 @@ spring:
             user-service:
               - uri: https://user-service-yuz5.onrender.com
 jwt:
-  secret: ${JWT_SECRET:aB3dEfGhIjKlMnOpQrStUvWxYz0123456789AbCdEfGhIjKlMnOpQrStUv}
+  secret: ${JWT_SECRET:jwt-placeholder-not-for-prod}
   expiration: ${JWT_EXPIRATION:3600000}
 app:
   environment: production

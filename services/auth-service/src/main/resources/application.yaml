@@ -8,7 +8,7 @@ server:
   port: ${SERVER_PORT:8081}
 
 jwt:
-  secret: ${JWT_SECRET:aB3dEfGhIjKlMnOpQrStUvWxYz0123456789AbCdEfGhIjKlMnOpQrStUv}
+  secret: ${JWT_SECRET:jwt-placeholder-not-for-prod}
   expiration: ${JWT_EXPIRATION:3600000}
 
 app:
