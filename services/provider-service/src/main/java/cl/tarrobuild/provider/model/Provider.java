@@ -5,6 +5,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Table(name = "providers")
 @Getter
@@ -25,4 +28,7 @@ public class Provider {
 
     @Column(nullable = false)
     private Boolean isActive = true;
+
+    @OneToMany(mappedBy = "provider", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ProviderProduct> products = new ArrayList<>();
 }

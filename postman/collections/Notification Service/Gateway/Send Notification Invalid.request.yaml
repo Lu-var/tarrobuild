@@ -1,0 +1,13 @@
+$kind: http-request
+url: "{{api_gateway}}{{api_prefix}}/notifications/send"
+method: POST
+body:
+  type: json
+  content: |-
+    {
+      "userId": null,
+      "type": "",
+      "content": "",
+      "status": null
+    }
+order: 150

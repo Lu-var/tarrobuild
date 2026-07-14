@@ -1,256 +1,372 @@
 {
-    "info":  {
-                 "name":  "Category Service",
-                 "description":  "# Category Service\n\nBase URL: `http://localhost:8084`\n\nManages product categories and their attribute definitions.",
-                 "schema":  "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
-             },
-    "item":  [
-                 {
-                     "name":  "Direct Requests",
-                     "item":  [
-                                  {
-                                      "name":  "Get All Categories",
-                                      "request":  {
-                                                      "method":  "GET",
-                                                      "header":  [
-
-                                                                 ],
-                                                      "url":  {
-                                                                  "host":  [
-                                                                               "{{category_service}}{{api_prefix}}"
-                                                                           ],
-                                                                  "raw":  "{{category_service}}{{api_prefix}}/categories",
-                                                                  "path":  [
-                                                                               "categories"
-                                                                           ]
-                                                              },
-                                                      "description":  "Retrieves all categories in the system."
-                                                  }
-                                  },
-                                  {
-                                      "name":  "Get Category By Id",
-                                      "request":  {
-                                                      "method":  "GET",
-                                                      "header":  [
-
-                                                                 ],
-                                                      "url":  {
-                                                                  "host":  [
-                                                                               "{{category_service}}{{api_prefix}}"
-                                                                           ],
-                                                                  "raw":  "{{category_service}}{{api_prefix}}/categories/1",
-                                                                  "path":  [
-                                                                               "categories",
-                                                                               "1"
-                                                                           ]
-                                                              },
-                                                      "description":  "Retrieves a single category by ID. Returns 404 if not found."
-                                                  }
-                                  },
-                                  {
-                                      "name":  "Create Category",
-                                      "request":  {
-                                                      "method":  "POST",
-                                                      "header":  [
-
-                                                                 ],
-                                                      "url":  {
-                                                                  "host":  [
-                                                                               "{{category_service}}{{api_prefix}}"
-                                                                           ],
-                                                                  "raw":  "{{category_service}}{{api_prefix}}/categories",
-                                                                  "path":  [
-                                                                               "categories"
-                                                                           ]
-                                                              },
-                                                      "description":  "Creates a new category. Required fields: `name`, `slug`.\n\n**Expected:** 201 Created",
-                                                      "body":  {
-                                                                   "mode":  "raw",
-                                                                   "raw":  "{\n  \"name\": \"GPU\",\n  \"slug\": \"gpu\",\n  \"description\": \"Graphics cards\",\n  \"isActive\": true\n}",
-                                                                   "options":  {
-                                                                                   "raw":  {
-                                                                                               "language":  "json"
-                                                                                           }
-                                                                               }
-                                                               }
-                                                  }
-                                  },
-                                  {
-                                      "name":  "Get Attributes By Category",
-                                      "request":  {
-                                                      "method":  "GET",
-                                                      "header":  [
-
-                                                                 ],
-                                                      "url":  {
-                                                                  "host":  [
-                                                                               "{{category_service}}{{api_prefix}}"
-                                                                           ],
-                                                                  "raw":  "{{category_service}}{{api_prefix}}/categories/1/attributes",
-                                                                  "path":  [
-                                                                               "categories",
-                                                                               "1",
-                                                                               "attributes"
-                                                                           ]
-                                                              },
-                                                      "description":  "Retrieves attribute definitions for a category."
-                                                  }
-                                  },
-                                  {
-                                      "name":  "Create Attribute Definition",
-                                      "request":  {
-                                                      "method":  "POST",
-                                                      "header":  [
-
-                                                                 ],
-                                                      "url":  {
-                                                                  "host":  [
-                                                                               "{{category_service}}{{api_prefix}}"
-                                                                           ],
-                                                                  "raw":  "{{category_service}}{{api_prefix}}/categories/1/attributes",
-                                                                  "path":  [
-                                                                               "categories",
-                                                                               "1",
-                                                                               "attributes"
-                                                                           ]
-                                                              },
-                                                      "description":  "Creates a new attribute definition for the category. Required fields: `attributeName`, `valueType`, `isRequired`.\n\n**Expected:** 201 Created",
-                                                      "body":  {
-                                                                   "mode":  "raw",
-                                                                   "raw":  "{\n  \"attributeName\": \"Chipset\",\n  \"valueType\": \"string\",\n  \"isRequired\": true\n}",
-                                                                   "options":  {
-                                                                                   "raw":  {
-                                                                                               "language":  "json"
-                                                                                           }
-                                                                               }
-                                                               }
-                                                  }
-                                  }
-                              ]
-                 },
-                 {
-                     "name":  "Proxy Requests",
-                     "item":  [
-                                  {
-                                      "name":  "Get All Categories (via gateway)",
-                                      "request":  {
-                                                      "method":  "GET",
-                                                      "header":  [
-
-                                                                 ],
-                                                      "url":  {
-                                                                  "raw":  "{{api_gateway}}{{api_prefix}}/categories",
-                                                                  "host":  [
-                                                                               "{{api_gateway}}{{api_prefix}}"
-                                                                           ],
-                                                                  "path":  [
-                                                                               "categories"
-                                                                           ]
-                                                              },
-                                                      "description":  "Through gateway: Retrieves all categories in the system."
-                                                  }
-                                  },
-                                  {
-                                      "name":  "Get Category By Id (via gateway)",
-                                      "request":  {
-                                                      "method":  "GET",
-                                                      "header":  [
-
-                                                                 ],
-                                                      "url":  {
-                                                                  "raw":  "{{api_gateway}}{{api_prefix}}/categories/1",
-                                                                  "host":  [
-                                                                               "{{api_gateway}}{{api_prefix}}"
-                                                                           ],
-                                                                  "path":  [
-                                                                               "categories",
-                                                                               "1"
-                                                                           ]
-                                                              },
-                                                      "description":  "Through gateway: Retrieves a single category by ID. Returns 404 if not found."
-                                                  }
-                                  },
-                                  {
-                                      "name":  "Create Category (via gateway)",
-                                      "request":  {
-                                                      "method":  "POST",
-                                                      "header":  [
-
-                                                                 ],
-                                                      "url":  {
-                                                                  "raw":  "{{api_gateway}}{{api_prefix}}/categories",
-                                                                  "host":  [
-                                                                               "{{api_gateway}}{{api_prefix}}"
-                                                                           ],
-                                                                  "path":  [
-                                                                               "categories"
-                                                                           ]
-                                                              },
-                                                      "description":  "Through gateway: Creates a new category. Required fields: `name`, `slug`.\n\n**Expected:** 201 Created",
-                                                      "body":  {
-                                                                   "mode":  "raw",
-                                                                   "raw":  "{\n  \"name\": \"GPU\",\n  \"slug\": \"gpu\",\n  \"description\": \"Graphics cards\",\n  \"isActive\": true\n}",
-                                                                   "options":  {
-                                                                                   "raw":  {
-                                                                                               "language":  "json"
-                                                                                           }
-                                                                               }
-                                                               }
-                                                  }
-                                  },
-                                  {
-                                      "name":  "Get Attributes By Category (via gateway)",
-                                      "request":  {
-                                                      "method":  "GET",
-                                                      "header":  [
-
-                                                                 ],
-                                                      "url":  {
-                                                                  "raw":  "{{api_gateway}}{{api_prefix}}/categories/1/attributes",
-                                                                  "host":  [
-                                                                               "{{api_gateway}}{{api_prefix}}"
-                                                                           ],
-                                                                  "path":  [
-                                                                               "categories",
-                                                                               "1",
-                                                                               "attributes"
-                                                                           ]
-                                                              },
-                                                      "description":  "Through gateway: Retrieves attribute definitions for a category."
-                                                  }
-                                  },
-                                  {
-                                      "name":  "Create Attribute Definition (via gateway)",
-                                      "request":  {
-                                                      "method":  "POST",
-                                                      "header":  [
-
-                                                                 ],
-                                                      "url":  {
-                                                                  "raw":  "{{api_gateway}}{{api_prefix}}/categories/1/attributes",
-                                                                  "host":  [
-                                                                               "{{api_gateway}}{{api_prefix}}"
-                                                                           ],
-                                                                  "path":  [
-                                                                               "categories",
-                                                                               "1",
-                                                                               "attributes"
-                                                                           ]
-                                                              },
-                                                      "description":  "Through gateway: Creates a new attribute definition for the category. Required fields: `attributeName`, `valueType`, `isRequired`.\n\n**Expected:** 201 Created",
-                                                      "body":  {
-                                                                   "mode":  "raw",
-                                                                   "raw":  "{\n  \"attributeName\": \"Chipset\",\n  \"valueType\": \"string\",\n  \"isRequired\": true\n}",
-                                                                   "options":  {
-                                                                                   "raw":  {
-                                                                                               "language":  "json"
-                                                                                           }
-                                                                               }
-                                                               }
-                                                  }
-                                  }
-                              ]
-                 }
-             ]
+  "info": {
+    "name": "Category Service",
+    "description": "# Category Service\n\nBase URL: `{{category_service}}{{api_prefix}}`\n\nManages product categories and their attribute definitions.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Direct",
+      "item": [
+        {
+          "name": "Get All Categories",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "host": [
+                "{{category_service}}{{api_prefix}}"
+              ],
+              "raw": "{{category_service}}{{api_prefix}}/categories",
+              "path": [
+                "categories"
+              ]
+            },
+            "description": "Retrieves all categories in the system."
+          }
+        },
+        {
+          "name": "Get Category By Id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "host": [
+                "{{category_service}}{{api_prefix}}"
+              ],
+              "raw": "{{category_service}}{{api_prefix}}/categories/1",
+              "path": [
+                "categories",
+                "1"
+              ]
+            },
+            "description": "Retrieves a single category by ID. Returns 404 if not found."
+          }
+        },
+        {
+          "name": "Create Category",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "host": [
+                "{{category_service}}{{api_prefix}}"
+              ],
+              "raw": "{{category_service}}{{api_prefix}}/categories",
+              "path": [
+                "categories"
+              ]
+            },
+            "description": "Creates a new category. Required fields: `name`, `slug`.\n\n**Expected:** 201 Created",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"GPU\",\n  \"slug\": \"gpu\",\n  \"description\": \"Graphics cards\",\n  \"isActive\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Get Attributes By Category",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "host": [
+                "{{category_service}}{{api_prefix}}"
+              ],
+              "raw": "{{category_service}}{{api_prefix}}/categories/1/attributes",
+              "path": [
+                "categories",
+                "1",
+                "attributes"
+              ]
+            },
+            "description": "Retrieves attribute definitions for a category."
+          }
+        },
+        {
+          "name": "Create Attribute Definition",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "host": [
+                "{{category_service}}{{api_prefix}}"
+              ],
+              "raw": "{{category_service}}{{api_prefix}}/categories/1/attributes",
+              "path": [
+                "categories",
+                "1",
+                "attributes"
+              ]
+            },
+            "description": "Creates a new attribute definition for the category. Required fields: `attributeName`, `valueType`, `isRequired`.\n\n**Expected:** 201 Created",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"attributeName\": \"Chipset\",\n  \"valueType\": \"string\",\n  \"isRequired\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Gateway",
+      "item": [
+        {
+          "name": "Get All Categories",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{api_gateway}}{{api_prefix}}/categories",
+              "host": [
+                "{{api_gateway}}{{api_prefix}}"
+              ],
+              "path": [
+                "categories"
+              ]
+            },
+            "description": "Through gateway: Retrieves all categories in the system."
+          }
+        },
+        {
+          "name": "Get Category By Id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{api_gateway}}{{api_prefix}}/categories/1",
+              "host": [
+                "{{api_gateway}}{{api_prefix}}"
+              ],
+              "path": [
+                "categories",
+                "1"
+              ]
+            },
+            "description": "Through gateway: Retrieves a single category by ID. Returns 404 if not found."
+          }
+        },
+        {
+          "name": "Create Category",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{api_gateway}}{{api_prefix}}/categories",
+              "host": [
+                "{{api_gateway}}{{api_prefix}}"
+              ],
+              "path": [
+                "categories"
+              ]
+            },
+            "description": "Through gateway: Creates a new category. Required fields: `name`, `slug`.\n\n**Expected:** 201 Created",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"GPU\",\n  \"slug\": \"gpu\",\n  \"description\": \"Graphics cards\",\n  \"isActive\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Get Attributes By Category",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{api_gateway}}{{api_prefix}}/categories/1/attributes",
+              "host": [
+                "{{api_gateway}}{{api_prefix}}"
+              ],
+              "path": [
+                "categories",
+                "1",
+                "attributes"
+              ]
+            },
+            "description": "Through gateway: Retrieves attribute definitions for a category."
+          }
+        },
+        {
+          "name": "Create Attribute Definition",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{api_gateway}}{{api_prefix}}/categories/1/attributes",
+              "host": [
+                "{{api_gateway}}{{api_prefix}}"
+              ],
+              "path": [
+                "categories",
+                "1",
+                "attributes"
+              ]
+            },
+            "description": "Through gateway: Creates a new attribute definition for the category. Required fields: `attributeName`, `valueType`, `isRequired`.\n\n**Expected:** 201 Created",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"attributeName\": \"Chipset\",\n  \"valueType\": \"string\",\n  \"isRequired\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Monolith",
+      "item": [
+        {
+          "name": "Get All Categories",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{tarrobuild}}{{api_prefix}}/categories",
+              "host": [
+                "{{tarrobuild}}{{api_prefix}}"
+              ],
+              "path": [
+                "categories"
+              ]
+            },
+            "description": "Through gateway: Retrieves all categories in the system."
+          }
+        },
+        {
+          "name": "Get Category By Id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{tarrobuild}}{{api_prefix}}/categories/1",
+              "host": [
+                "{{tarrobuild}}{{api_prefix}}"
+              ],
+              "path": [
+                "categories",
+                "1"
+              ]
+            },
+            "description": "Through gateway: Retrieves a single category by ID. Returns 404 if not found."
+          }
+        },
+        {
+          "name": "Create Category",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{tarrobuild}}{{api_prefix}}/categories",
+              "host": [
+                "{{tarrobuild}}{{api_prefix}}"
+              ],
+              "path": [
+                "categories"
+              ]
+            },
+            "description": "Through gateway: Creates a new category. Required fields: `name`, `slug`.\n\n**Expected:** 201 Created",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"GPU\",\n  \"slug\": \"gpu\",\n  \"description\": \"Graphics cards\",\n  \"isActive\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Get Attributes By Category",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{tarrobuild}}{{api_prefix}}/categories/1/attributes",
+              "host": [
+                "{{tarrobuild}}{{api_prefix}}"
+              ],
+              "path": [
+                "categories",
+                "1",
+                "attributes"
+              ]
+            },
+            "description": "Through gateway: Retrieves attribute definitions for a category."
+          }
+        },
+        {
+          "name": "Create Attribute Definition",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{tarrobuild}}{{api_prefix}}/categories/1/attributes",
+              "host": [
+                "{{tarrobuild}}{{api_prefix}}"
+              ],
+              "path": [
+                "categories",
+                "1",
+                "attributes"
+              ]
+            },
+            "description": "Through gateway: Creates a new attribute definition for the category. Required fields: `attributeName`, `valueType`, `isRequired`.\n\n**Expected:** 201 Created",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"attributeName\": \"Chipset\",\n  \"valueType\": \"string\",\n  \"isRequired\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  ]
 }
-

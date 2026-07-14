@@ -11,23 +11,23 @@
 - [x] **RF-05** — Filter by category/brand/price
 - [x] **RF-06** — Create build
 - [x] **RF-07** — Manage build items
-- [ ] **RF-08** — Compatibility check
-- [ ] **RF-09** — Power consumption estimate (cost: done via estimate-service, power validation: pending in compatibility-service)
+- [x] **RF-08** — Compatibility check (invoked by build-service on item create/update/delete)
+- [x] **RF-09** — Power consumption estimate (cost via estimate-service + power validation via compatibility rules, triggered on item change)
 - [x] **RF-10** — Provider references (SKU / external links)
 - [ ] **RF-11** — Consolidated build analysis
-- [ ] **RF-12** — Save favorite builds
-- [ ] **RF-13** — Upgrade recommendations
+- [x] **RF-12** — Save favorite builds
+- [x] **RF-13** — Missing component recommendations
 - [x] **RF-14** — CRUD components/attributes
 - [x] **RF-15** — CRUD compatibility rules
 - [x] **RF-16** — CRUD provider references
 - [ ] **RF-17** — Price/availability alerts
-- [ ] **RF-18** — Auto-notifications
+- [x] **RF-18** — Auto-notifications
 
 ## Non-functional requirements (RNF)
 
 - [ ] **RNF-01** — Response < 500ms
 - [x] **RNF-02** — Validation + semantic HTTP codes
-- [ ] **RNF-03** — Structured logs with correlation ID and downstream propagation
+- [x] **RNF-03** — Structured logs with correlation ID and downstream propagation
 - [x] **RNF-04** — Independent DB per service
 - [x] **RNF-05** — REST-only inter-service communication
 - [x] **RNF-06** — BCrypt password encryption
@@ -38,7 +38,7 @@
 - [x] **HU-02** — Authentication
 - [x] **HU-03** — Catalog exploration
 - [x] **HU-04** — Build creation
-- [ ] **HU-05** — Compatibility validation
+- [x] **HU-05** — Compatibility validation
 - [x] **HU-06** — Cost estimation
 - [ ] **HU-07** — Component recommendations
 - [x] **HU-08** — Build history
@@ -55,131 +55,132 @@
 ---
 ### Cross-cutting
 
+**Done**
+- [x] Eureka Service Discovery — discovery-server module, @EnableDiscoveryClient en 11 servicios, FeignClients y RestClients con `lb://`
+- [x] Gateway con URLs directas (no lb://) para compatibilidad con Render
+
 **Pending**
-- [ ] Ensure correlation ID propagation is consistently planned across all services (RNF-03)
-- [ ] Add user identity propagation — gateway forwards userId/email/role as headers, downstream services consume them (Gap #17)
 - [ ] (optional) Split profiles into `dev`/`prod` (environment) + `h2`/`mysql` (database)
-- [ ] Fix dependency chain in `.opencode/agents/shared-context.md` — add `user-service` before `category-service` (currently omitted, but `auth-service` depends on it)
-- [ ] Fix dependency chain in `.opencode/agents/planner.md` — same missing `user-service` fix
-- [ ] Fix `.opencode/agents/implementor.md` — change "entity" to "model" as the package name (actual package is `model/`, not `entity/`)
 
 ---
 ### api-gateway :8080
 
-**Pending**
-- [ ] Propagate user identity (userId/email/role) as headers to downstream services
-- [ ] Tests
+**Done**
+- [x] Swagger/OpenAPI (springdoc)
+- [x] ContextLoads test
+- [x] Unit tests (50 tests)
 
 ---
 
 ### auth-service :8081
-
-**Pending**
-- [ ] Correlation ID propagation to downstream services
-- [ ] Endpoint tests script
-- [ ] Tests
+**Done**
+- [x] Swagger/OpenAPI (springdoc)
+- [x] Tests unitarios (12 tests)
+- [x] ContextLoads test
 
 ---
+
 ### user-service :8082
 
-**Pending**
-- [ ] User with unique email (Module 3) — add `@Column(unique = true)` to `User.email`
-- [ ] Ensure email uniqueness validated across user-service and auth-service (duplicate check in register flow)
-- [ ] PATCH endpoint for partial user updates
-- [ ] Correlation ID propagation to downstream services
-- [ ] Endpoint tests script
-- [ ] Tests
+**Done**
+- [x] Swagger/OpenAPI (springdoc)
+- [x] Tests unitarios (18 tests)
+- [x] ContextLoads test
 
 ---
 
 ### category-service :8084
 
-**Pending**
-- [ ] PATCH endpoint for partial category updates
-- [ ] Correlation ID propagation to downstream services
-- [ ] Endpoint tests script
-- [ ] Tests
+**Done**
+- [x] Swagger/OpenAPI (springdoc)
+- [x] Tests unitarios (12 tests)
+- [x] ContextLoads test
 
 ---
 
 ### product-service :8083
 
+**Done**
+- [x] Swagger/OpenAPI (springdoc)
+- [x] Tests unitarios (20 tests)
+- [x] ContextLoads test
+
 **Pending**
-- [ ] FeignClient fallbacks and configurable timeouts (Module 5)
-- [ ] Correlation ID propagation to downstream services
 - [ ] Endpoint tests script
-- [ ] Tests
 
 ---
 
 ### compatibility-service :8085
 
+**Done**
+- [x] Swagger/OpenAPI (springdoc)
+- [x] Tests unitarios (12 tests)
+- [x] ContextLoads test
+
 **Pending**
-- [ ] Correlation ID propagation to downstream services
 - [ ] Endpoint tests script
-- [ ] Tests
 
 ---
+
 ### provider-service :8086
 
+**Done**
+- [x] Swagger/OpenAPI (springdoc)
+- [x] Tests unitarios (16 tests)
+- [x] ContextLoads test
+
 **Pending**
-- [ ] Add `@ManyToOne`/`@OneToMany` JPA relations on `Provider` and `ProviderProduct` instead of scalar `Long` fields (Module 3)
-- [ ] PATCH endpoint for partial provider updates
-- [ ] Correlation ID propagation to downstream services
+- [ ] Cross-service integration — currently isolated, no upstream service queries provider data
 - [ ] Endpoint tests script
-- [ ] Tests
 
 ---
 
 ### build-service :8087
 
-**In Progress**
-- [🔥] Fix `GET /api/builds` — filter by authenticated user instead of returning all builds (no ownership check, leaks all users' builds)
+**Done**
+- [x] Swagger/OpenAPI (springdoc)
+- [x] Tests unitarios (27 tests)
+- [x] ContextLoads test
+- [x] Lógica de roles (ADMIN/USER) en endpoints GET — ADMIN ve todas, USER solo las propias; /user/{userId} protegido
 
 **Pending**
-- [ ] (optional) Log who performed each action (Module 8 — extra challenge)
-- [ ] FeignClient fallbacks and configurable timeouts (Module 5)
-- [ ] Propagate user identity (userId/email/role) from incoming request for build ownership checks
-- [ ] Correlation ID propagation to downstream services
-- [ ] Tests
+- [ ] Endpoint tests script
 
 ---
 
 ### estimate-service :8088
 
+**Done**
+- [x] Swagger/OpenAPI (springdoc)
+- [x] Tests unitarios (11 tests)
+- [x] ContextLoads test
+
 **Pending**
-- [ ] Deduplicate keys in `application.yaml` (build/product/notification service URLs + server.port are duplicated)
-- [ ] Correlation ID propagation to downstream services
-- [ ] Endpoint tests script (notification as template)
-- [ ] Tests
+- [ ] Endpoint tests script
 
 ---
 
 ### hardware-advisor-service :8089
 
+**Done**
+- [x] Swagger/OpenAPI (springdoc)
+- [x] Tests unitarios (8 tests)
+- [x] ContextLoads test
+
 **Pending**
-- [ ] FeignClient → build-service (Module 5)
-- [ ] FeignClient → product-service (Module 5)
-- [ ] FeignClient → compatibility-service (Module 5)
-- [ ] FeignClient → notification-service (Module 5)
-- [ ] FeignClient fallbacks and configurable timeouts (Module 5)
-- [ ] Correlation ID propagation to downstream services
-- [ ] Implement generate() recommendation logic (fetch build → compare catalog → apply rules → persist)
 - [ ] Endpoint tests script (notification as template)
-- [ ] Tests
 
 ---
 
 ### notification-service :8090
 
-**Pending**
-- [ ] Replace `NoSuchElementException` with `EntityNotFoundException` for 404 responses
-- [ ] Add `EntityNotFoundException` handler to `GlobalExceptionHandler`
-- [ ] Add UserRestClient → user-service to resolve email on send()
-- [ ] Correlation ID propagation to downstream services
-- [ ] Endpoint tests script (no script file found)
-- [ ] Tests
+**Done**
+- [x] Swagger/OpenAPI (springdoc)
+- [x] Tests unitarios (8 tests)
+- [x] ContextLoads test
 
+**Pending**
+- [ ] Endpoint tests script (no script file found)
 ---
 
 ---
@@ -257,6 +258,13 @@
 - **`ResourceAccessException` → 503 (downstream unavailable)**
 - Generic `Exception` → 500
 - Dev (stack trace) vs. prod (message only) responses
+
+---
+
+## Documentación de apoyo
+
+- [TEST-STRATEGY.md](TEST-STRATEGY.md) — Estrategia de pruebas unitarias (204 tests, 11 servicios)
+- [API-DOCS.md](API-DOCS.md) — Documentación Swagger/OpenAPI (11 servicios)
 
 ---
 

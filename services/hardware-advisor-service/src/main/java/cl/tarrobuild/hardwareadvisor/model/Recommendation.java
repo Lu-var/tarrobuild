@@ -24,7 +24,7 @@ public class Recommendation {
     @Column(nullable = false)
     private String ruleApplied;
 
-    @Column(nullable = false)
+    @Column
     private Long suggestedProductId;
 
     @Column(columnDefinition = "TEXT")

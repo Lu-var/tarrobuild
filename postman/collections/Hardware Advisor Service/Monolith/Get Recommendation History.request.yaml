@@ -1,0 +1,4 @@
+$kind: http-request
+url: "{{tarrobuild}}{{api_prefix}}/advisor/history/1"
+method: GET
+order: 70

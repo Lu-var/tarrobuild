@@ -1,18 +1,336 @@
 {
   "info": {
     "name": "Compatibility Service",
-    "description": "# Compatibility Service\n\nBase URL: `http://localhost:8085`\n\nValidates component compatibility for PC builds.",
+    "description": "# Compatibility Service\n\nBase URL: `{{compatibility_service}}{{api_prefix}}`\n\nValidates component compatibility for PC builds.",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "item": [
     {
-      "name": "Direct Requests",
-      "item": []
+      "name": "Direct",
+      "item": [
+        {
+          "name": "Check Compatibility",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "host": [
+                "{{compatibility_service}}{{api_prefix}}"
+              ],
+              "raw": "{{compatibility_service}}{{api_prefix}}/compatibility/check",
+              "path": [
+                "compatibility",
+                "check"
+              ]
+            },
+            "description": "Validates compatibility of a set of products for a build.\n\n**Expected:** 200 OK",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"productIds\": [\n    1,\n    2\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Get Compatibility By Build",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "host": [
+                "{{compatibility_service}}{{api_prefix}}"
+              ],
+              "raw": "{{compatibility_service}}{{api_prefix}}/compatibility/check/1",
+              "path": [
+                "compatibility",
+                "check",
+                "1"
+              ]
+            },
+            "description": "Retrieves the compatibility result for a specific build."
+          }
+        },
+        {
+          "name": "Check Invalid Products",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "host": [
+                "{{compatibility_service}}{{api_prefix}}"
+              ],
+              "raw": "{{compatibility_service}}{{api_prefix}}/compatibility/check",
+              "path": [
+                "compatibility",
+                "check"
+              ]
+            },
+            "description": "Checks with only one product \u2014 should fail validation.\n\n**Expected:** 400 Bad Request",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"productIds\": [\n    1\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Check Non-existent Build",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "host": [
+                "{{compatibility_service}}{{api_prefix}}"
+              ],
+              "raw": "{{compatibility_service}}{{api_prefix}}/compatibility/check",
+              "path": [
+                "compatibility",
+                "check"
+              ]
+            },
+            "description": "Checks compatibility for a non-existent build.\n\n**Expected:** 404 Not Found",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"productIds\": [\n    1,\n    2\n  ],\n  \"buildId\": 9999\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        }
+      ]
     },
     {
-      "name": "Proxy Requests",
-      "item": []
+      "name": "Gateway",
+      "item": [
+        {
+          "name": "Check Compatibility",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "host": [
+                "{{api_gateway}}{{api_prefix}}"
+              ],
+              "raw": "{{api_gateway}}{{api_prefix}}/compatibility/check",
+              "path": [
+                "compatibility",
+                "check"
+              ]
+            },
+            "description": "Validates compatibility through the API Gateway.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"productIds\": [\n    1,\n    2\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Get Compatibility By Build",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "host": [
+                "{{api_gateway}}{{api_prefix}}"
+              ],
+              "raw": "{{api_gateway}}{{api_prefix}}/compatibility/check/1",
+              "path": [
+                "compatibility",
+                "check",
+                "1"
+              ]
+            },
+            "description": "Retrieves compatibility result through the API Gateway."
+          }
+        },
+        {
+          "name": "Check Invalid Products",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "host": [
+                "{{api_gateway}}{{api_prefix}}"
+              ],
+              "raw": "{{api_gateway}}{{api_prefix}}/compatibility/check",
+              "path": [
+                "compatibility",
+                "check"
+              ]
+            },
+            "description": "Invalid products check through the API Gateway.\n\n**Expected:** 400 Bad Request",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"productIds\": [\n    1\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Check Non-existent Build",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "host": [
+                "{{api_gateway}}{{api_prefix}}"
+              ],
+              "raw": "{{api_gateway}}{{api_prefix}}/compatibility/check",
+              "path": [
+                "compatibility",
+                "check"
+              ]
+            },
+            "description": "Non-existent build check through the API Gateway.\n\n**Expected:** 404 Not Found",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"productIds\": [\n    1,\n    2\n  ],\n  \"buildId\": 9999\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Monolith",
+      "item": [
+        {
+          "name": "Check Compatibility",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "host": [
+                "{{tarrobuild}}{{api_prefix}}"
+              ],
+              "raw": "{{tarrobuild}}{{api_prefix}}/compatibility/check",
+              "path": [
+                "compatibility",
+                "check"
+              ]
+            },
+            "description": "Validates compatibility through the API Gateway.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"productIds\": [\n    1,\n    2\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Get Compatibility By Build",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "host": [
+                "{{tarrobuild}}{{api_prefix}}"
+              ],
+              "raw": "{{tarrobuild}}{{api_prefix}}/compatibility/check/1",
+              "path": [
+                "compatibility",
+                "check",
+                "1"
+              ]
+            },
+            "description": "Retrieves compatibility result through the API Gateway."
+          }
+        },
+        {
+          "name": "Check Invalid Products",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "host": [
+                "{{tarrobuild}}{{api_prefix}}"
+              ],
+              "raw": "{{tarrobuild}}{{api_prefix}}/compatibility/check",
+              "path": [
+                "compatibility",
+                "check"
+              ]
+            },
+            "description": "Invalid products check through the API Gateway.\n\n**Expected:** 400 Bad Request",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"productIds\": [\n    1\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Check Non-existent Build",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "host": [
+                "{{tarrobuild}}{{api_prefix}}"
+              ],
+              "raw": "{{tarrobuild}}{{api_prefix}}/compatibility/check",
+              "path": [
+                "compatibility",
+                "check"
+              ]
+            },
+            "description": "Non-existent build check through the API Gateway.\n\n**Expected:** 404 Not Found",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"productIds\": [\n    1,\n    2\n  ],\n  \"buildId\": 9999\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        }
+      ]
     }
   ]
 }
-

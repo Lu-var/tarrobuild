@@ -1,0 +1,11 @@
+$kind: http-request
+url: "{{tarrobuild}}{{api_prefix}}/builds/1"
+method: PUT
+body:
+  type: json
+  content: |-
+    {
+      "userId": 1,
+      "name": "Updated Build Name"
+    }
+order: 230

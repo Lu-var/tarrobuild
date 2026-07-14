@@ -2,7 +2,6 @@ package cl.tarrobuild.estimate.client;
 
 import cl.tarrobuild.estimate.dto.NotificationClientRequest;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 
@@ -12,10 +11,9 @@ public class NotificationRestClient {
 
     private final RestClient restClient;
 
-    public NotificationRestClient(RestClient.Builder builder,
-                                  @Value("${notification-service.url}") String notificationServiceUrl) {
+    public NotificationRestClient(RestClient.Builder builder) {
         this.restClient = builder
-                .baseUrl(notificationServiceUrl)
+                .baseUrl("lb://notification-service")
                 .build();
     }
 

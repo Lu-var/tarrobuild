@@ -1,18 +1,696 @@
 {
   "info": {
     "name": "Provider Service",
-    "description": "# Provider Service\n\nBase URL: `http://localhost:8086`\n\nManages hardware providers and suppliers.",
+    "description": "# Provider Service\n\nBase URL: `{{provider_service}}{{api_prefix}}`\n\nManages hardware providers and their product catalogs.",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "item": [
     {
-      "name": "Direct Requests",
-      "item": []
+      "name": "Direct",
+      "item": [
+        {
+          "name": "Get All Providers",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "host": [
+                "{{provider_service}}{{api_prefix}}"
+              ],
+              "raw": "{{provider_service}}{{api_prefix}}/providers",
+              "path": [
+                "providers"
+              ]
+            },
+            "description": "Retrieves all providers."
+          }
+        },
+        {
+          "name": "Get Provider By Id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "host": [
+                "{{provider_service}}{{api_prefix}}"
+              ],
+              "raw": "{{provider_service}}{{api_prefix}}/providers/1",
+              "path": [
+                "providers",
+                "1"
+              ]
+            },
+            "description": "Retrieves a single provider by ID."
+          }
+        },
+        {
+          "name": "Create Provider",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "host": [
+                "{{provider_service}}{{api_prefix}}"
+              ],
+              "raw": "{{provider_service}}{{api_prefix}}/providers",
+              "path": [
+                "providers"
+              ]
+            },
+            "description": "Creates a new provider.\n\n**Expected:** 201 Created",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"TechSupply Inc.\",\n  \"contactEmail\": \"sales@techsupply.com\",\n  \"phone\": \"+56212345678\",\n  \"isActive\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Update Provider",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "host": [
+                "{{provider_service}}{{api_prefix}}"
+              ],
+              "raw": "{{provider_service}}{{api_prefix}}/providers/1",
+              "path": [
+                "providers",
+                "1"
+              ]
+            },
+            "description": "Updates an existing provider.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"TechSupply Updated\",\n  \"contactEmail\": \"new@techsupply.com\",\n  \"phone\": \"+56287654321\",\n  \"isActive\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Partial Update Provider",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "host": [
+                "{{provider_service}}{{api_prefix}}"
+              ],
+              "raw": "{{provider_service}}{{api_prefix}}/providers/1",
+              "path": [
+                "providers",
+                "1"
+              ]
+            },
+            "description": "Partially updates a provider.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"TechSupply Patched\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Delete Provider",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "host": [
+                "{{provider_service}}{{api_prefix}}"
+              ],
+              "raw": "{{provider_service}}{{api_prefix}}/providers/1",
+              "path": [
+                "providers",
+                "1"
+              ]
+            },
+            "description": "Deletes a provider.\n\n**Expected:** 204 No Content"
+          }
+        },
+        {
+          "name": "Get Provider Products",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "host": [
+                "{{provider_service}}{{api_prefix}}"
+              ],
+              "raw": "{{provider_service}}{{api_prefix}}/providers/1/products",
+              "path": [
+                "providers",
+                "1",
+                "products"
+              ]
+            },
+            "description": "Gets all products supplied by a provider."
+          }
+        },
+        {
+          "name": "Get Non-existent Provider",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "host": [
+                "{{provider_service}}{{api_prefix}}"
+              ],
+              "raw": "{{provider_service}}{{api_prefix}}/providers/9999",
+              "path": [
+                "providers",
+                "9999"
+              ]
+            },
+            "description": "Tries to get a provider that doesn't exist.\n\n**Expected:** 404 Not Found"
+          }
+        },
+        {
+          "name": "Delete Non-existent Provider",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "host": [
+                "{{provider_service}}{{api_prefix}}"
+              ],
+              "raw": "{{provider_service}}{{api_prefix}}/providers/9999",
+              "path": [
+                "providers",
+                "9999"
+              ]
+            },
+            "description": "Tries to delete a non-existent provider.\n\n**Expected:** 404 Not Found"
+          }
+        }
+      ]
     },
     {
-      "name": "Proxy Requests",
-      "item": []
+      "name": "Gateway",
+      "item": [
+        {
+          "name": "Get All Providers",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "host": [
+                "{{api_gateway}}{{api_prefix}}"
+              ],
+              "raw": "{{api_gateway}}{{api_prefix}}/providers",
+              "path": [
+                "providers"
+              ]
+            },
+            "description": "Retrieves all providers through the API Gateway."
+          }
+        },
+        {
+          "name": "Get Provider By Id",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "host": [
+                "{{api_gateway}}{{api_prefix}}"
+              ],
+              "raw": "{{api_gateway}}{{api_prefix}}/providers/1",
+              "path": [
+                "providers",
+                "1"
+              ]
+            },
+            "description": "Gets a provider through the API Gateway."
+          }
+        },
+        {
+          "name": "Create Provider",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "host": [
+                "{{api_gateway}}{{api_prefix}}"
+              ],
+              "raw": "{{api_gateway}}{{api_prefix}}/providers",
+              "path": [
+                "providers"
+              ]
+            },
+            "description": "Creates a provider through the API Gateway.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"ProxyProvider\",\n  \"contactEmail\": \"proxy@provider.com\",\n  \"phone\": \"+56211111111\",\n  \"isActive\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Update Provider",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "host": [
+                "{{api_gateway}}{{api_prefix}}"
+              ],
+              "raw": "{{api_gateway}}{{api_prefix}}/providers/1",
+              "path": [
+                "providers",
+                "1"
+              ]
+            },
+            "description": "Updates a provider through the API Gateway.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Proxy Updated\",\n  \"contactEmail\": \"updated@proxy.com\",\n  \"phone\": \"+56222222222\",\n  \"isActive\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Partial Update Provider",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "host": [
+                "{{api_gateway}}{{api_prefix}}"
+              ],
+              "raw": "{{api_gateway}}{{api_prefix}}/providers/1",
+              "path": [
+                "providers",
+                "1"
+              ]
+            },
+            "description": "Partial update through the API Gateway.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Proxy Patched\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Delete Provider",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "host": [
+                "{{api_gateway}}{{api_prefix}}"
+              ],
+              "raw": "{{api_gateway}}{{api_prefix}}/providers/1",
+              "path": [
+                "providers",
+                "1"
+              ]
+            },
+            "description": "Deletes a provider through the API Gateway.\n\n**Expected:** 204 No Content"
+          }
+        },
+        {
+          "name": "Get Provider Products",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "host": [
+                "{{api_gateway}}{{api_prefix}}"
+              ],
+              "raw": "{{api_gateway}}{{api_prefix}}/providers/1/products",
+              "path": [
+                "providers",
+                "1",
+                "products"
+              ]
+            },
+            "description": "Gets provider products through the API Gateway."
+          }
+        },
+        {
+          "name": "Get Non-existent Provider",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "host": [
+                "{{api_gateway}}{{api_prefix}}"
+              ],
+              "raw": "{{api_gateway}}{{api_prefix}}/providers/9999",
+              "path": [
+                "providers",
+                "9999"
+              ]
+            },
+            "description": "Non-existent provider through the API Gateway.\n\n**Expected:** 404 Not Found"
+          }
+        },
+        {
+          "name": "Delete Non-existent Provider",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "host": [
+                "{{api_gateway}}{{api_prefix}}"
+              ],
+              "raw": "{{api_gateway}}{{api_prefix}}/providers/9999",
+              "path": [
+                "providers",
+                "9999"
+              ]
+            },
+            "description": "Deletes non-existent provider through the API Gateway.\n\n**Expected:** 404 Not Found"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Monolith",
+      "item": [
+        {
+          "name": "Get All Providers",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "host": [
+                "{{tarrobuild}}{{api_prefix}}"
+              ],
+              "raw": "{{tarrobuild}}{{api_prefix}}/providers",
+              "path": [
+                "providers"
+              ]
+            },
+            "description": "Retrieves all providers through the API Gateway."
+          }
+        },
+        {
+          "name": "Get Provider By Id",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "host": [
+                "{{tarrobuild}}{{api_prefix}}"
+              ],
+              "raw": "{{tarrobuild}}{{api_prefix}}/providers/1",
+              "path": [
+                "providers",
+                "1"
+              ]
+            },
+            "description": "Gets a provider through the API Gateway."
+          }
+        },
+        {
+          "name": "Create Provider",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "host": [
+                "{{tarrobuild}}{{api_prefix}}"
+              ],
+              "raw": "{{tarrobuild}}{{api_prefix}}/providers",
+              "path": [
+                "providers"
+              ]
+            },
+            "description": "Creates a provider through the API Gateway.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"ProxyProvider\",\n  \"contactEmail\": \"proxy@provider.com\",\n  \"phone\": \"+56211111111\",\n  \"isActive\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Update Provider",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "host": [
+                "{{tarrobuild}}{{api_prefix}}"
+              ],
+              "raw": "{{tarrobuild}}{{api_prefix}}/providers/1",
+              "path": [
+                "providers",
+                "1"
+              ]
+            },
+            "description": "Updates a provider through the API Gateway.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Proxy Updated\",\n  \"contactEmail\": \"updated@proxy.com\",\n  \"phone\": \"+56222222222\",\n  \"isActive\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Partial Update Provider",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "host": [
+                "{{tarrobuild}}{{api_prefix}}"
+              ],
+              "raw": "{{tarrobuild}}{{api_prefix}}/providers/1",
+              "path": [
+                "providers",
+                "1"
+              ]
+            },
+            "description": "Partial update through the API Gateway.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Proxy Patched\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Delete Provider",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "host": [
+                "{{tarrobuild}}{{api_prefix}}"
+              ],
+              "raw": "{{tarrobuild}}{{api_prefix}}/providers/1",
+              "path": [
+                "providers",
+                "1"
+              ]
+            },
+            "description": "Deletes a provider through the API Gateway.\n\n**Expected:** 204 No Content"
+          }
+        },
+        {
+          "name": "Get Provider Products",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "host": [
+                "{{tarrobuild}}{{api_prefix}}"
+              ],
+              "raw": "{{tarrobuild}}{{api_prefix}}/providers/1/products",
+              "path": [
+                "providers",
+                "1",
+                "products"
+              ]
+            },
+            "description": "Gets provider products through the API Gateway."
+          }
+        },
+        {
+          "name": "Get Non-existent Provider",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "host": [
+                "{{tarrobuild}}{{api_prefix}}"
+              ],
+              "raw": "{{tarrobuild}}{{api_prefix}}/providers/9999",
+              "path": [
+                "providers",
+                "9999"
+              ]
+            },
+            "description": "Non-existent provider through the API Gateway.\n\n**Expected:** 404 Not Found"
+          }
+        },
+        {
+          "name": "Delete Non-existent Provider",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "host": [
+                "{{tarrobuild}}{{api_prefix}}"
+              ],
+              "raw": "{{tarrobuild}}{{api_prefix}}/providers/9999",
+              "path": [
+                "providers",
+                "9999"
+              ]
+            },
+            "description": "Deletes non-existent provider through the API Gateway.\n\n**Expected:** 404 Not Found"
+          }
+        }
+      ]
     }
   ]
 }
-

@@ -1,5 +1,0 @@
-$kind: http-request
-description: Retrieves a user by their email address. Returns 404 if not found.
-url: "{{user_service}}/api/users/email/lucas@tarrobuild.cl"
-method: GET
-order: 5000

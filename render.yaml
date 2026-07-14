@@ -5,6 +5,17 @@ databases:
     plan: free
 
 services:
+  # ─── Service Discovery ──────────────────────────────────────────
+  - type: web
+    name: discovery-server
+    runtime: docker
+    dockerfilePath: ./services/discovery-server/Dockerfile
+    dockerContext: .
+    plan: free
+    envVars:
+      - key: SERVER_PORT
+        value: 8761
+
   # ─── No-dependency services ──────────────────────────────────────
   - type: web
     name: user-service
@@ -21,6 +32,8 @@ services:
         fromDatabase:
           name: tarrobuild-db
           property: connectionString
+      - key: EUREKA_URL
+        value: https://discovery-server-whs1.onrender.com/eureka/
 
   - type: web
     name: category-service
@@ -37,6 +50,8 @@ services:
         fromDatabase:
           name: tarrobuild-db
           property: connectionString
+      - key: EUREKA_URL
+        value: https://discovery-server-whs1.onrender.com/eureka/
 
   - type: web
     name: provider-service
@@ -53,6 +68,8 @@ services:
         fromDatabase:
           name: tarrobuild-db
           property: connectionString
+      - key: EUREKA_URL
+        value: https://discovery-server-whs1.onrender.com/eureka/
 
   - type: web
     name: notification-service
@@ -69,6 +86,8 @@ services:
         fromDatabase:
           name: tarrobuild-db
           property: connectionString
+      - key: EUREKA_URL
+        value: https://discovery-server-whs1.onrender.com/eureka/
 
   # ─── Services that depend on (1) ────────────────────────────────
   - type: web
@@ -86,8 +105,8 @@ services:
         fromDatabase:
           name: tarrobuild-db
           property: connectionString
-      - key: USER_SERVICE_URL
-        value: https://user-service-yuz5.onrender.com
+      - key: EUREKA_URL
+        value: https://discovery-server-whs1.onrender.com/eureka/
       - key: JWT_SECRET
         value: EvXDpJvaLKZST142/tWw31XnTiwoQ/nX50n3/4NVD+wrDVz7xaYNQCca0fsz1vwunGTLGZmpYNTJPaqA6OMOog==
 
@@ -106,8 +125,8 @@ services:
         fromDatabase:
           name: tarrobuild-db
           property: connectionString
-      - key: CATEGORY_SERVICE_URL
-        value: https://category-service-4fmr.onrender.com
+      - key: EUREKA_URL
+        value: https://discovery-server-whs1.onrender.com/eureka/
 
   # ─── Services that depend on (2) ────────────────────────────────
   - type: web
@@ -125,10 +144,8 @@ services:
         fromDatabase:
           name: tarrobuild-db
           property: connectionString
-      - key: PRODUCT_SERVICE_URL
-        value: https://product-service-e903.onrender.com
-      - key: CATEGORY_SERVICE_URL
-        value: https://category-service-4fmr.onrender.com
+      - key: EUREKA_URL
+        value: https://discovery-server-whs1.onrender.com/eureka/
 
   # ─── Services that depend on (2)+(3) ────────────────────────────
   - type: web
@@ -146,12 +163,8 @@ services:
         fromDatabase:
           name: tarrobuild-db
           property: connectionString
-      - key: PRODUCT_SERVICE_URL
-        value: https://product-service-e903.onrender.com
-      - key: COMPATIBILITY_SERVICE_URL
-        value: https://compatibility-service.onrender.com
-      - key: PROVIDER_SERVICE_URL
-        value: https://provider-service-9ip0.onrender.com
+      - key: EUREKA_URL
+        value: https://discovery-server-whs1.onrender.com/eureka/
 
   # ─── Services that depend on (4) ────────────────────────────────
   - type: web
@@ -169,12 +182,8 @@ services:
         fromDatabase:
           name: tarrobuild-db
           property: connectionString
-      - key: BUILD_SERVICE_URL
-        value: https://build-service-lym5.onrender.com
-      - key: PRODUCT_SERVICE_URL
-        value: https://product-service-e903.onrender.com
-      - key: NOTIFICATION_SERVICE_URL
-        value: https://notification-service-e4ij.onrender.com
+      - key: EUREKA_URL
+        value: https://discovery-server-whs1.onrender.com/eureka/
 
   - type: web
     name: hardware-advisor-service
@@ -191,6 +200,8 @@ services:
         fromDatabase:
           name: tarrobuild-db
           property: connectionString
+      - key: EUREKA_URL
+        value: https://discovery-server-whs1.onrender.com/eureka/
 
   # ─── Gateway (depends on all services) ──────────────────────────
   - type: web

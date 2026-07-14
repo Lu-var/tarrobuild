@@ -1,0 +1,11 @@
+$kind: http-request
+url: "{{product_service}}{{api_prefix}}/products/1/attributes/9999"
+method: PUT
+body:
+  type: json
+  content: |-
+    {
+      "attributeName": "Test",
+      "attributeValue": "Test"
+    }
+order: 200

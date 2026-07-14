@@ -14,12 +14,6 @@ spring:
     locations: classpath:db/migration/mysql
     baseline-on-migrate: true
 
-product-service:
-  url: ${PRODUCT_SERVICE_URL:http://localhost:8083}
-
-category-service:
-  url: ${CATEGORY_SERVICE_URL:http://localhost:8084}
-
 app:
   environment: production
 

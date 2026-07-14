@@ -18,7 +18,7 @@ public class CompatibilityCheck {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column
     private Long buildId;
 
     @Column(nullable = false, length = 2000)

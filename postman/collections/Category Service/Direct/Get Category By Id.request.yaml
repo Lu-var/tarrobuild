@@ -1,0 +1,4 @@
+$kind: http-request
+url: "{{category_service}}{{api_prefix}}/categories/1"
+method: GET
+order: 20

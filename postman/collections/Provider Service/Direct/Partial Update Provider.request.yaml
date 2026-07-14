@@ -1,0 +1,10 @@
+$kind: http-request
+url: "{{provider_service}}{{api_prefix}}/providers/1"
+method: PATCH
+body:
+  type: json
+  content: |-
+    {
+      "name": "TechSupply Patched"
+    }
+order: 50

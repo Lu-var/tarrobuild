@@ -20,6 +20,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 import java.util.*;
 
+import static cl.tarrobuild.apigateway.config.PublicPaths.*;
 import static cl.tarrobuild.apigateway.exception.ApiError.writeJson;
 
 @Component
@@ -35,12 +36,15 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) {
         String path = request.getRequestURI();
-        return path.equals("/api/v1/auth/login") || path.equals("/api/auth/login")
-                || path.equals("/api/v1/auth/register") || path.equals("/api/auth/register")
-                || (request.getMethod().equals("GET") && (path.startsWith("/api/v1/products") || path.startsWith("/api/products")
-                    || path.startsWith("/api/v1/categories") || path.startsWith("/api/categories")))
-                || (request.getMethod().equals("POST") && (path.equals("/api/v1/compatibility/check") || path.equals("/api/compatibility/check")))
-                || path.equals("/api/v1/actuator/health") || path.equals("/actuator/health");
+        String method = request.getMethod();
+
+        boolean isAuth = AUTH_PREFIXES.stream().anyMatch(p -> path.equals(p + "/login") || path.equals(p + "/register"));
+        boolean isGetProduct = "GET".equals(method) && PRODUCT_PREFIXES.stream().anyMatch(path::startsWith);
+        boolean isGetCategory = "GET".equals(method) && CATEGORY_PREFIXES.stream().anyMatch(path::startsWith);
+        boolean isPostCompat = "POST".equals(method) && COMPAT_CHECK_ENDPOINTS.stream().anyMatch(path::equals);
+        boolean isHealth = HEALTH_ENDPOINTS.stream().anyMatch(path::equals);
+
+        return isAuth || isGetProduct || isGetCategory || isPostCompat || isHealth;
     }
 
     @Override
@@ -49,41 +53,45 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                                     @NonNull FilterChain filterChain) throws ServletException, IOException {
         String authHeader = request.getHeader("Authorization");
 
-        if (authHeader != null && authHeader.startsWith("Bearer ")) {
-            String token = authHeader.substring(7);
-            if (token.isBlank()) {
-                filterChain.doFilter(request, response);
-                return;
-            }
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            writeJson(response, "Authentication required");
+            return;
+        }
 
-            try {
-                AuthClientResponse authResponse = authRestClient.validateToken(token);
-                List<SimpleGrantedAuthority> authorities = List.of(
-                    new SimpleGrantedAuthority("ROLE_" + authResponse.role())
+        String token = authHeader.substring(7);
+        if (token.isBlank()) {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            writeJson(response, "Authentication required");
+            return;
+        }
+
+        try {
+            AuthClientResponse authResponse = authRestClient.validateToken(token);
+            List<SimpleGrantedAuthority> authorities = List.of(
+                new SimpleGrantedAuthority("ROLE_" + authResponse.role())
+            );
+            UsernamePasswordAuthenticationToken authentication =
+                new UsernamePasswordAuthenticationToken(
+                    authResponse.email(),
+                    null,
+                    authorities
                 );
-                UsernamePasswordAuthenticationToken authentication =
-                    new UsernamePasswordAuthenticationToken(
-                        authResponse.email(),
-                        null,
-                        authorities
-                    );
-                SecurityContextHolder.getContext().setAuthentication(authentication);
-                log.info("Token validated for user: {}", authResponse.email());
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+            log.info("Token validated for user: {}", authResponse.email());
 
-                request = new IdentityHeaderWrapper(request, authResponse);
+            request = new IdentityHeaderWrapper(request, authResponse);
 
-            } catch (HttpClientErrorException e) {
-                log.warn("Token rejected by auth-service: {}", e.getMessage());
-                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                writeJson(response, "Invalid or expired token");
-                return;
-            }
-            catch (ResourceAccessException e) {
-                log.error("Auth-service unreachable: {}", e.getMessage());
-                response.setStatus(HttpServletResponse.SC_SERVICE_UNAVAILABLE);
-                writeJson(response, "Authentication service unavailable");
-                return;
-            }
+        } catch (HttpClientErrorException e) {
+            log.warn("Token rejected by auth-service: {}", e.getMessage());
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            writeJson(response, "Invalid or expired token");
+            return;
+        } catch (ResourceAccessException e) {
+            log.error("Auth-service unreachable: {}", e.getMessage());
+            response.setStatus(HttpServletResponse.SC_SERVICE_UNAVAILABLE);
+            writeJson(response, "Authentication service unavailable");
+            return;
         }
 
         filterChain.doFilter(request, response);

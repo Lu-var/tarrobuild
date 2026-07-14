@@ -6,6 +6,9 @@ spring:
     password:
   flyway:
     enabled: false
+  sql:
+    init:
+      mode: always
   h2:
     console:
       enabled: true
@@ -22,3 +25,20 @@ logging:
   level:
     cl.tarrobuild: DEBUG
     org.hibernate.SQL: DEBUG
+
+
+  cloud:
+    discovery:
+      client:
+        simple:
+          instances:
+            build-service:
+              - uri: http://localhost:8087
+            notification-service:
+              - uri: http://localhost:8090
+            product-service:
+              - uri: http://localhost:8083
+
+eureka:
+  client:
+    enabled: false

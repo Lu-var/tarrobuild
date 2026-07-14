@@ -1,18 +1,342 @@
 {
   "info": {
     "name": "Hardware Advisor Service",
-    "description": "# Hardware Advisor Service\n\nBase URL: `http://localhost:8089`\n\nProvides hardware recommendations and suggestions.",
+    "description": "# Hardware Advisor Service\n\nBase URL: `{{hardware_advisor_service}}{{api_prefix}}`\n\nGenerates hardware recommendations based on user needs and build analysis.",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "item": [
     {
-      "name": "Direct Requests",
-      "item": []
+      "name": "Direct",
+      "item": [
+        {
+          "name": "Generate Recommendations",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "host": [
+                "{{hardware_advisor_service}}{{api_prefix}}"
+              ],
+              "raw": "{{hardware_advisor_service}}{{api_prefix}}/recommendations/generate",
+              "path": [
+                "recommendations",
+                "generate"
+              ]
+            },
+            "description": "Generates hardware recommendations for a user.\n\n**Expected:** 200 OK",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userId\": 1,\n  \"budget\": 1500000,\n  \"purpose\": \"gaming\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Get Recommendations By User",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "host": [
+                "{{hardware_advisor_service}}{{api_prefix}}"
+              ],
+              "raw": "{{hardware_advisor_service}}{{api_prefix}}/recommendations/1",
+              "path": [
+                "recommendations",
+                "1"
+              ]
+            },
+            "description": "Retrieves saved recommendations for a user."
+          }
+        },
+        {
+          "name": "Get Recommendation History",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "host": [
+                "{{hardware_advisor_service}}{{api_prefix}}"
+              ],
+              "raw": "{{hardware_advisor_service}}{{api_prefix}}/recommendations/1",
+              "path": [
+                "recommendations",
+                "1"
+              ]
+            },
+            "description": "Gets the history of all recommendations generated for a user."
+          }
+        },
+        {
+          "name": "Generate Invalid Request",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "host": [
+                "{{hardware_advisor_service}}{{api_prefix}}"
+              ],
+              "raw": "{{hardware_advisor_service}}{{api_prefix}}/recommendations/generate",
+              "path": [
+                "recommendations",
+                "generate"
+              ]
+            },
+            "description": "Generates with missing required fields.\n\n**Expected:** 400 Bad Request",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userId\": 1\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        }
+      ]
     },
     {
-      "name": "Proxy Requests",
-      "item": []
+      "name": "Gateway",
+      "item": [
+        {
+          "name": "Generate Recommendations",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "host": [
+                "{{api_gateway}}{{api_prefix}}"
+              ],
+              "raw": "{{api_gateway}}{{api_prefix}}/recommendations/generate",
+              "path": [
+                "recommendations",
+                "generate"
+              ]
+            },
+            "description": "Generates recommendations through the API Gateway.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userId\": 1,\n  \"budget\": 1500000,\n  \"purpose\": \"gaming\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Get Recommendations By User",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "host": [
+                "{{api_gateway}}{{api_prefix}}"
+              ],
+              "raw": "{{api_gateway}}{{api_prefix}}/recommendations/1",
+              "path": [
+                "recommendations",
+                "1"
+              ]
+            },
+            "description": "Gets recommendations through the API Gateway."
+          }
+        },
+        {
+          "name": "Get Recommendation History",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "host": [
+                "{{api_gateway}}{{api_prefix}}"
+              ],
+              "raw": "{{api_gateway}}{{api_prefix}}/recommendations/1",
+              "path": [
+                "recommendations",
+                "1"
+              ]
+            },
+            "description": "Gets history through the API Gateway."
+          }
+        },
+        {
+          "name": "Generate Invalid Request",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "host": [
+                "{{api_gateway}}{{api_prefix}}"
+              ],
+              "raw": "{{api_gateway}}{{api_prefix}}/recommendations/generate",
+              "path": [
+                "recommendations",
+                "generate"
+              ]
+            },
+            "description": "Invalid request through the API Gateway.\n\n**Expected:** 400 Bad Request",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userId\": 1\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Monolith",
+      "item": [
+        {
+          "name": "Generate Recommendations",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "host": [
+                "{{tarrobuild}}{{api_prefix}}"
+              ],
+              "raw": "{{tarrobuild}}{{api_prefix}}/recommendations/generate",
+              "path": [
+                "recommendations",
+                "generate"
+              ]
+            },
+            "description": "Generates recommendations through the API Gateway.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userId\": 1,\n  \"budget\": 1500000,\n  \"purpose\": \"gaming\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Get Recommendations By User",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "host": [
+                "{{tarrobuild}}{{api_prefix}}"
+              ],
+              "raw": "{{tarrobuild}}{{api_prefix}}/recommendations/1",
+              "path": [
+                "recommendations",
+                "1"
+              ]
+            },
+            "description": "Gets recommendations through the API Gateway."
+          }
+        },
+        {
+          "name": "Get Recommendation History",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "host": [
+                "{{tarrobuild}}{{api_prefix}}"
+              ],
+              "raw": "{{tarrobuild}}{{api_prefix}}/recommendations/1",
+              "path": [
+                "recommendations",
+                "1"
+              ]
+            },
+            "description": "Gets history through the API Gateway."
+          }
+        },
+        {
+          "name": "Generate Invalid Request",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "host": [
+                "{{tarrobuild}}{{api_prefix}}"
+              ],
+              "raw": "{{tarrobuild}}{{api_prefix}}/recommendations/generate",
+              "path": [
+                "recommendations",
+                "generate"
+              ]
+            },
+            "description": "Invalid request through the API Gateway.\n\n**Expected:** 400 Bad Request",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userId\": 1\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        }
+      ]
     }
   ]
 }
-

@@ -274,4 +274,159 @@ class CompatibilityServiceTest {
         assertNotNull(response);
         assertFalse(response.result());
     }
+
+    // -------------------------------------------------------------------------
+    // Test 8 — multiple rules, at least one fails → overall incompatible
+    // -------------------------------------------------------------------------
+
+    @Test
+    @DisplayName("Debería marcar incompatible si al menos una regla falla entre varias")
+    void check_MultipleRules_OneFails_ReturnsFalse() {
+        CompatibilityCheckRequest request = new CompatibilityCheckRequest(107L, List.of(1L, 2L, 3L, 4L));
+
+        CompatibilityRule socketRule = rule(
+                "CPU", "Socket", "EQUALS",
+                "Motherboard", "Socket",
+                "El socket del procesador no es compatible con la placa madre.");
+        CompatibilityRule powerRule = rule(
+                "GPU", "Power Draw", "GTE",
+                "PSU", "Wattage",
+                "Power supply wattage is insufficient for GPU power draw");
+
+        Mockito.when(ruleRepository.findAll()).thenReturn(List.of(socketRule, powerRule));
+
+        ProductClientResponse cpu         = productResponse(1L, 10L, "Socket", "AM4");
+        ProductClientResponse motherboard = productResponse(2L, 20L, "Socket", "AM4");
+        ProductClientResponse gpu         = productResponse(3L, 30L, "Power Draw", "350");
+        ProductClientResponse psu         = productResponse(4L, 40L, "Wattage", "300");
+
+        Mockito.when(productRestClient.getProductById(1L)).thenReturn(cpu);
+        Mockito.when(productRestClient.getProductById(2L)).thenReturn(motherboard);
+        Mockito.when(productRestClient.getProductById(3L)).thenReturn(gpu);
+        Mockito.when(productRestClient.getProductById(4L)).thenReturn(psu);
+        Mockito.when(categoryRestClient.getCategoryById(10L)).thenReturn(new CategoryClientResponse(10L, "CPU"));
+        Mockito.when(categoryRestClient.getCategoryById(20L)).thenReturn(new CategoryClientResponse(20L, "Motherboard"));
+        Mockito.when(categoryRestClient.getCategoryById(30L)).thenReturn(new CategoryClientResponse(30L, "GPU"));
+        Mockito.when(categoryRestClient.getCategoryById(40L)).thenReturn(new CategoryClientResponse(40L, "PSU"));
+        Mockito.when(checkRepository.save(any())).thenAnswer(inv -> inv.getArgument(0));
+
+        CompatibilityCheckResponse response = compatibilityService.check(request);
+
+        assertNotNull(response);
+        assertFalse(response.result());
+        assertTrue(response.details().contains("Power supply wattage is insufficient for GPU power draw"));
+    }
+
+    // -------------------------------------------------------------------------
+    // Test 9 — multiple rules, all pass → compatible
+    // -------------------------------------------------------------------------
+
+    @Test
+    @DisplayName("Debería confirmar compatibilidad si todas las reglas se cumplen")
+    void check_MultipleRules_AllPass_ReturnsTrue() {
+        CompatibilityCheckRequest request = new CompatibilityCheckRequest(108L, List.of(1L, 2L, 3L));
+
+        CompatibilityRule socketRule = rule(
+                "CPU", "Socket", "EQUALS",
+                "Motherboard", "Socket",
+                "El socket del procesador no es compatible con la placa madre.");
+        CompatibilityRule powerRule = rule(
+                "GPU", "Power Draw", "GTE",
+                "PSU", "Wattage",
+                "Power supply wattage is insufficient for GPU power draw");
+
+        Mockito.when(ruleRepository.findAll()).thenReturn(List.of(socketRule, powerRule));
+
+        ProductClientResponse cpu         = productResponse(1L, 10L, "Socket", "AM4");
+        ProductClientResponse motherboard = productResponse(2L, 20L, "Socket", "AM4");
+        ProductClientResponse psu         = productResponse(3L, 40L, "Wattage", "650");
+
+        Mockito.when(productRestClient.getProductById(1L)).thenReturn(cpu);
+        Mockito.when(productRestClient.getProductById(2L)).thenReturn(motherboard);
+        Mockito.when(productRestClient.getProductById(3L)).thenReturn(psu);
+        Mockito.when(categoryRestClient.getCategoryById(10L)).thenReturn(new CategoryClientResponse(10L, "CPU"));
+        Mockito.when(categoryRestClient.getCategoryById(20L)).thenReturn(new CategoryClientResponse(20L, "Motherboard"));
+        Mockito.when(categoryRestClient.getCategoryById(40L)).thenReturn(new CategoryClientResponse(40L, "PSU"));
+        Mockito.when(checkRepository.save(any())).thenAnswer(inv -> inv.getArgument(0));
+
+        CompatibilityCheckResponse response = compatibilityService.check(request);
+
+        assertNotNull(response);
+        assertTrue(response.result());
+        assertTrue(response.details().contains("All components are compatible."));
+    }
+
+    // -------------------------------------------------------------------------
+    // Test 10 — empty product list → compatible by default
+    // -------------------------------------------------------------------------
+
+    @Test
+    @DisplayName("Debería responder compatible si la lista de productos está vacía")
+    void check_EmptyProductList_ReturnsCompatible() {
+        CompatibilityCheckRequest request = new CompatibilityCheckRequest(109L, List.of());
+
+        Mockito.when(ruleRepository.findAll()).thenReturn(List.of(
+                rule("CPU", "Socket", "EQUALS", "Motherboard", "Socket", "Socket mismatch")));
+        Mockito.when(checkRepository.save(any())).thenAnswer(inv -> inv.getArgument(0));
+
+        CompatibilityCheckResponse response = compatibilityService.check(request);
+
+        assertNotNull(response);
+        assertTrue(response.result());
+        assertTrue(response.details().contains("All components are compatible."));
+    }
+
+    // -------------------------------------------------------------------------
+    // Test 11 — product returns null from Feign → handled gracefully
+    // -------------------------------------------------------------------------
+
+    @Test
+    @DisplayName("Debería tolerar productos nulos del Feign client sin lanzar excepción")
+    void check_NullProductFromFeign_SkipsGracefully() {
+        CompatibilityCheckRequest request = new CompatibilityCheckRequest(110L, List.of(1L, 2L));
+
+        Mockito.when(ruleRepository.findAll()).thenReturn(List.of(
+                rule("CPU", "Socket", "EQUALS", "Motherboard", "Socket", "Socket mismatch")));
+
+        Mockito.when(productRestClient.getProductById(1L)).thenReturn(null);
+        Mockito.when(productRestClient.getProductById(2L)).thenReturn(null);
+        Mockito.when(checkRepository.save(any())).thenAnswer(inv -> inv.getArgument(0));
+
+        CompatibilityCheckResponse response = compatibilityService.check(request);
+
+        assertNotNull(response);
+        assertTrue(response.result());
+        assertTrue(response.details().contains("All components are compatible."));
+    }
+
+    // -------------------------------------------------------------------------
+    // Test 12 — very large attribute values (edge case)
+    // -------------------------------------------------------------------------
+
+    @Test
+    @DisplayName("Debería manejar valores numéricos extremadamente grandes en reglas GTE")
+    void check_VeryLargeNumericValues_HandledGracefully() {
+        CompatibilityCheckRequest request = new CompatibilityCheckRequest(111L, List.of(1L, 2L));
+
+        CompatibilityRule powerRule = rule(
+                "GPU", "Power Draw", "GTE",
+                "PSU", "Wattage",
+                "Power supply wattage is insufficient for GPU power draw");
+
+        Mockito.when(ruleRepository.findAll()).thenReturn(List.of(powerRule));
+
+        ProductClientResponse gpu = productResponse(1L, 30L, "Power Draw", "999999999999");
+        ProductClientResponse psu = productResponse(2L, 40L, "Wattage", "999999999999");
+
+        Mockito.when(productRestClient.getProductById(1L)).thenReturn(gpu);
+        Mockito.when(productRestClient.getProductById(2L)).thenReturn(psu);
+        Mockito.when(categoryRestClient.getCategoryById(30L)).thenReturn(new CategoryClientResponse(30L, "GPU"));
+        Mockito.when(categoryRestClient.getCategoryById(40L)).thenReturn(new CategoryClientResponse(40L, "PSU"));
+        Mockito.when(checkRepository.save(any())).thenAnswer(inv -> inv.getArgument(0));
+
+        CompatibilityCheckResponse response = compatibilityService.check(request);
+
+        assertNotNull(response);
+        assertTrue(response.result());
+    }
 }

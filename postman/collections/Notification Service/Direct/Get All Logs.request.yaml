@@ -1,0 +1,4 @@
+$kind: http-request
+url: "{{notification_service}}{{api_prefix}}/notifications/logs"
+method: GET
+order: 80

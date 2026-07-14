@@ -51,7 +51,9 @@ public class CompatibilityService {
         if (rules.isEmpty()) {
             log.warn("No compatibility rules defined — marking as compatible by default");
             CompatibilityCheck check = new CompatibilityCheck();
-            check.setBuildId(request.buildId());
+            if (request.buildId() != null) {
+                check.setBuildId(request.buildId());
+            }
             check.setProductIds(request.productIds().stream()
                     .map(String::valueOf)
                     .collect(Collectors.joining(",")));
@@ -93,7 +95,9 @@ public class CompatibilityService {
                 : "Incompatibilities found:\n" + detailsBuilder.toString().trim();
 
         CompatibilityCheck check = new CompatibilityCheck();
-        check.setBuildId(request.buildId());
+        if (request.buildId() != null) {
+            check.setBuildId(request.buildId());
+        }
         check.setProductIds(request.productIds().stream()
                 .map(String::valueOf)
                 .collect(Collectors.joining(",")));

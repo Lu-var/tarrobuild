@@ -1,0 +1,12 @@
+$kind: http-request
+url: "{{category_service}}{{api_prefix}}/categories/1/attributes"
+method: POST
+body:
+  type: json
+  content: |-
+    {
+      "attributeName": "Chipset",
+      "valueType": "string",
+      "isRequired": true
+    }
+order: 50

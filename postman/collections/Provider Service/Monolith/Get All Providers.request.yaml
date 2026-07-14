@@ -1,0 +1,4 @@
+$kind: http-request
+url: "{{tarrobuild}}{{api_prefix}}/providers"
+method: GET
+order: 100

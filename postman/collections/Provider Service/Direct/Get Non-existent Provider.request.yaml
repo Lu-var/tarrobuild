@@ -1,0 +1,4 @@
+$kind: http-request
+url: "{{provider_service}}{{api_prefix}}/providers/9999"
+method: GET
+order: 80

@@ -2,7 +2,6 @@ package cl.tarrobuild.estimate.client;
 
 import cl.tarrobuild.estimate.dto.ProductClientResponse;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 
@@ -12,10 +11,9 @@ public class ProductRestClient {
 
     private final RestClient restClient;
 
-    public ProductRestClient(RestClient.Builder builder,
-                             @Value("${product-service.url}") String productServiceUrl) {
+    public ProductRestClient(RestClient.Builder builder) {
         this.restClient = builder
-                .baseUrl(productServiceUrl)
+                .baseUrl("lb://product-service")
                 .build();
     }
 

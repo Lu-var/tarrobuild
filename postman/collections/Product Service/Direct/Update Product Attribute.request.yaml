@@ -1,0 +1,11 @@
+$kind: http-request
+url: "{{product_service}}{{api_prefix}}/products/1/attributes/1"
+method: PUT
+body:
+  type: json
+  content: |-
+    {
+      "attributeName": "Socket Updated",
+      "attributeValue": "AM5"
+    }
+order: 190

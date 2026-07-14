@@ -3,8 +3,8 @@ package cl.tarrobuild.auth.client;
 import cl.tarrobuild.auth.dto.UserClientRequest;
 import cl.tarrobuild.auth.dto.UserClientResponse;
 import jakarta.persistence.EntityExistsException;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
@@ -15,10 +15,9 @@ public class UserRestClient {
 
     private final RestClient restClient;
 
-    public UserRestClient(RestClient.Builder builder,
-                          @Value("${user-service.url}") String userServiceUrl) {
+    public UserRestClient(RestClient.Builder builder) {
         this.restClient = builder
-                .baseUrl(userServiceUrl)
+                .baseUrl("lb://user-service")
                 .build();
     }
 
@@ -40,7 +39,7 @@ public class UserRestClient {
                 .uri("api/users/{id}", id)
                 .retrieve()
                 .onStatus(status -> status.value() == HttpStatus.NOT_FOUND.value(), (req, res) -> {
-                    throw new EntityExistsException("User with ID " + id + " not found");
+                    throw new EntityNotFoundException("User with ID " + id + " not found");
                 })
                 .body(UserClientResponse.class);
     }

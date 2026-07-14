@@ -1,5 +1,0 @@
-$kind: http-request
-description: Retrieves a single user by ID. Returns 404 if not found.
-url: "{{user_service}}/api/users/1"
-method: GET
-order: 4000

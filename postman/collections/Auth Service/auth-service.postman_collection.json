@@ -1,475 +1,1050 @@
 {
-    "info": {
-        "name": "Auth Service",
-        "description": "# Auth Service\n\nBase URL: `{{auth_service}}` (port `8081`)\n\nHandles user registration, authentication (JWT), token validation, and logout.",
-        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
-    },
-    "item": [
+  "info": {
+    "name": "Auth Service",
+    "description": "# Auth Service\n\nBase URL: `{{auth_service}}` (port `8081`)\n\nHandles user registration, authentication (JWT), token validation, and logout.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Direct",
+      "item": [
         {
-            "name": "Direct Requests",
-            "item": [
-                {
-                    "name": "Admin Login",
-                    "request": {
-                        "method": "POST",
-                        "header": [],
-                        "body": {
-                            "mode": "raw",
-                            "raw": "{\n  \"email\": \"admin@tarrobuild.cl\",\n  \"password\": \"admin123\"\n}",
-                            "options": { "raw": { "language": "json" } }
-                        },
-                        "url": {
-                            "raw": "{{auth_service}}{{api_prefix}}/auth/login",
-                            "host": ["{{auth_service}}{{api_prefix}}"],
-                            "path": ["auth", "login"]
-                        },
-                        "description": "Logs in as admin. The admin role is required for product/category/provider/user management endpoints.\n\n**Expected:** 200 OK (returns JWT token)"
-                    },
-                    "response": []
-                },
-                {
-                    "name": "User Login",
-                    "request": {
-                        "method": "POST",
-                        "header": [],
-                        "body": {
-                            "mode": "raw",
-                            "raw": "{\n  \"email\": \"user@tarrobuild.cl\",\n  \"password\": \"test123\"\n}",
-                            "options": { "raw": { "language": "json" } }
-                        },
-                        "url": {
-                            "raw": "{{auth_service}}{{api_prefix}}/auth/login",
-                            "host": ["{{auth_service}}{{api_prefix}}"],
-                            "path": ["auth", "login"]
-                        },
-                        "description": "Logs in as a regular USER role. User role can access builds, estimates, recommendations, and notifications.\n\n**Expected:** 200 OK (returns JWT token)"
-                    },
-                    "response": []
-                },
-                {
-                    "name": "Register",
-                    "request": {
-                        "auth": { "type": "noauth" },
-                        "method": "POST",
-                        "header": [],
-                        "body": {
-                            "mode": "raw",
-                            "raw": "{\n  \"email\": \"test@tarrobuild.cl\",\n  \"password\": \"TestPass123\",\n  \"name\": \"Test\",\n  \"lastName\": \"User\",\n  \"phone\": \"12345678\"\n}",
-                            "options": { "raw": { "language": "json" } }
-                        },
-                        "url": {
-                            "raw": "{{auth_service}}{{api_prefix}}/auth/register",
-                            "host": ["{{auth_service}}{{api_prefix}}"],
-                            "path": ["auth", "register"]
-                        },
-                        "description": "Registers a new user. Creates both a Credential (for login) and a User profile (via RestClient to user-service).\n\n**Expected:** 201 Created"
-                    },
-                    "response": []
-                },
-                {
-                    "name": "Register Duplicate Email",
-                    "request": {
-                        "auth": { "type": "noauth" },
-                        "method": "POST",
-                        "header": [],
-                        "body": {
-                            "mode": "raw",
-                            "raw": "{\n  \"email\": \"admin@tarrobuild.cl\",\n  \"password\": \"admin123\",\n  \"name\": \"Dup\",\n  \"lastName\": \"Admin\",\n  \"phone\": \"98765432\"\n}",
-                            "options": { "raw": { "language": "json" } }
-                        },
-                        "url": {
-                            "raw": "{{auth_service}}{{api_prefix}}/auth/register",
-                            "host": ["{{auth_service}}{{api_prefix}}"],
-                            "path": ["auth", "register"]
-                        },
-                        "description": "Negative test — tries to register with an email that already exists.\n\n**Expected:** 409 Conflict"
-                    },
-                    "response": []
-                },
-                {
-                    "name": "Register Invalid",
-                    "request": {
-                        "auth": { "type": "noauth" },
-                        "method": "POST",
-                        "header": [],
-                        "body": {
-                            "mode": "raw",
-                            "raw": "{\n  \"email\": \"\",\n  \"password\": \"\",\n  \"name\": \"\",\n  \"lastName\": \"\",\n  \"phone\": \"\"\n}",
-                            "options": { "raw": { "language": "json" } }
-                        },
-                        "url": {
-                            "raw": "{{auth_service}}{{api_prefix}}/auth/register",
-                            "host": ["{{auth_service}}{{api_prefix}}"],
-                            "path": ["auth", "register"]
-                        },
-                        "description": "Negative test — sends blank required fields.\n\n**Expected:** 400 Bad Request (validation errors)"
-                    },
-                    "response": []
-                },
-                {
-                    "name": "Register Empty Body",
-                    "request": {
-                        "auth": { "type": "noauth" },
-                        "method": "POST",
-                        "header": [],
-                        "body": {
-                            "mode": "raw",
-                            "raw": "{}",
-                            "options": { "raw": { "language": "json" } }
-                        },
-                        "url": {
-                            "raw": "{{auth_service}}{{api_prefix}}/auth/register",
-                            "host": ["{{auth_service}}{{api_prefix}}"],
-                            "path": ["auth", "register"]
-                        },
-                        "description": "Negative test — sends an empty JSON body.\n\n**Expected:** 400 Bad Request"
-                    },
-                    "response": []
-                },
-                {
-                    "name": "Login Wrong Password",
-                    "request": {
-                        "auth": { "type": "noauth" },
-                        "method": "POST",
-                        "header": [],
-                        "body": {
-                            "mode": "raw",
-                            "raw": "{\n  \"email\": \"admin@tarrobuild.cl\",\n  \"password\": \"wrongpassword\"\n}",
-                            "options": { "raw": { "language": "json" } }
-                        },
-                        "url": {
-                            "raw": "{{auth_service}}{{api_prefix}}/auth/login",
-                            "host": ["{{auth_service}}{{api_prefix}}"],
-                            "path": ["auth", "login"]
-                        },
-                        "description": "Negative test — tries to login with an incorrect password.\n\n**Expected:** 401 Unauthorized"
-                    },
-                    "response": []
-                },
-                {
-                    "name": "Login Nonexistent Email",
-                    "request": {
-                        "auth": { "type": "noauth" },
-                        "method": "POST",
-                        "header": [],
-                        "body": {
-                            "mode": "raw",
-                            "raw": "{\n  \"email\": \"noone@nowhere.com\",\n  \"password\": \"Test12345\"\n}",
-                            "options": { "raw": { "language": "json" } }
-                        },
-                        "url": {
-                            "raw": "{{auth_service}}{{api_prefix}}/auth/login",
-                            "host": ["{{auth_service}}{{api_prefix}}"],
-                            "path": ["auth", "login"]
-                        },
-                        "description": "Negative test — tries to login with an email that doesn't exist.\n\n**Expected:** 401 Unauthorized"
-                    },
-                    "response": []
-                },
-                {
-                    "name": "Login Invalid Body",
-                    "request": {
-                        "auth": { "type": "noauth" },
-                        "method": "POST",
-                        "header": [],
-                        "body": {
-                            "mode": "raw",
-                            "raw": "{}",
-                            "options": { "raw": { "language": "json" } }
-                        },
-                        "url": {
-                            "raw": "{{auth_service}}{{api_prefix}}/auth/login",
-                            "host": ["{{auth_service}}{{api_prefix}}"],
-                            "path": ["auth", "login"]
-                        },
-                        "description": "Negative test — sends an empty JSON body for login.\n\n**Expected:** 400 Bad Request"
-                    },
-                    "response": []
-                },
-                {
-                    "name": "Validate Token",
-                    "request": {
-                        "method": "GET",
-                        "header": [
-                            {
-                                "key": "Authorization",
-                                "value": "Bearer {{admin_token}}",
-                                "type": "text"
-                            }
-                        ],
-                        "url": {
-                            "raw": "{{auth_service}}{{api_prefix}}/auth/validate",
-                            "host": ["{{auth_service}}{{api_prefix}}"],
-                            "path": ["auth", "validate"]
-                        },
-                        "description": "Validates a JWT token. Requires a valid Bearer token in the Authorization header.\n\n**Expected:** 200 OK (returns userId, email, role)"
-                    },
-                    "response": []
-                },
-                {
-                    "name": "Validate No Token",
-                    "request": {
-                        "method": "GET",
-                        "header": [],
-                        "url": {
-                            "raw": "{{auth_service}}{{api_prefix}}/auth/validate",
-                            "host": ["{{auth_service}}{{api_prefix}}"],
-                            "path": ["auth", "validate"]
-                        },
-                        "description": "Negative test — calls validate without an Authorization header.\n\n**Expected:** 401 Unauthorized"
-                    },
-                    "response": []
-                },
-                {
-                    "name": "Validate Invalid Token",
-                    "request": {
-                        "method": "GET",
-                        "header": [
-                            {
-                                "key": "Authorization",
-                                "value": "Bearer invalidtoken123",
-                                "type": "text"
-                            }
-                        ],
-                        "url": {
-                            "raw": "{{auth_service}}{{api_prefix}}/auth/validate",
-                            "host": ["{{auth_service}}{{api_prefix}}"],
-                            "path": ["auth", "validate"]
-                        },
-                        "description": "Negative test — passes a malformed/invalid JWT token.\n\n**Expected:** 401 Unauthorized"
-                    },
-                    "response": []
-                },
-                {
-                    "name": "Logout",
-                    "request": {
-                        "method": "POST",
-                        "header": [
-                            {
-                                "key": "Authorization",
-                                "value": "Bearer {{admin_token}}",
-                                "type": "text"
-                            }
-                        ],
-                        "body": {
-                            "mode": "raw",
-                            "raw": "",
-                            "options": { "raw": { "language": "json" } }
-                        },
-                        "url": {
-                            "raw": "{{auth_service}}{{api_prefix}}/auth/logout",
-                            "host": ["{{auth_service}}{{api_prefix}}"],
-                            "path": ["auth", "logout"]
-                        },
-                        "description": "Logs out the current session. Note: JWT is stateless so this is a placeholder for future token blacklist logic.\n\n**Expected:** 200 OK"
-                    },
-                    "response": []
+          "name": "Admin Login",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@tarrobuild.cl\",\n  \"password\": \"admin123\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
                 }
-            ]
+              }
+            },
+            "url": {
+              "raw": "{{auth_service}}{{api_prefix}}/auth/login",
+              "host": [
+                "{{auth_service}}{{api_prefix}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            },
+            "description": "Logs in as admin. The admin role is required for product/category/provider/user management endpoints.\n\n**Expected:** 200 OK (returns JWT token)"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var jsonData = pm.response.json();",
+                  "pm.environment.set(\"admin_token\", jsonData.token);"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
         },
         {
-            "name": "Proxy Requests",
-            "item": [
-                {
-                    "name": "Register (via gateway)",
-                    "request": {
-                        "auth": { "type": "noauth" },
-                        "method": "POST",
-                        "header": [],
-                        "body": {
-                            "mode": "raw",
-                            "raw": "{\n  \"email\": \"proxytest@tarrobuild.cl\",\n  \"password\": \"ProxyPass123\",\n  \"name\": \"Proxy\",\n  \"lastName\": \"Test\",\n  \"phone\": \"87654321\"\n}",
-                            "options": { "raw": { "language": "json" } }
-                        },
-                        "url": {
-                            "raw": "{{api_gateway}}{{api_prefix}}/auth/register",
-                            "host": ["{{api_gateway}}{{api_prefix}}"],
-                            "path": ["auth", "register"]
-                        },
-                        "description": "Through gateway: Registers a new user. Gateway permits all `/api/auth/**` requests.\n\n**Expected:** 201 Created"
-                    },
-                    "response": []
-                },
-                {
-                    "name": "Admin Login (via gateway)",
-                    "request": {
-                        "auth": { "type": "noauth" },
-                        "method": "POST",
-                        "header": [],
-                        "body": {
-                            "mode": "raw",
-                            "raw": "{\n  \"email\": \"admin@tarrobuild.cl\",\n  \"password\": \"admin123\"\n}",
-                            "options": { "raw": { "language": "json" } }
-                        },
-                        "url": {
-                            "raw": "{{api_gateway}}{{api_prefix}}/auth/login",
-                            "host": ["{{api_gateway}}{{api_prefix}}"],
-                            "path": ["auth", "login"]
-                        },
-                        "description": "Through gateway: Logs in as admin. The gateway permits POST /api/auth/login without authentication.\n\n**Expected:** 200 OK"
-                    },
-                    "response": []
-                },
-                {
-                    "name": "User Login (via gateway)",
-                    "request": {
-                        "auth": { "type": "noauth" },
-                        "method": "POST",
-                        "header": [],
-                        "body": {
-                            "mode": "raw",
-                            "raw": "{\n  \"email\": \"user@tarrobuild.cl\",\n  \"password\": \"test123\"\n}",
-                            "options": { "raw": { "language": "json" } }
-                        },
-                        "url": {
-                            "raw": "{{api_gateway}}{{api_prefix}}/auth/login",
-                            "host": ["{{api_gateway}}{{api_prefix}}"],
-                            "path": ["auth", "login"]
-                        },
-                        "description": "Through gateway: Logs in as a regular user (USER role).\n\n**Expected:** 200 OK"
-                    },
-                    "response": []
-                },
-                {
-                    "name": "Register Duplicate Email (via gateway)",
-                    "request": {
-                        "auth": { "type": "noauth" },
-                        "method": "POST",
-                        "header": [],
-                        "body": {
-                            "mode": "raw",
-                            "raw": "{\n  \"email\": \"admin@tarrobuild.cl\",\n  \"password\": \"admin123\",\n  \"name\": \"Dup\",\n  \"lastName\": \"Admin\",\n  \"phone\": \"98765432\"\n}",
-                            "options": { "raw": { "language": "json" } }
-                        },
-                        "url": {
-                            "raw": "{{api_gateway}}{{api_prefix}}/auth/register",
-                            "host": ["{{api_gateway}}{{api_prefix}}"],
-                            "path": ["auth", "register"]
-                        },
-                        "description": "Through gateway: Negative test — tries to register an existing email.\n\n**Expected:** 409 Conflict"
-                    },
-                    "response": []
-                },
-                {
-                    "name": "Register Invalid (via gateway)",
-                    "request": {
-                        "auth": { "type": "noauth" },
-                        "method": "POST",
-                        "header": [],
-                        "body": {
-                            "mode": "raw",
-                            "raw": "{\n  \"email\": \"\",\n  \"password\": \"\",\n  \"name\": \"\",\n  \"lastName\": \"\",\n  \"phone\": \"\"\n}",
-                            "options": { "raw": { "language": "json" } }
-                        },
-                        "url": {
-                            "raw": "{{api_gateway}}{{api_prefix}}/auth/register",
-                            "host": ["{{api_gateway}}{{api_prefix}}"],
-                            "path": ["auth", "register"]
-                        },
-                        "description": "Through gateway: Negative test — sends blank required fields.\n\n**Expected:** 400 Bad Request"
-                    },
-                    "response": []
-                },
-                {
-                    "name": "Login Wrong Password (via gateway)",
-                    "request": {
-                        "auth": { "type": "noauth" },
-                        "method": "POST",
-                        "header": [],
-                        "body": {
-                            "mode": "raw",
-                            "raw": "{\n  \"email\": \"admin@tarrobuild.cl\",\n  \"password\": \"wrongpassword\"\n}",
-                            "options": { "raw": { "language": "json" } }
-                        },
-                        "url": {
-                            "raw": "{{api_gateway}}{{api_prefix}}/auth/login",
-                            "host": ["{{api_gateway}}{{api_prefix}}"],
-                            "path": ["auth", "login"]
-                        },
-                        "description": "Through gateway: Negative test — wrong password.\n\n**Expected:** 401 Unauthorized"
-                    },
-                    "response": []
-                },
-                {
-                    "name": "Validate Token (via gateway)",
-                    "request": {
-                        "method": "GET",
-                        "header": [
-                            {
-                                "key": "Authorization",
-                                "value": "Bearer {{admin_token}}",
-                                "type": "text"
-                            }
-                        ],
-                        "url": {
-                            "raw": "{{api_gateway}}{{api_prefix}}/auth/validate",
-                            "host": ["{{api_gateway}}{{api_prefix}}"],
-                            "path": ["auth", "validate"]
-                        },
-                        "description": "Through gateway: Validates a JWT token. The gateway delegates token validation to auth-service.\n\n**Expected:** 200 OK"
-                    },
-                    "response": []
-                },
-                {
-                    "name": "Validate No Token (via gateway)",
-                    "request": {
-                        "method": "GET",
-                        "header": [],
-                        "url": {
-                            "raw": "{{api_gateway}}{{api_prefix}}/auth/validate",
-                            "host": ["{{api_gateway}}{{api_prefix}}"],
-                            "path": ["auth", "validate"]
-                        },
-                        "description": "Through gateway: Negative test — validate without an Authorization header. The request reaches auth-service which returns 401.\n\n**Expected:** 401 Unauthorized"
-                    },
-                    "response": []
-                },
-                {
-                    "name": "Validate Invalid Token (via gateway)",
-                    "request": {
-                        "method": "GET",
-                        "header": [
-                            {
-                                "key": "Authorization",
-                                "value": "Bearer invalidtoken123",
-                                "type": "text"
-                            }
-                        ],
-                        "url": {
-                            "raw": "{{api_gateway}}{{api_prefix}}/auth/validate",
-                            "host": ["{{api_gateway}}{{api_prefix}}"],
-                            "path": ["auth", "validate"]
-                        },
-                        "description": "Through gateway: Negative test — invalid token forwarded to auth-service.\n\n**Expected:** 401 Unauthorized"
-                    },
-                    "response": []
-                },
-                {
-                    "name": "Logout (via gateway)",
-                    "request": {
-                        "method": "POST",
-                        "header": [
-                            {
-                                "key": "Authorization",
-                                "value": "Bearer {{admin_token}}",
-                                "type": "text"
-                            }
-                        ],
-                        "body": {
-                            "mode": "raw",
-                            "raw": "",
-                            "options": { "raw": { "language": "json" } }
-                        },
-                        "url": {
-                            "raw": "{{api_gateway}}{{api_prefix}}/auth/logout",
-                            "host": ["{{api_gateway}}{{api_prefix}}"],
-                            "path": ["auth", "logout"]
-                        },
-                        "description": "Through gateway: Logs out the current session.\n\n**Expected:** 200 OK"
-                    },
-                    "response": []
+          "name": "User Login",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"user@tarrobuild.cl\",\n  \"password\": \"test123\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
                 }
-            ]
+              }
+            },
+            "url": {
+              "raw": "{{auth_service}}{{api_prefix}}/auth/login",
+              "host": [
+                "{{auth_service}}{{api_prefix}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            },
+            "description": "Logs in as a regular USER role. User role can access builds, estimates, recommendations, and notifications.\n\n**Expected:** 200 OK (returns JWT token)"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var jsonData = pm.response.json();",
+                  "pm.environment.set(\"user_token\", jsonData.token);"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Register",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"test@tarrobuild.cl\",\n  \"password\": \"TestPass123\",\n  \"name\": \"Test\",\n  \"lastName\": \"User\",\n  \"phone\": \"12345678\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{auth_service}}{{api_prefix}}/auth/register",
+              "host": [
+                "{{auth_service}}{{api_prefix}}"
+              ],
+              "path": [
+                "auth",
+                "register"
+              ]
+            },
+            "description": "Registers a new user. Creates both a Credential (for login) and a User profile (via RestClient to user-service).\n\n**Expected:** 201 Created"
+          },
+          "response": []
+        },
+        {
+          "name": "Register Duplicate Email",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@tarrobuild.cl\",\n  \"password\": \"admin123\",\n  \"name\": \"Dup\",\n  \"lastName\": \"Admin\",\n  \"phone\": \"98765432\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{auth_service}}{{api_prefix}}/auth/register",
+              "host": [
+                "{{auth_service}}{{api_prefix}}"
+              ],
+              "path": [
+                "auth",
+                "register"
+              ]
+            },
+            "description": "Negative test \u2014 tries to register with an email that already exists.\n\n**Expected:** 409 Conflict"
+          },
+          "response": []
+        },
+        {
+          "name": "Register Invalid",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"\",\n  \"password\": \"\",\n  \"name\": \"\",\n  \"lastName\": \"\",\n  \"phone\": \"\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{auth_service}}{{api_prefix}}/auth/register",
+              "host": [
+                "{{auth_service}}{{api_prefix}}"
+              ],
+              "path": [
+                "auth",
+                "register"
+              ]
+            },
+            "description": "Negative test \u2014 sends blank required fields.\n\n**Expected:** 400 Bad Request (validation errors)"
+          },
+          "response": []
+        },
+        {
+          "name": "Register Empty Body",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{auth_service}}{{api_prefix}}/auth/register",
+              "host": [
+                "{{auth_service}}{{api_prefix}}"
+              ],
+              "path": [
+                "auth",
+                "register"
+              ]
+            },
+            "description": "Negative test \u2014 sends an empty JSON body.\n\n**Expected:** 400 Bad Request"
+          },
+          "response": []
+        },
+        {
+          "name": "Login Wrong Password",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@tarrobuild.cl\",\n  \"password\": \"wrongpassword\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{auth_service}}{{api_prefix}}/auth/login",
+              "host": [
+                "{{auth_service}}{{api_prefix}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            },
+            "description": "Negative test \u2014 tries to login with an incorrect password.\n\n**Expected:** 401 Unauthorized"
+          },
+          "response": []
+        },
+        {
+          "name": "Login Nonexistent Email",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"noone@nowhere.com\",\n  \"password\": \"Test12345\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{auth_service}}{{api_prefix}}/auth/login",
+              "host": [
+                "{{auth_service}}{{api_prefix}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            },
+            "description": "Negative test \u2014 tries to login with an email that doesn't exist.\n\n**Expected:** 401 Unauthorized"
+          },
+          "response": []
+        },
+        {
+          "name": "Login Invalid Body",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{auth_service}}{{api_prefix}}/auth/login",
+              "host": [
+                "{{auth_service}}{{api_prefix}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            },
+            "description": "Negative test \u2014 sends an empty JSON body for login.\n\n**Expected:** 400 Bad Request"
+          },
+          "response": []
+        },
+        {
+          "name": "Validate Token",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{auth_service}}{{api_prefix}}/auth/validate",
+              "host": [
+                "{{auth_service}}{{api_prefix}}"
+              ],
+              "path": [
+                "auth",
+                "validate"
+              ]
+            },
+            "description": "Validates a JWT token. Requires a valid Bearer token in the Authorization header.\n\n**Expected:** 200 OK (returns userId, email, role)"
+          },
+          "response": []
+        },
+        {
+          "name": "Validate No Token",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{auth_service}}{{api_prefix}}/auth/validate",
+              "host": [
+                "{{auth_service}}{{api_prefix}}"
+              ],
+              "path": [
+                "auth",
+                "validate"
+              ]
+            },
+            "description": "Negative test \u2014 calls validate without an Authorization header.\n\n**Expected:** 401 Unauthorized"
+          },
+          "response": []
+        },
+        {
+          "name": "Validate Invalid Token",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer invalidtoken123",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{auth_service}}{{api_prefix}}/auth/validate",
+              "host": [
+                "{{auth_service}}{{api_prefix}}"
+              ],
+              "path": [
+                "auth",
+                "validate"
+              ]
+            },
+            "description": "Negative test \u2014 passes a malformed/invalid JWT token.\n\n**Expected:** 401 Unauthorized"
+          },
+          "response": []
+        },
+        {
+          "name": "Logout",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{auth_service}}{{api_prefix}}/auth/logout",
+              "host": [
+                "{{auth_service}}{{api_prefix}}"
+              ],
+              "path": [
+                "auth",
+                "logout"
+              ]
+            },
+            "description": "Logs out the current session. Note: JWT is stateless so this is a placeholder for future token blacklist logic.\n\n**Expected:** 200 OK"
+          },
+          "response": []
         }
-    ]
+      ]
+    },
+    {
+      "name": "Gateway",
+      "item": [
+        {
+          "name": "Register",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"proxytest@tarrobuild.cl\",\n  \"password\": \"ProxyPass123\",\n  \"name\": \"Proxy\",\n  \"lastName\": \"Test\",\n  \"phone\": \"87654321\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{api_gateway}}{{api_prefix}}/auth/register",
+              "host": [
+                "{{api_gateway}}{{api_prefix}}"
+              ],
+              "path": [
+                "auth",
+                "register"
+              ]
+            },
+            "description": "Through gateway: Registers a new user. Gateway permits all `/api/auth/**` requests.\n\n**Expected:** 201 Created"
+          },
+          "response": []
+        },
+        {
+          "name": "Admin Login",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@tarrobuild.cl\",\n  \"password\": \"admin123\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{api_gateway}}{{api_prefix}}/auth/login",
+              "host": [
+                "{{api_gateway}}{{api_prefix}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            },
+            "description": "Through gateway: Logs in as admin. The gateway permits POST /api/auth/login without authentication.\n\n**Expected:** 200 OK"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var jsonData = pm.response.json();",
+                  "pm.environment.set(\"admin_token\", jsonData.token);"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "User Login",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"user@tarrobuild.cl\",\n  \"password\": \"test123\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{api_gateway}}{{api_prefix}}/auth/login",
+              "host": [
+                "{{api_gateway}}{{api_prefix}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            },
+            "description": "Through gateway: Logs in as a regular user (USER role).\n\n**Expected:** 200 OK"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var jsonData = pm.response.json();",
+                  "pm.environment.set(\"user_token\", jsonData.token);"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Register Duplicate Email",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@tarrobuild.cl\",\n  \"password\": \"admin123\",\n  \"name\": \"Dup\",\n  \"lastName\": \"Admin\",\n  \"phone\": \"98765432\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{api_gateway}}{{api_prefix}}/auth/register",
+              "host": [
+                "{{api_gateway}}{{api_prefix}}"
+              ],
+              "path": [
+                "auth",
+                "register"
+              ]
+            },
+            "description": "Through gateway: Negative test \u2014 tries to register an existing email.\n\n**Expected:** 409 Conflict"
+          },
+          "response": []
+        },
+        {
+          "name": "Register Invalid",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"\",\n  \"password\": \"\",\n  \"name\": \"\",\n  \"lastName\": \"\",\n  \"phone\": \"\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{api_gateway}}{{api_prefix}}/auth/register",
+              "host": [
+                "{{api_gateway}}{{api_prefix}}"
+              ],
+              "path": [
+                "auth",
+                "register"
+              ]
+            },
+            "description": "Through gateway: Negative test \u2014 sends blank required fields.\n\n**Expected:** 400 Bad Request"
+          },
+          "response": []
+        },
+        {
+          "name": "Login Wrong Password",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@tarrobuild.cl\",\n  \"password\": \"wrongpassword\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{api_gateway}}{{api_prefix}}/auth/login",
+              "host": [
+                "{{api_gateway}}{{api_prefix}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            },
+            "description": "Through gateway: Negative test \u2014 wrong password.\n\n**Expected:** 401 Unauthorized"
+          },
+          "response": []
+        },
+        {
+          "name": "Validate Token",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{api_gateway}}{{api_prefix}}/auth/validate",
+              "host": [
+                "{{api_gateway}}{{api_prefix}}"
+              ],
+              "path": [
+                "auth",
+                "validate"
+              ]
+            },
+            "description": "Through gateway: Validates a JWT token. The gateway delegates token validation to auth-service.\n\n**Expected:** 200 OK"
+          },
+          "response": []
+        },
+        {
+          "name": "Validate No Token",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{api_gateway}}{{api_prefix}}/auth/validate",
+              "host": [
+                "{{api_gateway}}{{api_prefix}}"
+              ],
+              "path": [
+                "auth",
+                "validate"
+              ]
+            },
+            "description": "Through gateway: Negative test \u2014 validate without an Authorization header. The request reaches auth-service which returns 401.\n\n**Expected:** 401 Unauthorized"
+          },
+          "response": []
+        },
+        {
+          "name": "Validate Invalid Token",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{api_gateway}}{{api_prefix}}/auth/validate",
+              "host": [
+                "{{api_gateway}}{{api_prefix}}"
+              ],
+              "path": [
+                "auth",
+                "validate"
+              ]
+            },
+            "description": "Through gateway: Negative test \u2014 invalid token forwarded to auth-service.\n\n**Expected:** 401 Unauthorized"
+          },
+          "response": []
+        },
+        {
+          "name": "Logout",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{api_gateway}}{{api_prefix}}/auth/logout",
+              "host": [
+                "{{api_gateway}}{{api_prefix}}"
+              ],
+              "path": [
+                "auth",
+                "logout"
+              ]
+            },
+            "description": "Through gateway: Logs out the current session.\n\n**Expected:** 200 OK"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Monolith",
+      "item": [
+        {
+          "name": "Register",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"proxytest@tarrobuild.cl\",\n  \"password\": \"ProxyPass123\",\n  \"name\": \"Proxy\",\n  \"lastName\": \"Test\",\n  \"phone\": \"87654321\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{tarrobuild}}{{api_prefix}}/auth/register",
+              "host": [
+                "{{tarrobuild}}{{api_prefix}}"
+              ],
+              "path": [
+                "auth",
+                "register"
+              ]
+            },
+            "description": "Through gateway: Registers a new user. Gateway permits all `/api/auth/**` requests.\n\n**Expected:** 201 Created"
+          },
+          "response": []
+        },
+        {
+          "name": "Admin Login",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@tarrobuild.cl\",\n  \"password\": \"admin123\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{tarrobuild}}{{api_prefix}}/auth/login",
+              "host": [
+                "{{tarrobuild}}{{api_prefix}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            },
+            "description": "Through gateway: Logs in as admin. The gateway permits POST /api/auth/login without authentication.\n\n**Expected:** 200 OK"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var jsonData = pm.response.json();",
+                  "pm.environment.set(\"admin_token\", jsonData.token);"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "User Login",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"user@tarrobuild.cl\",\n  \"password\": \"test123\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{tarrobuild}}{{api_prefix}}/auth/login",
+              "host": [
+                "{{tarrobuild}}{{api_prefix}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            },
+            "description": "Through gateway: Logs in as a regular user (USER role).\n\n**Expected:** 200 OK"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var jsonData = pm.response.json();",
+                  "pm.environment.set(\"user_token\", jsonData.token);"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Register Duplicate Email",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@tarrobuild.cl\",\n  \"password\": \"admin123\",\n  \"name\": \"Dup\",\n  \"lastName\": \"Admin\",\n  \"phone\": \"98765432\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{tarrobuild}}{{api_prefix}}/auth/register",
+              "host": [
+                "{{tarrobuild}}{{api_prefix}}"
+              ],
+              "path": [
+                "auth",
+                "register"
+              ]
+            },
+            "description": "Through gateway: Negative test \u2014 tries to register an existing email.\n\n**Expected:** 409 Conflict"
+          },
+          "response": []
+        },
+        {
+          "name": "Register Invalid",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"\",\n  \"password\": \"\",\n  \"name\": \"\",\n  \"lastName\": \"\",\n  \"phone\": \"\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{tarrobuild}}{{api_prefix}}/auth/register",
+              "host": [
+                "{{tarrobuild}}{{api_prefix}}"
+              ],
+              "path": [
+                "auth",
+                "register"
+              ]
+            },
+            "description": "Through gateway: Negative test \u2014 sends blank required fields.\n\n**Expected:** 400 Bad Request"
+          },
+          "response": []
+        },
+        {
+          "name": "Login Wrong Password",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@tarrobuild.cl\",\n  \"password\": \"wrongpassword\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{tarrobuild}}{{api_prefix}}/auth/login",
+              "host": [
+                "{{tarrobuild}}{{api_prefix}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            },
+            "description": "Through gateway: Negative test \u2014 wrong password.\n\n**Expected:** 401 Unauthorized"
+          },
+          "response": []
+        },
+        {
+          "name": "Validate Token",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{tarrobuild}}{{api_prefix}}/auth/validate",
+              "host": [
+                "{{tarrobuild}}{{api_prefix}}"
+              ],
+              "path": [
+                "auth",
+                "validate"
+              ]
+            },
+            "description": "Through gateway: Validates a JWT token. The gateway delegates token validation to auth-service.\n\n**Expected:** 200 OK"
+          },
+          "response": []
+        },
+        {
+          "name": "Validate No Token",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{tarrobuild}}{{api_prefix}}/auth/validate",
+              "host": [
+                "{{tarrobuild}}{{api_prefix}}"
+              ],
+              "path": [
+                "auth",
+                "validate"
+              ]
+            },
+            "description": "Through gateway: Negative test \u2014 validate without an Authorization header. The request reaches auth-service which returns 401.\n\n**Expected:** 401 Unauthorized"
+          },
+          "response": []
+        },
+        {
+          "name": "Validate Invalid Token",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{tarrobuild}}{{api_prefix}}/auth/validate",
+              "host": [
+                "{{tarrobuild}}{{api_prefix}}"
+              ],
+              "path": [
+                "auth",
+                "validate"
+              ]
+            },
+            "description": "Through gateway: Negative test \u2014 invalid token forwarded to auth-service.\n\n**Expected:** 401 Unauthorized"
+          },
+          "response": []
+        },
+        {
+          "name": "Logout",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{tarrobuild}}{{api_prefix}}/auth/logout",
+              "host": [
+                "{{tarrobuild}}{{api_prefix}}"
+              ],
+              "path": [
+                "auth",
+                "logout"
+              ]
+            },
+            "description": "Through gateway: Logs out the current session.\n\n**Expected:** 200 OK"
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
 }

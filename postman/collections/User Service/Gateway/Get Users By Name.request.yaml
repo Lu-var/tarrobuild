@@ -1,0 +1,4 @@
+$kind: http-request
+url: "{{api_gateway}}{{api_prefix}}/users?name=Lucas"
+method: GET
+order: 140

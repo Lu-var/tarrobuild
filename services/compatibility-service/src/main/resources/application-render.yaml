@@ -1,4 +1,15 @@
 spring:
+
+  cloud:
+    discovery:
+      client:
+        simple:
+          instances:
+            category-service:
+              - uri: https://category-service-4fmr.onrender.com
+            product-service:
+              - uri: https://product-service-e903.onrender.com
+
   datasource:
     url: ${DATABASE_URL}
     driver-class-name: org.postgresql.Driver
@@ -19,14 +30,12 @@ spring:
       hibernate:
         default_schema: compatibility
         format_sql: true
-product-service:
-  url: ${PRODUCT_SERVICE_URL:http://localhost:8083}
-
-category-service:
-  url: ${CATEGORY_SERVICE_URL:http://localhost:8084}
-
 app:
   environment: production
+
+restclient:
+  connect-timeout: 30000
+  read-timeout: 90000
 
 logging:
   level:
@@ -38,3 +47,7 @@ logging:
     rollingpolicy:
       max-file-size: 10MB
       max-history: 10
+
+eureka:
+  client:
+    enabled: false

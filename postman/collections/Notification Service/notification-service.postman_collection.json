@@ -1,638 +1,1023 @@
 {
-    "info":  {
-                 "name":  "Notification Service",
-                 "description":  "# Notification Service\n\nBase URL: `{{notification_service}}` (port `8090`)\n\nHandles in-app notification sending and querying. Notifications are stored in H2 (dev) or MySQL (prod).\n\n## Status enum\n\n- `INFO` — General information\n- `WARNING` — Warning or alert\n- `SUCCESS` — Successful operation\n- `ERROR` — Error condition\n\nTypes are free-form strings (e.g. `ESTIMATE_READY`, `RECOMMENDATIONS_READY`, `PRICE_ALERT`).",
-                 "schema":  "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
-             },
-    "item":  [
-                 {
-                     "name":  "Direct Requests",
-                     "item":  [
-                                  {
-                                      "name":  "Send Notification",
-                                      "request":  {
-                                                      "method":  "POST",
-                                                      "header":  [
-
-                                                                 ],
-                                                      "url":  {
-                                                                  "host":  [
-                                                                               "{{notification_service}}{{api_prefix}}"
-                                                                           ],
-                                                                  "raw":  "{{notification_service}}{{api_prefix}}/notifications/send",
-                                                                  "path":  [
-                                                                               "notifications",
-                                                                               "send"
-                                                                           ]
-                                                              },
-                                                      "description":  "Sends a notification with `INFO` status.\n\n**Expected:** 201 Created",
-                                                      "body":  {
-                                                                   "mode":  "raw",
-                                                                   "raw":  "{\n  \"userId\": 1,\n  \"type\": \"ESTIMATE_READY\",\n  \"content\": \"Your budget estimate for build #5 is ready.\",\n  \"status\": \"INFO\"\n}",
-                                                                   "options":  {
-                                                                                   "raw":  {
-                                                                                               "language":  "json"
-                                                                                           }
-                                                                               }
-                                                               }
-                                                  }
-                                  },
-                                  {
-                                      "name":  "Send Notification Warning",
-                                      "request":  {
-                                                      "method":  "POST",
-                                                      "header":  [
-
-                                                                 ],
-                                                      "url":  {
-                                                                  "host":  [
-                                                                               "{{notification_service}}{{api_prefix}}"
-                                                                           ],
-                                                                  "raw":  "{{notification_service}}{{api_prefix}}/notifications/send",
-                                                                  "path":  [
-                                                                               "notifications",
-                                                                               "send"
-                                                                           ]
-                                                              },
-                                                      "description":  "Sends a notification with `WARNING` status.\n\n**Expected:** 201 Created",
-                                                      "body":  {
-                                                                   "mode":  "raw",
-                                                                   "raw":  "{\n  \"userId\": 1,\n  \"type\": \"COMPATIBILITY_WARNING\",\n  \"content\": \"Build #5 has incompatible components: CPU socket LGA1700 does not match motherboard socket AM5.\",\n  \"status\": \"WARNING\"\n}",
-                                                                   "options":  {
-                                                                                   "raw":  {
-                                                                                               "language":  "json"
-                                                                                           }
-                                                                               }
-                                                               }
-                                                  }
-                                  },
-                                  {
-                                      "name":  "Send Notification Invalid",
-                                      "request":  {
-                                                      "method":  "POST",
-                                                      "header":  [
-
-                                                                 ],
-                                                      "url":  {
-                                                                  "host":  [
-                                                                               "{{notification_service}}{{api_prefix}}"
-                                                                           ],
-                                                                  "raw":  "{{notification_service}}{{api_prefix}}/notifications/send",
-                                                                  "path":  [
-                                                                               "notifications",
-                                                                               "send"
-                                                                           ]
-                                                              },
-                                                      "description":  "Negative test -- sends a request with null userId, blank type/content, and null status.\n\n**Expected:** 400 Bad Request (validation errors)",
-                                                      "body":  {
-                                                                   "mode":  "raw",
-                                                                   "raw":  "{\n  \"userId\": null,\n  \"type\": \"\",\n  \"content\": \"\",\n  \"status\": null\n}",
-                                                                   "options":  {
-                                                                                   "raw":  {
-                                                                                               "language":  "json"
-                                                                                           }
-                                                                               }
-                                                               }
-                                                  }
-                                  },
-                                  {
-                                      "name":  "Send Notification Success",
-                                      "request":  {
-                                                      "method":  "POST",
-                                                      "header":  [
-
-                                                                 ],
-                                                      "url":  {
-                                                                  "host":  [
-                                                                               "{{notification_service}}{{api_prefix}}"
-                                                                           ],
-                                                                  "raw":  "{{notification_service}}{{api_prefix}}/notifications/send",
-                                                                  "path":  [
-                                                                               "notifications",
-                                                                               "send"
-                                                                           ]
-                                                              },
-                                                      "description":  "Sends a notification with `SUCCESS` status.\n\n**Expected:** 201 Created",
-                                                      "body":  {
-                                                                   "mode":  "raw",
-                                                                   "raw":  "{\n  \"userId\": 1,\n  \"type\": \"BUILD_VALIDATED\",\n  \"content\": \"Build #8 passed all compatibility checks.\",\n  \"status\": \"SUCCESS\"\n}",
-                                                                   "options":  {
-                                                                                   "raw":  {
-                                                                                               "language":  "json"
-                                                                                           }
-                                                                               }
-                                                               }
-                                                  }
-                                  },
-                                  {
-                                      "name":  "Send Notification Error",
-                                      "request":  {
-                                                      "method":  "POST",
-                                                      "header":  [
-
-                                                                 ],
-                                                      "url":  {
-                                                                  "host":  [
-                                                                               "{{notification_service}}{{api_prefix}}"
-                                                                           ],
-                                                                  "raw":  "{{notification_service}}{{api_prefix}}/notifications/send",
-                                                                  "path":  [
-                                                                               "notifications",
-                                                                               "send"
-                                                                           ]
-                                                              },
-                                                      "description":  "Sends a notification with `ERROR` status.\n\n**Expected:** 201 Created",
-                                                      "body":  {
-                                                                   "mode":  "raw",
-                                                                   "raw":  "{\n  \"userId\": 1,\n  \"type\": \"BUILD_ERROR\",\n  \"content\": \"Build #12 contains incompatible components: CPU LGA1700 is not compatible with cooler AM5.\",\n  \"status\": \"ERROR\"\n}",
-                                                                   "options":  {
-                                                                                   "raw":  {
-                                                                                               "language":  "json"
-                                                                                           }
-                                                                               }
-                                                               }
-                                                  }
-                                  },
-                                  {
-                                      "name":  "Send Notification Invalid Status",
-                                      "request":  {
-                                                      "method":  "POST",
-                                                      "header":  [
-
-                                                                 ],
-                                                      "url":  {
-                                                                  "host":  [
-                                                                               "{{notification_service}}{{api_prefix}}"
-                                                                           ],
-                                                                  "raw":  "{{notification_service}}{{api_prefix}}/notifications/send",
-                                                                  "path":  [
-                                                                               "notifications",
-                                                                               "send"
-                                                                           ]
-                                                              },
-                                                      "description":  "Negative test -- sends an invalid enum status value.\n\n**Expected:** 400 Bad Request (invalid enum)",
-                                                      "body":  {
-                                                                   "mode":  "raw",
-                                                                   "raw":  "{\n  \"userId\": 1,\n  \"type\": \"TEST\",\n  \"content\": \"Invalid status test.\",\n  \"status\": \"BOGUS_STATUS\"\n}",
-                                                                   "options":  {
-                                                                                   "raw":  {
-                                                                                               "language":  "json"
-                                                                                           }
-                                                                               }
-                                                               }
-                                                  }
-                                  },
-                                  {
-                                      "name":  "Send Notification Missing Status",
-                                      "request":  {
-                                                      "method":  "POST",
-                                                      "header":  [
-
-                                                                 ],
-                                                      "url":  {
-                                                                  "host":  [
-                                                                               "{{notification_service}}{{api_prefix}}"
-                                                                           ],
-                                                                  "raw":  "{{notification_service}}{{api_prefix}}/notifications/send",
-                                                                  "path":  [
-                                                                               "notifications",
-                                                                               "send"
-                                                                           ]
-                                                              },
-                                                      "description":  "Negative test -- sends a request without the `status` field.\n\n**Expected:** 400 Bad Request (status @NotNull validation)",
-                                                      "body":  {
-                                                                   "mode":  "raw",
-                                                                   "raw":  "{\n  \"userId\": 1,\n  \"type\": \"TEST\",\n  \"content\": \"Missing status field.\"\n}",
-                                                                   "options":  {
-                                                                                   "raw":  {
-                                                                                               "language":  "json"
-                                                                                           }
-                                                                               }
-                                                               }
-                                                  }
-                                  },
-                                  {
-                                      "name":  "Get All Logs",
-                                      "request":  {
-                                                      "method":  "GET",
-                                                      "header":  [
-
-                                                                 ],
-                                                      "url":  {
-                                                                  "host":  [
-                                                                               "{{notification_service}}{{api_prefix}}"
-                                                                           ],
-                                                                  "raw":  "{{notification_service}}{{api_prefix}}/notifications/logs",
-                                                                  "path":  [
-                                                                               "notifications",
-                                                                               "logs"
-                                                                           ]
-                                                              },
-                                                      "description":  "Retrieves all notification logs across all users. Returns an empty array if none exist.\n\n**Expected:** 200 OK"
-                                                  }
-                                  },
-                                  {
-                                      "name":  "Get Logs By User Id",
-                                      "request":  {
-                                                      "method":  "GET",
-                                                      "header":  [
-
-                                                                 ],
-                                                      "url":  {
-                                                                  "host":  [
-                                                                               "{{notification_service}}{{api_prefix}}"
-                                                                           ],
-                                                                  "raw":  "{{notification_service}}{{api_prefix}}/notifications/logs/user/1",
-                                                                  "path":  [
-                                                                               "notifications",
-                                                                               "logs",
-                                                                               "user",
-                                                                               "1"
-                                                                           ]
-                                                              },
-                                                      "description":  "Retrieves all notifications for a specific user. Returns an empty array if the user has no notifications.\n\n**Expected:** 200 OK"
-                                                  }
-                                  },
-                                  {
-                                      "name":  "Get Logs By User Id No Results",
-                                      "request":  {
-                                                      "method":  "GET",
-                                                      "header":  [
-
-                                                                 ],
-                                                      "url":  {
-                                                                  "host":  [
-                                                                               "{{notification_service}}{{api_prefix}}"
-                                                                           ],
-                                                                  "raw":  "{{notification_service}}{{api_prefix}}/notifications/logs/user/9999",
-                                                                  "path":  [
-                                                                               "notifications",
-                                                                               "logs",
-                                                                               "user",
-                                                                               "9999"
-                                                                           ]
-                                                              },
-                                                      "description":  "Negative test -- queries notifications for a user with no logs. Returns an empty array, not a 404.\n\n**Expected:** 200 OK (empty list)"
-                                                  }
-                                  },
-                                  {
-                                      "name":  "Get Log By Id",
-                                      "request":  {
-                                                      "method":  "GET",
-                                                      "header":  [
-
-                                                                 ],
-                                                      "url":  {
-                                                                  "host":  [
-                                                                               "{{notification_service}}{{api_prefix}}"
-                                                                           ],
-                                                                  "raw":  "{{notification_service}}{{api_prefix}}/notifications/logs/1",
-                                                                  "path":  [
-                                                                               "notifications",
-                                                                               "logs",
-                                                                               "1"
-                                                                           ]
-                                                              },
-                                                      "description":  "Retrieves a single notification log by its ID.\n\n**Expected:** 200 OK"
-                                                  }
-                                  },
-                                  {
-                                      "name":  "Get Log By Id Not Found",
-                                      "request":  {
-                                                      "method":  "GET",
-                                                      "header":  [
-
-                                                                 ],
-                                                      "url":  {
-                                                                  "host":  [
-                                                                               "{{notification_service}}{{api_prefix}}"
-                                                                           ],
-                                                                  "raw":  "{{notification_service}}{{api_prefix}}/notifications/logs/9999",
-                                                                  "path":  [
-                                                                               "notifications",
-                                                                               "logs",
-                                                                               "9999"
-                                                                           ]
-                                                              },
-                                                      "description":  "Negative test -- tries to fetch a notification log that does not exist.\n\n**Expected:** 404 Not Found"
-                                                  }
-                                  }
-                              ]
-                 },
-                 {
-                     "name":  "Proxy Requests",
-                     "item":  [
-                                  {
-                                      "name":  "Send Notification (via gateway)",
-                                      "request":  {
-                                                      "method":  "POST",
-                                                      "header":  [
-
-                                                                 ],
-                                                      "url":  {
-                                                                  "raw":  "{{api_gateway}}{{api_prefix}}/notifications/send",
-                                                                  "host":  [
-                                                                               "{{api_gateway}}{{api_prefix}}"
-                                                                           ],
-                                                                  "path":  [
-                                                                               "notifications",
-                                                                               "send"
-                                                                           ]
-                                                              },
-                                                      "description":  "Through gateway: Sends a notification with `INFO` status.\n\n**Expected:** 201 Created",
-                                                      "body":  {
-                                                                   "mode":  "raw",
-                                                                   "raw":  "{\n  \"userId\": 1,\n  \"type\": \"ESTIMATE_READY\",\n  \"content\": \"Your budget estimate for build #5 is ready.\",\n  \"status\": \"INFO\"\n}",
-                                                                   "options":  {
-                                                                                   "raw":  {
-                                                                                               "language":  "json"
-                                                                                           }
-                                                                               }
-                                                               }
-                                                  }
-                                  },
-                                  {
-                                      "name":  "Send Notification Warning (via gateway)",
-                                      "request":  {
-                                                      "method":  "POST",
-                                                      "header":  [
-
-                                                                 ],
-                                                      "url":  {
-                                                                  "raw":  "{{api_gateway}}{{api_prefix}}/notifications/send",
-                                                                  "host":  [
-                                                                               "{{api_gateway}}{{api_prefix}}"
-                                                                           ],
-                                                                  "path":  [
-                                                                               "notifications",
-                                                                               "send"
-                                                                           ]
-                                                              },
-                                                      "description":  "Through gateway: Sends a notification with `WARNING` status.\n\n**Expected:** 201 Created",
-                                                      "body":  {
-                                                                   "mode":  "raw",
-                                                                   "raw":  "{\n  \"userId\": 1,\n  \"type\": \"COMPATIBILITY_WARNING\",\n  \"content\": \"Build #5 has incompatible components: CPU socket LGA1700 does not match motherboard socket AM5.\",\n  \"status\": \"WARNING\"\n}",
-                                                                   "options":  {
-                                                                                   "raw":  {
-                                                                                               "language":  "json"
-                                                                                           }
-                                                                               }
-                                                               }
-                                                  }
-                                  },
-                                  {
-                                      "name":  "Send Notification Invalid (via gateway)",
-                                      "request":  {
-                                                      "method":  "POST",
-                                                      "header":  [
-
-                                                                 ],
-                                                      "url":  {
-                                                                  "raw":  "{{api_gateway}}{{api_prefix}}/notifications/send",
-                                                                  "host":  [
-                                                                               "{{api_gateway}}{{api_prefix}}"
-                                                                           ],
-                                                                  "path":  [
-                                                                               "notifications",
-                                                                               "send"
-                                                                           ]
-                                                              },
-                                                      "description":  "Through gateway: Negative test -- sends a request with null userId, blank type/content, and null status.\n\n**Expected:** 400 Bad Request (validation errors)",
-                                                      "body":  {
-                                                                   "mode":  "raw",
-                                                                   "raw":  "{\n  \"userId\": null,\n  \"type\": \"\",\n  \"content\": \"\",\n  \"status\": null\n}",
-                                                                   "options":  {
-                                                                                   "raw":  {
-                                                                                               "language":  "json"
-                                                                                           }
-                                                                               }
-                                                               }
-                                                  }
-                                  },
-                                  {
-                                      "name":  "Send Notification Success (via gateway)",
-                                      "request":  {
-                                                      "method":  "POST",
-                                                      "header":  [
-
-                                                                 ],
-                                                      "url":  {
-                                                                  "raw":  "{{api_gateway}}{{api_prefix}}/notifications/send",
-                                                                  "host":  [
-                                                                               "{{api_gateway}}{{api_prefix}}"
-                                                                           ],
-                                                                  "path":  [
-                                                                               "notifications",
-                                                                               "send"
-                                                                           ]
-                                                              },
-                                                      "description":  "Through gateway: Sends a notification with `SUCCESS` status.\n\n**Expected:** 201 Created",
-                                                      "body":  {
-                                                                   "mode":  "raw",
-                                                                   "raw":  "{\n  \"userId\": 1,\n  \"type\": \"BUILD_VALIDATED\",\n  \"content\": \"Build #8 passed all compatibility checks.\",\n  \"status\": \"SUCCESS\"\n}",
-                                                                   "options":  {
-                                                                                   "raw":  {
-                                                                                               "language":  "json"
-                                                                                           }
-                                                                               }
-                                                               }
-                                                  }
-                                  },
-                                  {
-                                      "name":  "Send Notification Error (via gateway)",
-                                      "request":  {
-                                                      "method":  "POST",
-                                                      "header":  [
-
-                                                                 ],
-                                                      "url":  {
-                                                                  "raw":  "{{api_gateway}}{{api_prefix}}/notifications/send",
-                                                                  "host":  [
-                                                                               "{{api_gateway}}{{api_prefix}}"
-                                                                           ],
-                                                                  "path":  [
-                                                                               "notifications",
-                                                                               "send"
-                                                                           ]
-                                                              },
-                                                      "description":  "Through gateway: Sends a notification with `ERROR` status.\n\n**Expected:** 201 Created",
-                                                      "body":  {
-                                                                   "mode":  "raw",
-                                                                   "raw":  "{\n  \"userId\": 1,\n  \"type\": \"BUILD_ERROR\",\n  \"content\": \"Build #12 contains incompatible components: CPU LGA1700 is not compatible with cooler AM5.\",\n  \"status\": \"ERROR\"\n}",
-                                                                   "options":  {
-                                                                                   "raw":  {
-                                                                                               "language":  "json"
-                                                                                           }
-                                                                               }
-                                                               }
-                                                  }
-                                  },
-                                  {
-                                      "name":  "Send Notification Invalid Status (via gateway)",
-                                      "request":  {
-                                                      "method":  "POST",
-                                                      "header":  [
-
-                                                                 ],
-                                                      "url":  {
-                                                                  "raw":  "{{api_gateway}}{{api_prefix}}/notifications/send",
-                                                                  "host":  [
-                                                                               "{{api_gateway}}{{api_prefix}}"
-                                                                           ],
-                                                                  "path":  [
-                                                                               "notifications",
-                                                                               "send"
-                                                                           ]
-                                                              },
-                                                      "description":  "Through gateway: Negative test -- sends an invalid enum status value.\n\n**Expected:** 400 Bad Request (invalid enum)",
-                                                      "body":  {
-                                                                   "mode":  "raw",
-                                                                   "raw":  "{\n  \"userId\": 1,\n  \"type\": \"TEST\",\n  \"content\": \"Invalid status test.\",\n  \"status\": \"BOGUS_STATUS\"\n}",
-                                                                   "options":  {
-                                                                                   "raw":  {
-                                                                                               "language":  "json"
-                                                                                           }
-                                                                               }
-                                                               }
-                                                  }
-                                  },
-                                  {
-                                      "name":  "Send Notification Missing Status (via gateway)",
-                                      "request":  {
-                                                      "method":  "POST",
-                                                      "header":  [
-
-                                                                 ],
-                                                      "url":  {
-                                                                  "raw":  "{{api_gateway}}{{api_prefix}}/notifications/send",
-                                                                  "host":  [
-                                                                               "{{api_gateway}}{{api_prefix}}"
-                                                                           ],
-                                                                  "path":  [
-                                                                               "notifications",
-                                                                               "send"
-                                                                           ]
-                                                              },
-                                                      "description":  "Through gateway: Negative test -- sends a request without the `status` field.\n\n**Expected:** 400 Bad Request (status @NotNull validation)",
-                                                      "body":  {
-                                                                   "mode":  "raw",
-                                                                   "raw":  "{\n  \"userId\": 1,\n  \"type\": \"TEST\",\n  \"content\": \"Missing status field.\"\n}",
-                                                                   "options":  {
-                                                                                   "raw":  {
-                                                                                               "language":  "json"
-                                                                                           }
-                                                                               }
-                                                               }
-                                                  }
-                                  },
-                                  {
-                                      "name":  "Get All Logs (via gateway)",
-                                      "request":  {
-                                                      "method":  "GET",
-                                                      "header":  [
-
-                                                                 ],
-                                                      "url":  {
-                                                                  "raw":  "{{api_gateway}}{{api_prefix}}/notifications/logs",
-                                                                  "host":  [
-                                                                               "{{api_gateway}}{{api_prefix}}"
-                                                                           ],
-                                                                  "path":  [
-                                                                               "notifications",
-                                                                               "logs"
-                                                                           ]
-                                                              },
-                                                      "description":  "Through gateway: Retrieves all notification logs across all users. Returns an empty array if none exist.\n\n**Expected:** 200 OK"
-                                                  }
-                                  },
-                                  {
-                                      "name":  "Get Logs By User Id (via gateway)",
-                                      "request":  {
-                                                      "method":  "GET",
-                                                      "header":  [
-
-                                                                 ],
-                                                      "url":  {
-                                                                  "raw":  "{{api_gateway}}{{api_prefix}}/notifications/logs/user/1",
-                                                                  "host":  [
-                                                                               "{{api_gateway}}{{api_prefix}}"
-                                                                           ],
-                                                                  "path":  [
-                                                                               "notifications",
-                                                                               "logs",
-                                                                               "user",
-                                                                               "1"
-                                                                           ]
-                                                              },
-                                                      "description":  "Through gateway: Retrieves all notifications for a specific user. Returns an empty array if the user has no notifications.\n\n**Expected:** 200 OK"
-                                                  }
-                                  },
-                                  {
-                                      "name":  "Get Logs By User Id No Results (via gateway)",
-                                      "request":  {
-                                                      "method":  "GET",
-                                                      "header":  [
-
-                                                                 ],
-                                                      "url":  {
-                                                                  "raw":  "{{api_gateway}}{{api_prefix}}/notifications/logs/user/9999",
-                                                                  "host":  [
-                                                                               "{{api_gateway}}{{api_prefix}}"
-                                                                           ],
-                                                                  "path":  [
-                                                                               "notifications",
-                                                                               "logs",
-                                                                               "user",
-                                                                               "9999"
-                                                                           ]
-                                                              },
-                                                      "description":  "Through gateway: Negative test -- queries notifications for a user with no logs. Returns an empty array, not a 404.\n\n**Expected:** 200 OK (empty list)"
-                                                  }
-                                  },
-                                  {
-                                      "name":  "Get Log By Id (via gateway)",
-                                      "request":  {
-                                                      "method":  "GET",
-                                                      "header":  [
-
-                                                                 ],
-                                                      "url":  {
-                                                                  "raw":  "{{api_gateway}}{{api_prefix}}/notifications/logs/1",
-                                                                  "host":  [
-                                                                               "{{api_gateway}}{{api_prefix}}"
-                                                                           ],
-                                                                  "path":  [
-                                                                               "notifications",
-                                                                               "logs",
-                                                                               "1"
-                                                                           ]
-                                                              },
-                                                      "description":  "Through gateway: Retrieves a single notification log by its ID.\n\n**Expected:** 200 OK"
-                                                  }
-                                  },
-                                  {
-                                      "name":  "Get Log By Id Not Found (via gateway)",
-                                      "request":  {
-                                                      "method":  "GET",
-                                                      "header":  [
-
-                                                                 ],
-                                                      "url":  {
-                                                                  "raw":  "{{api_gateway}}{{api_prefix}}/notifications/logs/9999",
-                                                                  "host":  [
-                                                                               "{{api_gateway}}{{api_prefix}}"
-                                                                           ],
-                                                                  "path":  [
-                                                                               "notifications",
-                                                                               "logs",
-                                                                               "9999"
-                                                                           ]
-                                                              },
-                                                      "description":  "Through gateway: Negative test -- tries to fetch a notification log that does not exist.\n\n**Expected:** 404 Not Found"
-                                                  }
-                                  }
-                              ]
-                 }
-             ]
+  "info": {
+    "name": "Notification Service",
+    "description": "# Notification Service\n\nBase URL: `{{notification_service}}` (port `8090`)\n\nHandles in-app notification sending and querying. Notifications are stored in H2 (dev) or MySQL (prod).\n\n## Status enum\n\n- `INFO` \u2014 General information\n- `WARNING` \u2014 Warning or alert\n- `SUCCESS` \u2014 Successful operation\n- `ERROR` \u2014 Error condition\n\nTypes are free-form strings (e.g. `ESTIMATE_READY`, `RECOMMENDATIONS_READY`, `PRICE_ALERT`).",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Direct",
+      "item": [
+        {
+          "name": "Send Notification",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "host": [
+                "{{notification_service}}{{api_prefix}}"
+              ],
+              "raw": "{{notification_service}}{{api_prefix}}/notifications/send",
+              "path": [
+                "notifications",
+                "send"
+              ]
+            },
+            "description": "Sends a notification with `INFO` status.\n\n**Expected:** 201 Created",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userId\": 1,\n  \"type\": \"ESTIMATE_READY\",\n  \"content\": \"Your budget estimate for build #5 is ready.\",\n  \"status\": \"INFO\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Send Notification Warning",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "host": [
+                "{{notification_service}}{{api_prefix}}"
+              ],
+              "raw": "{{notification_service}}{{api_prefix}}/notifications/send",
+              "path": [
+                "notifications",
+                "send"
+              ]
+            },
+            "description": "Sends a notification with `WARNING` status.\n\n**Expected:** 201 Created",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userId\": 1,\n  \"type\": \"COMPATIBILITY_WARNING\",\n  \"content\": \"Build #5 has incompatible components: CPU socket LGA1700 does not match motherboard socket AM5.\",\n  \"status\": \"WARNING\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Send Notification Invalid",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "host": [
+                "{{notification_service}}{{api_prefix}}"
+              ],
+              "raw": "{{notification_service}}{{api_prefix}}/notifications/send",
+              "path": [
+                "notifications",
+                "send"
+              ]
+            },
+            "description": "Negative test -- sends a request with null userId, blank type/content, and null status.\n\n**Expected:** 400 Bad Request (validation errors)",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userId\": null,\n  \"type\": \"\",\n  \"content\": \"\",\n  \"status\": null\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Send Notification Success",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "host": [
+                "{{notification_service}}{{api_prefix}}"
+              ],
+              "raw": "{{notification_service}}{{api_prefix}}/notifications/send",
+              "path": [
+                "notifications",
+                "send"
+              ]
+            },
+            "description": "Sends a notification with `SUCCESS` status.\n\n**Expected:** 201 Created",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userId\": 1,\n  \"type\": \"BUILD_VALIDATED\",\n  \"content\": \"Build #8 passed all compatibility checks.\",\n  \"status\": \"SUCCESS\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Send Notification Error",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "host": [
+                "{{notification_service}}{{api_prefix}}"
+              ],
+              "raw": "{{notification_service}}{{api_prefix}}/notifications/send",
+              "path": [
+                "notifications",
+                "send"
+              ]
+            },
+            "description": "Sends a notification with `ERROR` status.\n\n**Expected:** 201 Created",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userId\": 1,\n  \"type\": \"BUILD_ERROR\",\n  \"content\": \"Build #12 contains incompatible components: CPU LGA1700 is not compatible with cooler AM5.\",\n  \"status\": \"ERROR\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Send Notification Invalid Status",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "host": [
+                "{{notification_service}}{{api_prefix}}"
+              ],
+              "raw": "{{notification_service}}{{api_prefix}}/notifications/send",
+              "path": [
+                "notifications",
+                "send"
+              ]
+            },
+            "description": "Negative test -- sends an invalid enum status value.\n\n**Expected:** 400 Bad Request (invalid enum)",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userId\": 1,\n  \"type\": \"TEST\",\n  \"content\": \"Invalid status test.\",\n  \"status\": \"BOGUS_STATUS\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Send Notification Missing Status",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "host": [
+                "{{notification_service}}{{api_prefix}}"
+              ],
+              "raw": "{{notification_service}}{{api_prefix}}/notifications/send",
+              "path": [
+                "notifications",
+                "send"
+              ]
+            },
+            "description": "Negative test -- sends a request without the `status` field.\n\n**Expected:** 400 Bad Request (status @NotNull validation)",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userId\": 1,\n  \"type\": \"TEST\",\n  \"content\": \"Missing status field.\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Get All Logs",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "host": [
+                "{{notification_service}}{{api_prefix}}"
+              ],
+              "raw": "{{notification_service}}{{api_prefix}}/notifications/logs",
+              "path": [
+                "notifications",
+                "logs"
+              ]
+            },
+            "description": "Retrieves all notification logs across all users. Returns an empty array if none exist.\n\n**Expected:** 200 OK"
+          }
+        },
+        {
+          "name": "Get Logs By User Id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "host": [
+                "{{notification_service}}{{api_prefix}}"
+              ],
+              "raw": "{{notification_service}}{{api_prefix}}/notifications/logs/user/1",
+              "path": [
+                "notifications",
+                "logs",
+                "user",
+                "1"
+              ]
+            },
+            "description": "Retrieves all notifications for a specific user. Returns an empty array if the user has no notifications.\n\n**Expected:** 200 OK"
+          }
+        },
+        {
+          "name": "Get Logs By User Id No Results",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "host": [
+                "{{notification_service}}{{api_prefix}}"
+              ],
+              "raw": "{{notification_service}}{{api_prefix}}/notifications/logs/user/9999",
+              "path": [
+                "notifications",
+                "logs",
+                "user",
+                "9999"
+              ]
+            },
+            "description": "Negative test -- queries notifications for a user with no logs. Returns an empty array, not a 404.\n\n**Expected:** 200 OK (empty list)"
+          }
+        },
+        {
+          "name": "Get Log By Id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "host": [
+                "{{notification_service}}{{api_prefix}}"
+              ],
+              "raw": "{{notification_service}}{{api_prefix}}/notifications/logs/1",
+              "path": [
+                "notifications",
+                "logs",
+                "1"
+              ]
+            },
+            "description": "Retrieves a single notification log by its ID.\n\n**Expected:** 200 OK"
+          }
+        },
+        {
+          "name": "Get Log By Id Not Found",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "host": [
+                "{{notification_service}}{{api_prefix}}"
+              ],
+              "raw": "{{notification_service}}{{api_prefix}}/notifications/logs/9999",
+              "path": [
+                "notifications",
+                "logs",
+                "9999"
+              ]
+            },
+            "description": "Negative test -- tries to fetch a notification log that does not exist.\n\n**Expected:** 404 Not Found"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Gateway",
+      "item": [
+        {
+          "name": "Send Notification",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{api_gateway}}{{api_prefix}}/notifications/send",
+              "host": [
+                "{{api_gateway}}{{api_prefix}}"
+              ],
+              "path": [
+                "notifications",
+                "send"
+              ]
+            },
+            "description": "Through gateway: Sends a notification with `INFO` status.\n\n**Expected:** 201 Created",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userId\": 1,\n  \"type\": \"ESTIMATE_READY\",\n  \"content\": \"Your budget estimate for build #5 is ready.\",\n  \"status\": \"INFO\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Send Notification Warning",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{api_gateway}}{{api_prefix}}/notifications/send",
+              "host": [
+                "{{api_gateway}}{{api_prefix}}"
+              ],
+              "path": [
+                "notifications",
+                "send"
+              ]
+            },
+            "description": "Through gateway: Sends a notification with `WARNING` status.\n\n**Expected:** 201 Created",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userId\": 1,\n  \"type\": \"COMPATIBILITY_WARNING\",\n  \"content\": \"Build #5 has incompatible components: CPU socket LGA1700 does not match motherboard socket AM5.\",\n  \"status\": \"WARNING\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Send Notification Invalid",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{api_gateway}}{{api_prefix}}/notifications/send",
+              "host": [
+                "{{api_gateway}}{{api_prefix}}"
+              ],
+              "path": [
+                "notifications",
+                "send"
+              ]
+            },
+            "description": "Through gateway: Negative test -- sends a request with null userId, blank type/content, and null status.\n\n**Expected:** 400 Bad Request (validation errors)",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userId\": null,\n  \"type\": \"\",\n  \"content\": \"\",\n  \"status\": null\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Send Notification Success",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{api_gateway}}{{api_prefix}}/notifications/send",
+              "host": [
+                "{{api_gateway}}{{api_prefix}}"
+              ],
+              "path": [
+                "notifications",
+                "send"
+              ]
+            },
+            "description": "Through gateway: Sends a notification with `SUCCESS` status.\n\n**Expected:** 201 Created",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userId\": 1,\n  \"type\": \"BUILD_VALIDATED\",\n  \"content\": \"Build #8 passed all compatibility checks.\",\n  \"status\": \"SUCCESS\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Send Notification Error",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{api_gateway}}{{api_prefix}}/notifications/send",
+              "host": [
+                "{{api_gateway}}{{api_prefix}}"
+              ],
+              "path": [
+                "notifications",
+                "send"
+              ]
+            },
+            "description": "Through gateway: Sends a notification with `ERROR` status.\n\n**Expected:** 201 Created",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userId\": 1,\n  \"type\": \"BUILD_ERROR\",\n  \"content\": \"Build #12 contains incompatible components: CPU LGA1700 is not compatible with cooler AM5.\",\n  \"status\": \"ERROR\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Send Notification Invalid Status",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{api_gateway}}{{api_prefix}}/notifications/send",
+              "host": [
+                "{{api_gateway}}{{api_prefix}}"
+              ],
+              "path": [
+                "notifications",
+                "send"
+              ]
+            },
+            "description": "Through gateway: Negative test -- sends an invalid enum status value.\n\n**Expected:** 400 Bad Request (invalid enum)",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userId\": 1,\n  \"type\": \"TEST\",\n  \"content\": \"Invalid status test.\",\n  \"status\": \"BOGUS_STATUS\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Send Notification Missing Status",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{api_gateway}}{{api_prefix}}/notifications/send",
+              "host": [
+                "{{api_gateway}}{{api_prefix}}"
+              ],
+              "path": [
+                "notifications",
+                "send"
+              ]
+            },
+            "description": "Through gateway: Negative test -- sends a request without the `status` field.\n\n**Expected:** 400 Bad Request (status @NotNull validation)",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userId\": 1,\n  \"type\": \"TEST\",\n  \"content\": \"Missing status field.\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Get All Logs",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{api_gateway}}{{api_prefix}}/notifications/logs",
+              "host": [
+                "{{api_gateway}}{{api_prefix}}"
+              ],
+              "path": [
+                "notifications",
+                "logs"
+              ]
+            },
+            "description": "Through gateway: Retrieves all notification logs across all users. Returns an empty array if none exist.\n\n**Expected:** 200 OK"
+          }
+        },
+        {
+          "name": "Get Logs By User Id",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{api_gateway}}{{api_prefix}}/notifications/logs/user/1",
+              "host": [
+                "{{api_gateway}}{{api_prefix}}"
+              ],
+              "path": [
+                "notifications",
+                "logs",
+                "user",
+                "1"
+              ]
+            },
+            "description": "Through gateway: Retrieves all notifications for a specific user. Returns an empty array if the user has no notifications.\n\n**Expected:** 200 OK"
+          }
+        },
+        {
+          "name": "Get Logs By User Id No Results",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{api_gateway}}{{api_prefix}}/notifications/logs/user/9999",
+              "host": [
+                "{{api_gateway}}{{api_prefix}}"
+              ],
+              "path": [
+                "notifications",
+                "logs",
+                "user",
+                "9999"
+              ]
+            },
+            "description": "Through gateway: Negative test -- queries notifications for a user with no logs. Returns an empty array, not a 404.\n\n**Expected:** 200 OK (empty list)"
+          }
+        },
+        {
+          "name": "Get Log By Id",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{api_gateway}}{{api_prefix}}/notifications/logs/1",
+              "host": [
+                "{{api_gateway}}{{api_prefix}}"
+              ],
+              "path": [
+                "notifications",
+                "logs",
+                "1"
+              ]
+            },
+            "description": "Through gateway: Retrieves a single notification log by its ID.\n\n**Expected:** 200 OK"
+          }
+        },
+        {
+          "name": "Get Log By Id Not Found",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{api_gateway}}{{api_prefix}}/notifications/logs/9999",
+              "host": [
+                "{{api_gateway}}{{api_prefix}}"
+              ],
+              "path": [
+                "notifications",
+                "logs",
+                "9999"
+              ]
+            },
+            "description": "Through gateway: Negative test -- tries to fetch a notification log that does not exist.\n\n**Expected:** 404 Not Found"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Monolith",
+      "item": [
+        {
+          "name": "Send Notification",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{tarrobuild}}{{api_prefix}}/notifications/send",
+              "host": [
+                "{{tarrobuild}}{{api_prefix}}"
+              ],
+              "path": [
+                "notifications",
+                "send"
+              ]
+            },
+            "description": "Through gateway: Sends a notification with `INFO` status.\n\n**Expected:** 201 Created",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userId\": 1,\n  \"type\": \"ESTIMATE_READY\",\n  \"content\": \"Your budget estimate for build #5 is ready.\",\n  \"status\": \"INFO\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Send Notification Warning",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{tarrobuild}}{{api_prefix}}/notifications/send",
+              "host": [
+                "{{tarrobuild}}{{api_prefix}}"
+              ],
+              "path": [
+                "notifications",
+                "send"
+              ]
+            },
+            "description": "Through gateway: Sends a notification with `WARNING` status.\n\n**Expected:** 201 Created",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userId\": 1,\n  \"type\": \"COMPATIBILITY_WARNING\",\n  \"content\": \"Build #5 has incompatible components: CPU socket LGA1700 does not match motherboard socket AM5.\",\n  \"status\": \"WARNING\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Send Notification Invalid",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{tarrobuild}}{{api_prefix}}/notifications/send",
+              "host": [
+                "{{tarrobuild}}{{api_prefix}}"
+              ],
+              "path": [
+                "notifications",
+                "send"
+              ]
+            },
+            "description": "Through gateway: Negative test -- sends a request with null userId, blank type/content, and null status.\n\n**Expected:** 400 Bad Request (validation errors)",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userId\": null,\n  \"type\": \"\",\n  \"content\": \"\",\n  \"status\": null\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Send Notification Success",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{tarrobuild}}{{api_prefix}}/notifications/send",
+              "host": [
+                "{{tarrobuild}}{{api_prefix}}"
+              ],
+              "path": [
+                "notifications",
+                "send"
+              ]
+            },
+            "description": "Through gateway: Sends a notification with `SUCCESS` status.\n\n**Expected:** 201 Created",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userId\": 1,\n  \"type\": \"BUILD_VALIDATED\",\n  \"content\": \"Build #8 passed all compatibility checks.\",\n  \"status\": \"SUCCESS\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Send Notification Error",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{tarrobuild}}{{api_prefix}}/notifications/send",
+              "host": [
+                "{{tarrobuild}}{{api_prefix}}"
+              ],
+              "path": [
+                "notifications",
+                "send"
+              ]
+            },
+            "description": "Through gateway: Sends a notification with `ERROR` status.\n\n**Expected:** 201 Created",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userId\": 1,\n  \"type\": \"BUILD_ERROR\",\n  \"content\": \"Build #12 contains incompatible components: CPU LGA1700 is not compatible with cooler AM5.\",\n  \"status\": \"ERROR\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Send Notification Invalid Status",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{tarrobuild}}{{api_prefix}}/notifications/send",
+              "host": [
+                "{{tarrobuild}}{{api_prefix}}"
+              ],
+              "path": [
+                "notifications",
+                "send"
+              ]
+            },
+            "description": "Through gateway: Negative test -- sends an invalid enum status value.\n\n**Expected:** 400 Bad Request (invalid enum)",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userId\": 1,\n  \"type\": \"TEST\",\n  \"content\": \"Invalid status test.\",\n  \"status\": \"BOGUS_STATUS\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Send Notification Missing Status",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{tarrobuild}}{{api_prefix}}/notifications/send",
+              "host": [
+                "{{tarrobuild}}{{api_prefix}}"
+              ],
+              "path": [
+                "notifications",
+                "send"
+              ]
+            },
+            "description": "Through gateway: Negative test -- sends a request without the `status` field.\n\n**Expected:** 400 Bad Request (status @NotNull validation)",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userId\": 1,\n  \"type\": \"TEST\",\n  \"content\": \"Missing status field.\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Get All Logs",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{tarrobuild}}{{api_prefix}}/notifications/logs",
+              "host": [
+                "{{tarrobuild}}{{api_prefix}}"
+              ],
+              "path": [
+                "notifications",
+                "logs"
+              ]
+            },
+            "description": "Through gateway: Retrieves all notification logs across all users. Returns an empty array if none exist.\n\n**Expected:** 200 OK"
+          }
+        },
+        {
+          "name": "Get Logs By User Id",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{tarrobuild}}{{api_prefix}}/notifications/logs/user/1",
+              "host": [
+                "{{tarrobuild}}{{api_prefix}}"
+              ],
+              "path": [
+                "notifications",
+                "logs",
+                "user",
+                "1"
+              ]
+            },
+            "description": "Through gateway: Retrieves all notifications for a specific user. Returns an empty array if the user has no notifications.\n\n**Expected:** 200 OK"
+          }
+        },
+        {
+          "name": "Get Logs By User Id No Results",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{tarrobuild}}{{api_prefix}}/notifications/logs/user/9999",
+              "host": [
+                "{{tarrobuild}}{{api_prefix}}"
+              ],
+              "path": [
+                "notifications",
+                "logs",
+                "user",
+                "9999"
+              ]
+            },
+            "description": "Through gateway: Negative test -- queries notifications for a user with no logs. Returns an empty array, not a 404.\n\n**Expected:** 200 OK (empty list)"
+          }
+        },
+        {
+          "name": "Get Log By Id",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{tarrobuild}}{{api_prefix}}/notifications/logs/1",
+              "host": [
+                "{{tarrobuild}}{{api_prefix}}"
+              ],
+              "path": [
+                "notifications",
+                "logs",
+                "1"
+              ]
+            },
+            "description": "Through gateway: Retrieves a single notification log by its ID.\n\n**Expected:** 200 OK"
+          }
+        },
+        {
+          "name": "Get Log By Id Not Found",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{tarrobuild}}{{api_prefix}}/notifications/logs/9999",
+              "host": [
+                "{{tarrobuild}}{{api_prefix}}"
+              ],
+              "path": [
+                "notifications",
+                "logs",
+                "9999"
+              ]
+            },
+            "description": "Through gateway: Negative test -- tries to fetch a notification log that does not exist.\n\n**Expected:** 404 Not Found"
+          }
+        }
+      ]
+    }
+  ]
 }
-

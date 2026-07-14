@@ -1,0 +1,4 @@
+$kind: http-request
+url: "{{build_service}}{{api_prefix}}/builds/1/items/1"
+method: GET
+order: 110

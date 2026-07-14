@@ -1,0 +1,13 @@
+$kind: http-request
+url: "{{notification_service}}{{api_prefix}}/notifications/send"
+method: POST
+body:
+  type: json
+  content: |-
+    {
+      "userId": 1,
+      "type": "BUILD_VALIDATED",
+      "content": "Build #8 passed all compatibility checks.",
+      "status": "SUCCESS"
+    }
+order: 40

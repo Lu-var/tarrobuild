@@ -1,0 +1,15 @@
+$kind: http-request
+url: "{{tarrobuild}}{{api_prefix}}/products/9999"
+method: PUT
+body:
+  type: json
+  content: |-
+    {
+      "name": "Test",
+      "description": "Test",
+      "msrp": 100,
+      "categoryId": 1,
+      "brand": "Test",
+      "model": "Test"
+    }
+order: 320

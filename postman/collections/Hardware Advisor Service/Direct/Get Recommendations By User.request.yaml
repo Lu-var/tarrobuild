@@ -1,0 +1,4 @@
+$kind: http-request
+url: "{{hardware_advisor_service}}{{api_prefix}}/advisor/recommendations/1"
+method: GET
+order: 20

@@ -4,15 +4,6 @@ spring:
   profiles:
     active: ${SPRING_PROFILES_ACTIVE:h2}
 
-build-service:
-  url: ${BUILD_SERVICE_URL:http://localhost:8087}
-
-product-service:
-  url: ${PRODUCT_SERVICE_URL:http://localhost:8083}
-
-notification-service:
-  url: ${NOTIFICATION_SERVICE_URL:http://localhost:8090}
-
 app:
   environment: production
 
@@ -29,3 +20,12 @@ logging:
 
 server:
   port: ${SERVER_PORT:8088}
+
+restclient:
+  connect-timeout: 5000
+  read-timeout: 10000
+
+eureka:
+  client:
+    service-url:
+      defaultZone: ${EUREKA_URL:http://localhost:8761/eureka/}

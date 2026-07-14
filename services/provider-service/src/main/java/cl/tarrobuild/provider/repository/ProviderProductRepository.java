@@ -8,9 +8,9 @@ import java.util.Optional;
 
 public interface ProviderProductRepository extends JpaRepository<ProviderProduct, Long> {
 
-    List<ProviderProduct> findByProviderId(Long providerId);
+    List<ProviderProduct> findByProvider_Id(Long providerId);
 
     List<ProviderProduct> findByProductId(Long productId);
 
-    Optional<ProviderProduct> findByIdAndProviderId(Long id, Long providerId);
+    Optional<ProviderProduct> findByIdAndProvider_Id(Long id, Long providerId);
 }

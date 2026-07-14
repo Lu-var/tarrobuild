@@ -1,0 +1,14 @@
+$kind: http-request
+url: "{{tarrobuild}}{{api_prefix}}/compatibility/check"
+method: POST
+body:
+  type: json
+  content: |-
+    {
+      "productIds": [
+        1,
+        2
+      ],
+      "buildId": 1
+    }
+order: 60

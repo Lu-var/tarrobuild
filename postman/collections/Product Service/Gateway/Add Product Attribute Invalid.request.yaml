@@ -1,0 +1,11 @@
+$kind: http-request
+url: "{{api_gateway}}{{api_prefix}}/products/1/attributes"
+method: POST
+body:
+  type: json
+  content: |-
+    {
+      "attributeName": "",
+      "attributeValue": ""
+    }
+order: 400

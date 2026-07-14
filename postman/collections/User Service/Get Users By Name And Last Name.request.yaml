@@ -1,8 +1,0 @@
-$kind: http-request
-description: Searches users by both first name and last name.
-url: "{{user_service}}/api/users?name=Lucas&last_name=Vargas"
-method: GET
-queryParams:
-  name: Lucas
-  last_name: Vargas
-order: 3000

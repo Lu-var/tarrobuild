@@ -1,0 +1,10 @@
+app:
+  environment: production
+
+restclient:
+  connect-timeout: 30000
+  read-timeout: 90000
+
+eureka:
+  client:
+    enabled: false
