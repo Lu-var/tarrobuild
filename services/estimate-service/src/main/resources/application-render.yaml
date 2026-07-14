@@ -1,4 +1,17 @@
 spring:
+
+  cloud:
+    discovery:
+      client:
+        simple:
+          instances:
+            build-service:
+              - uri: https://build-service-lym5.onrender.com
+            notification-service:
+              - uri: https://notification-service-e4ij.onrender.com
+            product-service:
+              - uri: https://product-service-e903.onrender.com
+
   datasource:
     url: ${DATABASE_URL}
     driver-class-name: org.postgresql.Driver

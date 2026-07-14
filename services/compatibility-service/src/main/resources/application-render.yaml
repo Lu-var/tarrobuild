@@ -1,4 +1,15 @@
 spring:
+
+  cloud:
+    discovery:
+      client:
+        simple:
+          instances:
+            category-service:
+              - uri: https://category-service-4fmr.onrender.com
+            product-service:
+              - uri: https://product-service-e903.onrender.com
+
   datasource:
     url: ${DATABASE_URL}
     driver-class-name: org.postgresql.Driver

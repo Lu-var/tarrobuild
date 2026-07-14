@@ -1,4 +1,13 @@
 spring:
+
+  cloud:
+    discovery:
+      client:
+        simple:
+          instances:
+            user-service:
+              - uri: https://user-service-yuz5.onrender.com
+
   datasource:
     url: ${DATABASE_URL}
     driver-class-name: org.postgresql.Driver

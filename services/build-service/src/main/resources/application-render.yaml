@@ -1,4 +1,17 @@
 spring:
+
+  cloud:
+    discovery:
+      client:
+        simple:
+          instances:
+            product-service:
+              - uri: https://product-service-e903.onrender.com
+            compatibility-service:
+              - uri: https://compatibility-service.onrender.com
+            notification-service:
+              - uri: https://notification-service-e4ij.onrender.com
+
   datasource:
     url: ${DATABASE_URL}
     driver-class-name: org.postgresql.Driver

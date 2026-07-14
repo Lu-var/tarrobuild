@@ -19,6 +19,13 @@ spring:
       hibernate:
         default_schema: product
         format_sql: true
+  cloud:
+    discovery:
+      client:
+        simple:
+          instances:
+            category-service:
+              - uri: https://category-service-4fmr.onrender.com
 app:
   environment: production
 
