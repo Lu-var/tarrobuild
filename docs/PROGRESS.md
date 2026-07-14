@@ -15,13 +15,13 @@
 - [x] **RF-09** — Power consumption estimate (cost via estimate-service + power validation via compatibility rules, triggered on item change)
 - [x] **RF-10** — Provider references (SKU / external links)
 - [ ] **RF-11** — Consolidated build analysis
-- [ ] **RF-12** — Save favorite builds
-- [ ] **RF-13** — Upgrade recommendations
+- [x] **RF-12** — Save favorite builds
+- [x] **RF-13** — Missing component recommendations
 - [x] **RF-14** — CRUD components/attributes
 - [x] **RF-15** — CRUD compatibility rules
 - [x] **RF-16** — CRUD provider references
 - [ ] **RF-17** — Price/availability alerts
-- [ ] **RF-18** — Auto-notifications
+- [x] **RF-18** — Auto-notifications
 
 ## Non-functional requirements (RNF)
 

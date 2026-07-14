@@ -18,16 +18,20 @@
 | FB-13 | Sin roles ADMIN/USER en build-service | Agregada lógica de roles en `BuildController` y `BuildService` | `BuildController.java`, `BuildService.java` | ADMIN ve todas las builds, USER solo las suyas | Corregido |
 | FB-14 | Sin docker compose funcional | Creado `compose.yml` con healthchecks y dependencias | `compose.yml`, `application-prod.yaml` | `docker compose up` levanta todo el stack | Corregido |
 | FB-15 | Falta de documentación de arquitectura y APIs | Creados `ARCHITECTURE.md`, `API-DOCS.md`, `TEST-STRATEGY.md` | `docs/` múltiples archivos | Documentación revisada y alineada con código | Corregido |
+| FB-16 | Pruebas unitarias solo en 1/11 servicios | Agregados 212 tests en 11 servicios siguiendo estructura de compatibility-service | `src/test/java/` en todos los servicios | `mvn test` BUILD SUCCESS en los 11 servicios | Corregido |
+| FB-17 | Gateway enrutaba solo 2/10 servicios con lb:// sin Eureka | Agregado discovery-server (@EnableEurekaServer), registro en 11 servicios, gateway cambió a URLs directas | `discovery-server/`, `GatewayRoutesConfig.java`, `application.yaml` en cada servicio | Las 10 rutas del gateway funcionan con URLs directas desde variables de entorno | Corregido |
+| FB-18 | GET /api/builds sin filtro por usuario (falla de seguridad) | Implementada lógica de roles ADMIN/USER: ADMIN ve todas, USER solo las propias; /user/{userId} protegido con 403 | `BuildController.java`, `BuildService.java` | Tests y verificación en Render: ADMIN=14 builds, USER=2 builds, cross-user=403 | Corregido |
+| FB-19 | Feign clients declarados pero nunca usados (compatibility, provider) | Eliminado ProviderFeignClient (código muerto); CompatibilityFeignClient integrado en BuildService.triggerCompatibilityCheck() | `ProviderFeignClient.java`, `ProviderFeignClientFallbackFactory.java`, `BuildService.java` | No hay referencias a ProviderFeignClient; BuildService llama a checkCompatibility() en cada cambio de items | Corregido |
 
 ## Tareas pendientes identificadas por el equipo
 
 | ID | Tarea | Prioridad | Estado | Justificación si no se corrige |
 |----|-------|-----------|--------|-------------------------------|
-| P-01 | RF-11: Análisis consolidado de build | Media | Pendiente | Depende de RF-08, RF-09, RF-13 |
-| P-02 | RF-12: Builds favoritas e historial | Media | Pendiente | Funcionalidad no crítica para el core |
-| P-03 | RF-13: Recomendaciones de mejora/upgrade | Media | Pendiente | hardware-advisor-service tiene estructura base |
-| P-04 | RF-17: Alertas de precio | Baja | Pendiente | Funcionalidad avanzada post-MVP |
-| P-05 | RF-18: Notificaciones automáticas | Baja | Parcial | notification-service existe, falta integrar flujos |
-| P-06 | RNF-01: Response < 500ms | Media | Pendiente | Requiere pruebas de performance |
+| P-01 | RF-11: Análisis consolidado de build | Media | Pendiente | Cada servicio expone su endpoint individual; requiere orquestador no contemplado |
+| P-02 | RF-12: Builds favoritas e historial | Media | Corregido | Implementado con FavoriteService + BuildHistoryService |
+| P-03 | RF-13: Recomendaciones de mejora/upgrade | Media | Corregido | generate() recomienda componentes para slots vacíos |
+| P-04 | RF-17: Alertas de precio | Baja | Pendiente | Requiere integración con APIs externas de proveedores |
+| P-05 | RF-18: Notificaciones automáticas | Baja | Corregido | BuildService envía notificaciones en create/update |
+| P-06 | RNF-01: Response < 500ms | Media | Pendiente | Aplica en estado estable; Render free tier añade cold starts |
 | P-07 | Eureka Server (service discovery) | Alta | Corregido | discovery-server creado, @EnableDiscoveryClient en 11 servicios, registro en Eureka verificado |
 | P-08 | Gateway rutas con `lb://` | Alta | Rechazado | El gateway usa URLs directas porque las rutas son de entrada única (no necesitan discovery); `lb://` se usa solo para comunicación service-to-service (Feign/RestClient) |

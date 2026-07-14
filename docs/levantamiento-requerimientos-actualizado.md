@@ -14,15 +14,15 @@
 | RF-08 | Verificar compatibilidad | Sin cambios | — | Implementado | `CompatibilityService.java`, `CompatibilityServiceTest.java` |
 | RF-09 | Calcular costo + validar consumo | Unificado en estimate-service | Originalmente eran dos servicios separados; se unificó para simplificar | Implementado | `EstimateService.java`, `EstimateServiceTest.java` |
 | RF-10 | Referencias de vendedores | Sin cambios | — | Implementado | `ProviderController.java`, `ProviderServiceTest.java` |
-| RF-11 | Análisis consolidado de build | Sin cambios | — | No implementado | Pendiente de implementación |
-| RF-12 | Builds favoritas e historial | Sin cambios | — | No implementado | Pendiente de implementación |
-| RF-13 | Recomendaciones de mejora | Sin cambios | — | No implementado | hardware-advisor-service tiene estructura base |
+| RF-11 | Análisis consolidado de build | Sin cambios | — | No implementado | Cada servicio expone su endpoint individual; el consolidado requiere un orquestador no contemplado en la arquitectura original |
+| RF-12 | Builds favoritas e historial | Sin cambios | — | Implementado | `POST /api/builds/{id}/favorite`, `GET /api/builds/favorites`, `GET /api/builds/{id}/history` |
+| RF-13 | Recomendaciones de mejora | Sin cambios | — | Parcial | hardware-advisor-service.generate() recomienda componentes para categorías faltantes |
 | RF-14 | CRUD componentes y atributos | Sin cambios | — | Implementado | `ProductController.java`, `CategoryController.java` |
 | RF-15 | Reglas de compatibilidad | Sin cambios | — | Implementado | `CompatibilityController.java`, seed data V2 |
 | RF-16 | Precios de mercado | Sin cambios | — | Parcial | ProviderProduct soporta precios, falta integración |
-| RF-17 | Alertas de precio | Sin cambios | — | No implementado | Pendiente de implementación |
-| RF-18 | Notificaciones automáticas | Sin cambios | — | Parcial | NotificationService implementado, faltan integraciones |
-| RNF-01 | Response < 500ms | Sin cambios | — | No implementado | Pendiente de pruebas de performance |
+| RF-17 | Alertas de precio | Sin cambios | — | No implementado | Requiere integración con APIs externas de proveedores no disponible en el alcance del curso |
+| RF-18 | Notificaciones automáticas | Sin cambios | — | Implementado | BuildService envía notificaciones al crear build y cambiar estado |
+| RNF-01 | Response < 500ms | Sin cambios | — | No implementado | Aplica en estado estable; Render free tier añade cold starts. Script: `scripts/performance-test.ps1` |
 | RNF-02 | Feign + RestClient | Sin cambios | — | Implementado | 6 FeignClients + 9 RestClients en el proyecto |
 | RNF-03 | Logout de JWT | Sin cambios | — | Implementado | `AuthController.logout()` |
 | RNF-04 | No exponer credenciales | Sin cambios | — | Implementado | `.env.example` por servicio, variables de entorno |

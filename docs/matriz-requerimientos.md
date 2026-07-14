@@ -15,19 +15,19 @@
 | RF-09 | Calcular costo total de una build y validar consumo energético | Funcional | Implementado | `POST /api/estimate` → `POST /api/v1/estimate` | `EstimateServiceTest.calcular_estimate_exitoso` |
 | RF-10 | Obtener referencias de vendedores registrados para componentes | Funcional | Implementado | `GET /api/providers` → `GET /api/v1/providers` | `ProviderServiceTest.listarProveedores_retornaTodos` |
 | RF-11 | Generar análisis consolidado de build (compatibilidad + costo + advertencias) | Funcional | No implementado | — | — |
-| RF-12 | Guardar builds favoritas e historial de configuraciones | Funcional | No implementado | — | — |
-| RF-13 | Generar recomendaciones de mejora o upgrade | Funcional | No implementado | — | — |
+| RF-12 | Guardar builds favoritas e historial de configuraciones | Funcional | Implementado | `POST /api/builds/{id}/favorite`, `GET /api/builds/favorites`, `GET /api/builds/{id}/history` | `BuildServiceTest` |
+| RF-13 | Generar recomendaciones de mejora o upgrade | Funcional | Parcial | `POST /api/recommendations/generate` recomienda componentes para categorías faltantes | `HardwareAdvisorServiceTest` |
 | RF-14 | Crear/editar componentes y atributos técnicos del catálogo | Funcional | Implementado | `POST/PUT /api/products`, `POST/PUT /api/categories` | `ProductServiceTest.crearProducto_exitoso`, `CategoryServiceTest.crearCategoria_exitoso` |
 | RF-15 | Crear/editar reglas de compatibilidad entre categorías | Funcional | Implementado | `POST/PUT /api/compatibility/rules` | `CompatibilityServiceTest.check_MultipleRules_AllPass_ReturnsTrue` |
 | RF-16 | Registrar/actualizar referencias de precios de mercado | Funcional | Parcial | `PUT /api/providers/products/{id}` | `ProviderServiceTest.actualizarProductoProveedor_exitoso` |
-| RF-17 | Configurar alertas para cambios de precio o disponibilidad | Funcional | No implementado | — | — |
-| RF-18 | Enviar notificaciones automáticas al usuario sobre alertas en builds | Funcional | Parcial | `POST /api/notifications/send` | `NotificationServiceTest.enviar_notificacion_exitoso` |
+| RF-17 | Configurar alertas para cambios de precio o disponibilidad | Funcional | No implementado | — | Requiere integración con APIs externas de proveedores no disponible en el alcance del curso |
+| RF-18 | Enviar notificaciones automáticas al usuario sobre alertas en builds | Funcional | Implementado | BuildService.notificationFeignClient en createBuild() y updateBuildStatus() | `BuildServiceTest` |
 
 ## Requerimientos No Funcionales
 
 | ID | Requerimiento | Tipo | Estado | Evidencia |
 |----|--------------|------|--------|-----------|
-| RNF-01 | Las respuestas de la API deben responder en menos de 500ms | No funcional | No implementado | Pendiente de pruebas de performance |
+| RNF-01 | Las respuestas de la API deben responder en menos de 500ms | No funcional | No implementado | Aplica en estado estable (servicios calientes). Render free tier añade latencia de cold start (50-90s) no controlable. Script de medición en `scripts/performance-test.ps1` |
 | RNF-02 | Los microservicios deben usar Feign Client y RestClient para comunicación HTTP | No funcional | Implementado | 6 FeignClients + 9 RestClients en el proyecto |
 | RNF-03 | El sistema debe incluir un mecanismo de logout para invalidar tokens JWT | No funcional | Implementado | `POST /api/auth/logout` |
 | RNF-04 | No exponer credenciales en GitHub | No funcional | Implementado | `.env.example` por servicio, variables de entorno |

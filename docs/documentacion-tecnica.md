@@ -309,15 +309,15 @@ URLs públicas de servicios:
 |----------|-----|
 | api-gateway | https://api-gateway-tzkw.onrender.com |
 | auth-service | https://auth-service-oww8.onrender.com |
-| user-service | https://user-service-1ycx.onrender.com |
+| user-service | https://user-service-yuz5.onrender.com |
 | product-service | https://product-service-e903.onrender.com |
-| category-service | https://category-service-91sc.onrender.com |
-| compatibility-service | https://compatibility-service-3hfz.onrender.com |
-| provider-service | https://provider-service-56hc.onrender.com |
+| category-service | https://category-service-4fmr.onrender.com |
+| compatibility-service | https://compatibility-service.onrender.com |
+| provider-service | https://provider-service-9ip0.onrender.com |
 | build-service | https://build-service-lym5.onrender.com |
-| estimate-service | https://estimate-service-h0h9.onrender.com |
-| hardware-advisor-service | https://hardware-advisor-service-9b8i.onrender.com |
-| notification-service | https://notification-service-d4ww.onrender.com |
+| estimate-service | https://estimate-service-dkhv.onrender.com |
+| hardware-advisor-service | https://hardware-advisor-service.onrender.com |
+| notification-service | https://notification-service-e4ij.onrender.com |
 
 ### Configuración por servicio en Render
 

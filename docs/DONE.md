@@ -225,3 +225,31 @@
 - [x] `compose.yml` con healthchecks en MySQL, port 8080 para gateway, env vars para hardware-advisor
 - [x] `application-prod.yaml` creado en los 11 servicios
 - [x] `Dockerfile.render` multi-stage en raíz del proyecto
+
+### RF-12 — Builds favoritas e historial
+
+- [x] `Favorite.java` + `BuildHistory.java` entities en build-service
+- [x] `FavoriteService.java` — toggle favorite + listar favoritos
+- [x] `BuildHistoryService.java` — snapshot automático en updateBuild/updateBuildStatus
+- [x] Endpoints: `POST /api/builds/{id}/favorite`, `GET /api/builds/favorites`, `GET /api/builds/{id}/history`
+- [x] Migraciones Flyway V3 para MySQL y PostgreSQL
+
+### RF-18 — Notificaciones automáticas
+
+- [x] `NotificationFeignClient` + `NotificationFeignClientFallbackFactory` en build-service
+- [x] `NotificationClientRequest` DTO en build-service
+- [x] Notificaciones en `BuildService.createBuild()` y `BuildService.updateBuildStatus()`
+- [x] Fire-and-forget con try-catch (no propaga errores)
+
+### RF-13 — Recomendaciones de componentes faltantes
+
+- [x] `HardwareAdvisorService.generate()` recomienda productos para categorías vacías en la build
+- [x] Mapa estático de nombres de categorías
+- [x] Validación de compatibilidad vía `CompatibilityFeignClient` antes de sugerir
+- [x] Notificación al usuario cuando se generan recomendaciones
+
+### RNF-01 — Script de performance
+
+- [x] `scripts/performance-test.ps1` — parámetros env/route/service
+- [x] Log por fecha, servicio y tiempo de respuesta
+- [x] Soporte para local y Render (direct, gateway, monolith)
