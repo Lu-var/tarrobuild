@@ -1,5 +1,5 @@
 CREATE OR REPLACE PACKAGE pkg_product AS
-  PROCEDURE listar_categorias (p_cursor OUT SYS_REFCURSOR);   -- apoyo para agregar/editar
+  PROCEDURE listar_categorias (p_cursor OUT SYS_REFCURSOR);
   PROCEDURE listar_todo (p_cursor OUT SYS_REFCURSOR);
   PROCEDURE buscar_uno  (p_id IN product.id%TYPE, p_cursor OUT SYS_REFCURSOR);
   PROCEDURE agregar     (p_name        IN product.name%TYPE,
@@ -17,8 +17,8 @@ CREATE OR REPLACE PACKAGE pkg_product AS
                          p_brand       IN product.brand%TYPE,
                          p_model       IN product.model%TYPE,
                          p_is_active   IN product.is_active%TYPE);
-  PROCEDURE desactivar  (p_id IN product.id%TYPE);   -- baja lógica (HU-10)
-  PROCEDURE eliminar    (p_id IN product.id%TYPE);   -- baja física
+  PROCEDURE desactivar  (p_id IN product.id%TYPE);
+  PROCEDURE eliminar    (p_id IN product.id%TYPE);
 END pkg_product;
 /
 
@@ -36,17 +36,20 @@ CREATE OR REPLACE PACKAGE BODY pkg_product AS
     END IF;
   END;
 
-  PROCEDURE validar_datos(p_price NUMBER, p_category_id NUMBER) IS
-    v NUMBER;
-  BEGIN
-    IF p_price IS NULL OR p_price <= 0 THEN
-      RAISE_APPLICATION_ERROR(-20002, 'El precio debe ser mayor que 0');
-    END IF;
-    SELECT COUNT(*) INTO v FROM category WHERE id = p_category_id;
-    IF v = 0 THEN
-      RAISE_APPLICATION_ERROR(-20003, 'La categoría ' || p_category_id || ' no existe');
-    END IF;
-  END;
+PROCEDURE validar_datos(p_name VARCHAR2, p_price NUMBER, p_category_id NUMBER) IS
+  v NUMBER;
+BEGIN
+  IF TRIM(p_name) IS NULL THEN
+    RAISE_APPLICATION_ERROR(-20005, 'El nombre es obligatorio');
+  END IF;
+  IF p_price IS NULL OR p_price <= 0 THEN
+    RAISE_APPLICATION_ERROR(-20002, 'El precio debe ser mayor que 0');
+  END IF;
+  SELECT COUNT(*) INTO v FROM category WHERE id = p_category_id;
+  IF v = 0 THEN
+    RAISE_APPLICATION_ERROR(-20003, 'La categoría ' || p_category_id || ' no existe');
+  END IF;
+END;
 
   -- LISTAR CATEGORÍAS (apoyo)
   PROCEDURE listar_categorias(p_cursor OUT SYS_REFCURSOR) IS
@@ -80,7 +83,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_product AS
                     p_brand IN product.brand%TYPE, p_model IN product.model%TYPE,
                     p_id OUT product.id%TYPE) IS
   BEGIN
-    validar_datos(p_price, p_category_id);
+    validar_datos(p_name, p_price, p_category_id);
     INSERT INTO product (name, description, price, category_id, brand, model)
     VALUES (p_name, p_description, p_price, p_category_id, p_brand, p_model)
     RETURNING id INTO p_id;
@@ -94,7 +97,12 @@ CREATE OR REPLACE PACKAGE BODY pkg_product AS
                    p_model IN product.model%TYPE, p_is_active IN product.is_active%TYPE) IS
   BEGIN
     validar_existe(p_id);
-    validar_datos(p_price, p_category_id);
+    validar_datos(p_name, p_price, p_category_id);
+
+    IF p_is_active IS NULL OR p_is_active NOT IN (0, 1) THEN
+      RAISE_APPLICATION_ERROR(-20006, 'is_active debe ser 0 o 1');
+    END IF;
+    
     UPDATE product
        SET name = p_name, description = p_description, price = p_price,
            category_id = p_category_id, brand = p_brand, model = p_model,
@@ -103,7 +111,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_product AS
     COMMIT;
   END;
 
-  -- DESACTIVAR (baja lógica)
+  -- DESACTIVAR
   PROCEDURE desactivar(p_id IN product.id%TYPE) IS
   BEGIN
     validar_existe(p_id);
@@ -111,7 +119,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_product AS
     COMMIT;
   END;
 
-  -- ELIMINAR (baja física)
+  -- ELIMINAR
   PROCEDURE eliminar(p_id IN product.id%TYPE) IS
   BEGIN
     validar_existe(p_id);
@@ -121,7 +129,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_product AS
     WHEN e_en_uso THEN
       ROLLBACK;
       RAISE_APPLICATION_ERROR(-20004,
-        'No se puede eliminar: el producto está en una build. Use desactivar.');
+        'No se puede eliminar: el producto está referenciado (build o recomendación). Use desactivar.');
   END;
 END pkg_product;
 /

@@ -108,6 +108,11 @@ def eliminar(conn):
     else:
         print("Operación cancelada.")
 
+def desactivar(conn):
+    id_ = pedir_numero("ID del producto a desactivar")
+    conn.cursor().callproc("pkg_product.desactivar", [id_])
+    print("Producto desactivado.")
+
 
 MENU = {
     "1": ("Listar todo", listar_todo),
@@ -115,6 +120,7 @@ MENU = {
     "3": ("Agregar", agregar),
     "4": ("Editar", editar),
     "5": ("Eliminar", eliminar),
+    "6": ("Desactivar", desactivar),   # nuevo
 }
 
 
